@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1f4d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/app-icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./assets/app-icon-192.png">
+<title>TUSHAR VISA SIM Management System</title>
+<style>
+  :root{
+    --bg:#f3f5f9; --card:#fff; --text:#1c2333; --muted:#6b7488; --line:#e3e7ef;
+    --primary:#2563eb; --primary-d:#1d4ed8; --green:#16a34a; --red:#dc2626; --amber:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Arial,"Noto Sans Bengali","Kalpurush","SolaimanLipi",sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+  header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:18px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+  header h1{margin:0;font-size:20px}
+  header small{opacity:.85}
+  .stats{display:flex;gap:10px;flex-wrap:wrap}
+  .stat{background:rgba(255,255,255,.15);padding:6px 14px;border-radius:10px;text-align:center;min-width:80px}
+  .stat b{display:block;font-size:20px}
+  .stat span{font-size:12px;opacity:.9}
+  main{max-width:1200px;margin:0 auto;padding:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card h2{margin:0 0 12px;font-size:16px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row>*{flex:1 1 160px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+  input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fff;color:var(--text)}
+  input:focus,select:focus,textarea:focus{outline:2px solid #bfd3ff;border-color:var(--primary)}
+  button{font:inherit;cursor:pointer;border:0;border-radius:9px;padding:9px 16px;background:var(--primary);color:#fff;font-weight:600}
+  button:hover{background:var(--primary-d)}
+  button.sec{background:#eef1f7;color:var(--text)}
+  button.sec:hover{background:#e0e5ef}
+  button.danger{background:#fee2e2;color:var(--red);padding:6px 10px}
+  button.danger:hover{background:#fecaca}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+  .actions>*{flex:0 0 auto}
+  .search-wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+  .search-wrap .grow{flex:1 1 280px}
+  #q{font-size:20px;letter-spacing:1px;padding:12px 14px;border:2px solid var(--primary)}
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:760px}
+  th{background:#f0f3f9;text-align:left;font-size:12px;color:var(--muted);padding:9px 8px;position:sticky;top:0}
+  td{padding:6px 6px;border-top:1px solid var(--line);vertical-align:middle}
+  td input,td select{padding:6px 8px;border-color:transparent;background:#f8f9fc}
+  td input:hover,td select:hover{border-color:var(--line)}
+  .num{font-weight:700;font-size:16px;font-family:Consolas,monospace;white-space:nowrap}
+  mark{background:#fde68a;border-radius:3px;padding:0 1px}
+  .pid{font-weight:800;font-size:18px;font-family:Consolas,monospace;white-space:nowrap}
+  .pid.S{color:#334155}
+  .idb .big.S{color:#334155}
+  .pid.T{color:#15803d}.pid.M{color:#b91c1c}.pid.O{color:#4338ca}
+  .nopid{color:#b0b6c3;font-weight:400}
+  .idb{display:flex;align-items:center;gap:16px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:10px 16px;margin-top:10px}
+  .idb .big{font-size:38px;font-weight:800;font-family:Consolas,monospace;min-width:100px;text-align:center}
+  .idb .big.T{color:#15803d}.idb .big.M{color:#b91c1c}.idb .big.O{color:#4338ca}
+  .idb .big.none{font-size:15px;color:#92400e;font-weight:600}
+  .idb .info{line-height:1.5}
+  .idb .info b{font-size:17px;font-family:Consolas,monospace}
+  .badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+  .p-tourist{background:#dcfce7;color:#166534}
+  .p-medical{background:#fee2e2;color:#991b1b}
+  .p-other{background:#e0e7ff;color:#3730a3}
+  .empty{padding:30px;text-align:center;color:var(--muted)}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.3s;z-index:9}
+  .toast.show{opacity:1}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  details summary{cursor:pointer;font-weight:600}
+  .warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:8px 12px;font-size:13px;margin-top:10px}
+  @media(max-width:600px){main{padding:10px}}
+
+  /* ---- polish + edit UI ---- */
+  tbody tr:hover{background:#f7f9fd}
+  td{padding:10px 8px}
+  td.idx{color:var(--muted);font-size:13px}
+  .notecell{color:var(--muted);font-size:13px;max-width:220px}
+  .acts{white-space:nowrap;text-align:right}
+  button.icon{padding:7px 10px;background:#eef1f7;color:var(--text);font-size:15px;line-height:1;border-radius:8px;margin-left:4px}
+  button.icon:hover{background:#dbe7ff}
+  button.icon.del{background:#fee2e2}
+  button.icon.del:hover{background:#fecaca}
+  .badge{font-size:12px;padding:3px 10px}
+  .p-unknown{background:#f1f5f9;color:#475569}
+  .keep{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:10px;cursor:pointer}
+  .keep input{width:auto}
+  .pcol[data-p=tourist]{border-color:#86efac;background:#f0fdf4}
+  .pcol[data-p=medical]{border-color:#fca5a5;background:#fef2f2}
+  .pcol[data-p=other]{border-color:#a5b4fc;background:#eef2ff}
+  .overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+  .overlay[hidden]{display:none}
+  .modal{background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:92vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:pop .18s ease}
+  @keyframes pop{from{transform:translateY(10px) scale(.98);opacity:0}}
+  .mhead{display:flex;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#eff6ff,#fff)}
+  .mhead h3{margin:0;font-size:17px}
+  .mids{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+  button.x{background:#eef1f7;color:var(--muted);padding:0;width:32px;height:32px;border-radius:50%;flex:0 0 auto}
+  button.x:hover{background:#e0e5ef}
+  .mbody{padding:16px 20px;display:grid;gap:12px}
+  .mbody .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  #eNum{font-family:Consolas,monospace;font-size:18px;font-weight:700;letter-spacing:1px}
+  .seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .opt{position:relative;margin:0;font-size:13px;color:var(--text);cursor:pointer}
+  .opt input{position:absolute;opacity:0;width:0;height:0;padding:0}
+  .opt span{display:block;text-align:center;padding:10px 4px;border:2px solid var(--line);border-radius:10px;font-weight:600;background:#fff}
+  .opt input:focus-visible+span{outline:2px solid #bfd3ff}
+  .opt.u input:checked+span{border-color:#64748b;background:#f1f5f9}
+  .opt.t input:checked+span{border-color:#16a34a;background:#dcfce7;color:#166534}
+  .opt.m input:checked+span{border-color:#dc2626;background:#fee2e2;color:#991b1b}
+  .opt.o input:checked+span{border-color:#4f46e5;background:#e0e7ff;color:#3730a3}
+  .ewarn,.eerr{font-size:13px;border-radius:10px;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+  .eerr{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+  .ewarn:empty,.eerr:empty{display:none}
+  .mfoot{display:flex;gap:8px;align-items:center;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfd}
+  .mfoot .sp{flex:1}
+  @media(max-width:520px){.seg{grid-template-columns:1fr 1fr}.mbody .two{grid-template-columns:1fr}}
+  button.icon{display:inline-flex;align-items:center}
+  button.icon.del{color:var(--red)}
+
+  /* ---- category groups + search scope ---- */
+  .scope{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .chip{background:#eef1f7;color:var(--text);padding:8px 14px;border-radius:999px;border:2px solid transparent;font-weight:600;font-size:14px}
+  .chip:hover{background:#e0e5ef}
+  .chip b{margin-left:6px;font-size:12px;background:#fff;border-radius:999px;padding:1px 8px;color:var(--muted)}
+  .chip.on{background:#1e3a8a;color:#fff}
+  .chip.on b{color:#1e3a8a}
+  .chip.on.medical{background:#dc2626}.chip.on.medical b{color:#dc2626}
+  .chip.on.tourist{background:#16a34a}.chip.on.tourist b{color:#16a34a}
+  .chip.on.other{background:#4f46e5}.chip.on.other b{color:#4f46e5}
+  .chip.on.none{background:#64748b}.chip.on.none b{color:#64748b}
+  tr.grp td{padding:10px 12px;font-weight:700;font-size:14px;cursor:pointer;user-select:none;border-top:2px solid var(--line)}
+  tr.grp:hover{background:inherit}
+  tr.grp.medical td{background:#fee2e2;color:#991b1b}
+  tr.grp.tourist td{background:#dcfce7;color:#166534}
+  tr.grp.other td{background:#e0e7ff;color:#3730a3}
+  tr.grp.unknown td{background:#f1f5f9;color:#475569}
+  tr.grp .gc{margin-left:8px;font-size:12px;background:#fff;border-radius:999px;padding:1px 9px}
+  tr.grp .car{display:inline-block;width:14px}
+  /* similar-number (typo tolerant) panel */
+  .simp{margin-top:12px;border:2px solid #f59e0b;background:#fffbeb;border-radius:12px;padding:10px 14px}
+  .simp-h{font-weight:800;color:#92400e;font-size:15px}
+  .simp-h span{background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;margin-left:6px}
+  .simp-sub{font-size:12px;color:#92400e;margin:2px 0 8px}
+  .simrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin-top:6px}
+  .simrow .num{font-size:20px;letter-spacing:1px}
+  .simrow .who{color:var(--muted);font-size:13px;flex:1 1 140px}
+  .dx{background:#fecaca;color:#991b1b;border-radius:3px;padding:0 1px}
+  .dt{background:#fed7aa;color:#9a3412;border-radius:3px;padding:0 1px}
+  .mpct{font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;background:#fef3c7;color:#92400e;white-space:nowrap}
+  .mpct.hi{background:#fde68a}
+  /* given (handed-over) status */
+  .p-given{background:#d1fae5;color:#065f46}
+  tr.given td:not(.acts){opacity:.55}
+  button.icon.give{color:#9ca3af}
+  button.icon.give.on{background:#d1fae5;color:#065f46}
+  .printonly{display:none}
+  @media print{
+    header,main>.card:not(#listCard),.toast,.overlay,.acts,thead th:last-child{display:none!important}
+    body{background:#fff}
+    .card{border:0;box-shadow:none;padding:0}
+    .printonly{display:block;font-weight:700;margin:0 0 8px}
+    table{min-width:0;font-size:12px} tr{break-inside:avoid}
+    tr.grp td,.badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    tr.given td{opacity:1}
+  }
+
+  /* ---- wanted list + match alerts + extras ---- */
+  .stat.click{cursor:pointer}
+  .stat.click:hover{background:rgba(255,255,255,.28)}
+  .p-want{background:#e0f2fe;color:#075985}
+  .wantp{margin-top:12px;border:2px solid #38bdf8;background:#f0f9ff;border-radius:12px;padding:10px 14px}
+  .wantp-h{font-weight:800;color:#075985;font-size:15px}
+  .wantp-h span{background:#0ea5e9;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;margin-left:6px}
+  .wrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:8px}
+  .wantp .wrow{border-color:#bae6fd}
+  .wrow.found{background:#f0fdf4;border-color:#bbf7d0}
+  .wrow.closed{opacity:.6}
+  .wmain{flex:1 1 320px;min-width:0}
+  .wmain .num{font-size:19px;letter-spacing:1px}
+  .wmeta{font-size:13px;color:var(--muted);margin-top:3px}
+  .wmeta b{color:var(--text)}
+  .wbtn{display:flex;gap:6px;flex-wrap:wrap}
+  .wbtn button,.wlive button,.mcard button{padding:6px 12px;font-size:13px}
+  button.good{background:#16a34a}button.good:hover{background:#15803d}
+  button.ghost{background:#eef1f7;color:var(--text)}button.ghost:hover{background:#e0e5ef}
+  .wlive{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;padding:8px 10px;background:#fffbeb;border:1px dashed #f59e0b;border-radius:10px;font-size:13px}
+  .wlive .num{font-size:16px}
+  .wfound{margin-top:6px;font-size:13px;color:#166534}
+  .mk{font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .mk-exact{background:#bbf7d0;color:#166534}.mk-partial{background:#bae6fd;color:#075985}.mk-similar{background:#fde68a;color:#92400e}
+  .mcard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+  .mcard.exact{border-color:#86efac;background:#f0fdf4}.mcard.partial{border-color:#7dd3fc;background:#f0f9ff}.mcard.similar{border-color:#fcd34d;background:#fffbeb}
+  .mcard .num{font-size:19px;letter-spacing:1px}
+  .mcard .done{font-weight:700;color:#166534;font-size:13px}.mcard .done.no{color:#6b7280}
+  #infoOv .modal{max-width:660px}
+  .wantnote{font-size:13px;border-radius:10px;padding:8px 12px;background:#f0f9ff;border:1px solid #7dd3fc;color:#075985;margin-top:8px}
+  .undo{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:8px 10px 8px 18px;border-radius:12px;z-index:30;display:flex;gap:14px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+  .undo[hidden]{display:none}
+  .undo button{background:#fbbf24;color:#111827;padding:6px 14px}
+
+  /* ---- home button + note dialog ---- */
+  .homebtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);padding:8px 14px}
+  .homebtn:hover{background:rgba(255,255,255,.3)}
+  .hrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  #noteOv{z-index:40}
+  #noteOv .modal{max-width:460px;text-align:center}
+  .nhead{padding:24px 24px 6px}
+  .nhead h3{margin:12px 0 4px;font-size:20px}
+  .nhead p{margin:0;color:var(--muted);font-size:14px}
+  .ncheck{width:56px;height:56px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff;background:#16a34a;box-shadow:0 0 0 8px #dcfce7;animation:pop .25s ease}
+  .nhead.warn .ncheck{background:#f59e0b;box-shadow:0 0 0 8px #fef3c7}
+  .nbody{padding:14px 24px 22px;display:grid;gap:12px;text-align:left}
+  .nids{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .nid{border:2px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;background:#f8fafc}
+  .nid span{display:block;font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:700}
+  .nid b{display:block;font-size:40px;line-height:1.15;font-family:Consolas,monospace}
+  .nid.S b{color:#334155}.nid.T{border-color:#86efac;background:#f0fdf4}.nid.T b{color:#15803d}
+  .nid.M{border-color:#fca5a5;background:#fef2f2}.nid.M b{color:#b91c1c}
+  .nid.O{border-color:#a5b4fc;background:#eef2ff}.nid.O b{color:#4338ca}
+  .nid.none b{font-size:22px;color:#94a3b8;padding:10px 0}
+  .ndetail{text-align:center;font-size:14px;color:var(--text);line-height:1.6}
+  .ndetail .num{font-size:20px;letter-spacing:1px}
+  .nwarn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.5}
+  .nack{display:flex;align-items:center;gap:12px;border:2px solid var(--primary);border-radius:12px;padding:12px 14px;cursor:pointer;font-weight:700;font-size:15px;color:var(--text);margin:0;background:#eff6ff}
+  .nack input{width:22px;height:22px;flex:0 0 auto;accent-color:#16a34a}
+  .bigok{width:100%;padding:18px 20px;font-size:19px;font-weight:800;letter-spacing:.3px;color:#fff;border-radius:14px;border:0;
+    background:linear-gradient(180deg,#22c55e,#16a34a);box-shadow:0 6px 16px rgba(22,163,74,.35),inset 0 1px 0 rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:transform .12s,box-shadow .12s,filter .12s}
+  .bigok:hover{background:linear-gradient(180deg,#22c55e,#15803d);filter:brightness(1.03);transform:translateY(-1px);box-shadow:0 9px 20px rgba(22,163,74,.4),inset 0 1px 0 rgba(255,255,255,.3)}
+  .bigok:active{transform:translateY(1px) scale(.99);box-shadow:0 2px 6px rgba(22,163,74,.35)}
+  .bigok:focus-visible{outline:4px solid #bbf7d0;outline-offset:2px}
+  .bigok .tick{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.25);font-size:19px}
+  .bigok.done{background:#15803d;pointer-events:none;animation:okpop .35s ease}
+  @keyframes okpop{0%{transform:scale(1)}45%{transform:scale(1.04)}100%{transform:scale(1)}}
+  .nserial{background:linear-gradient(180deg,#f8fafc,#eef2f7);border:1px solid var(--line);border-radius:20px;padding:18px 10px 16px;text-align:center}
+  .nserial small{display:block;font-size:12px;letter-spacing:3px;color:var(--muted);font-weight:700}
+  .nserial b{display:block;font-size:clamp(64px,20vw,104px);line-height:1.05;font-weight:800;font-family:Consolas,"Segoe UI",monospace;color:#0f172a;letter-spacing:2px}
+  .nserial .snum{display:block;margin-top:4px;font-size:14px;color:var(--muted);letter-spacing:1px}
+  .nmsg{text-align:center;font-size:15px;color:#334155;line-height:1.5;padding:0 6px}
+  .nmini{text-align:center;font-size:12.5px;color:#92400e;background:#fffbeb;border-radius:10px;padding:6px 10px}
+  .nhint{text-align:center;font-size:12px;color:var(--muted);margin-top:-4px}
+  .nlist{max-height:38vh;overflow:auto;border:1px solid var(--line);border-radius:10px}
+  .nlist table{min-width:0;font-size:14px}
+  .nlist td,.nlist th{padding:6px 10px}
+  .nsub{font-weight:700;font-size:13px;margin:4px 0 -4px;color:#92400e}
+  .nbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .dupcard{border:2px solid #fcd34d;background:#fffbeb;border-radius:14px;padding:12px 14px;display:grid;gap:6px}
+  .dupcard .ids{display:flex;gap:16px;align-items:baseline}
+  .dupcard .ids b{font-size:32px;font-family:Consolas,monospace}
+  .dupcard .num{font-size:20px;letter-spacing:1px}
+
+/* ================= UI + MOTION LAYER (visual only; no data logic) ================= */
+:root{--bg:#eef1f8;--line:#e0e6f1;--primary:#2f5bea;--primary-d:#2347c8;--ease:cubic-bezier(.22,1,.36,1);
+  --sh1:0 1px 2px rgba(16,30,70,.05),0 4px 14px rgba(16,30,70,.06);--sh2:0 2px 4px rgba(16,30,70,.06),0 14px 34px rgba(16,30,70,.14);--safe:env(safe-area-inset-bottom,0px)}
+.bnav{display:none}
+@media screen{
+html{-webkit-text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;background:radial-gradient(1100px 380px at 50% -120px,#dbe4ff,transparent 70%),var(--bg)}
+header{background:linear-gradient(135deg,#0f1f4d 0%,#1d3fae 60%,#2f5bea 100%);padding:20px 24px;box-shadow:0 10px 28px rgba(15,31,77,.28);position:relative;overflow:hidden}
+header::after{content:"";position:absolute;width:340px;height:340px;right:-90px;top:-170px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+header>*{position:relative;z-index:1}
+header h1{font-size:21px;letter-spacing:.2px}
+.stat{backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);transition:transform .25s var(--ease),background .2s;animation:statin .6s var(--ease) backwards}
+.stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}.stat:nth-child(5){animation-delay:.2s}.stat:nth-child(6){animation-delay:.25s}.stat:nth-child(7){animation-delay:.3s}
+.stat b{font-variant-numeric:tabular-nums;display:block;transition:transform .25s var(--ease)}
+.stat b.bump{transform:scale(1.18)}
+.stat.click:hover{transform:translateY(-2px)}
+@keyframes statin{from{opacity:0;transform:translateY(10px) scale(.94)}}
+main>.card{border-radius:18px;box-shadow:var(--sh1);animation:cardin .6s var(--ease) backwards;scroll-margin-top:12px}
+main>.card:nth-child(2){animation-delay:.07s}main>.card:nth-child(3){animation-delay:.14s}main>.card:nth-child(4){animation-delay:.21s}main>.card:nth-child(5){animation-delay:.28s}
+@keyframes cardin{from{opacity:0;transform:translateY(16px)}}
+.card h2{font-size:17px}
+input,select,textarea{border-radius:11px;transition:border-color .2s,box-shadow .2s,background .2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 4px rgba(47,91,234,.16)}
+#q{border-radius:14px}#q:focus{box-shadow:0 0 0 6px rgba(47,91,234,.16)}
+button{border-radius:11px;transition:transform .15s var(--ease),background .2s,box-shadow .2s,filter .2s;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+button:not(.bigok):not(.x):hover{box-shadow:0 4px 12px rgba(47,91,234,.18)}
+button:active{transform:scale(.95)}
+button:focus-visible,.chip:focus-visible{outline:3px solid rgba(47,91,234,.4);outline-offset:2px}
+.chip{transition:background .25s,color .25s,transform .25s var(--ease),box-shadow .25s}
+.chip.on{transform:scale(1.04);box-shadow:0 6px 14px rgba(15,31,77,.22)}
+tbody tr{transition:background .2s}
+tr.fx-in{animation:rowin .45s var(--ease) backwards;animation-delay:var(--d,0ms)}
+tr.fx-new{animation:newrow 1.5s var(--ease) backwards}
+@keyframes rowin{from{opacity:0;transform:translateY(10px)}}
+@keyframes newrow{from{opacity:0;transform:translateY(-12px);background:#dbe7ff}55%{background:#dbe7ff}}
+.fx-pop{animation:pop2 .4s var(--ease) backwards}
+@keyframes pop2{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+button.icon.give.on{animation:givepop .4s var(--ease)}
+@keyframes givepop{40%{transform:scale(1.25)}}
+.overlay{backdrop-filter:blur(6px)}
+.overlay:not([hidden]){animation:fadein .25s ease}
+.modal{animation:sheet .38s var(--ease)}
+@keyframes fadein{from{opacity:0}}
+@keyframes sheet{from{opacity:0;transform:translateY(26px) scale(.97)}}
+.ncheck{position:relative}
+.ncheck::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid #22c55e;animation:ringp 1s .15s ease-out both}
+.nhead.warn .ncheck::after{border-color:#f59e0b}
+@keyframes ringp{from{transform:scale(.75);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.nserial b{animation:serial .6s .1s var(--ease) backwards}
+@keyframes serial{from{opacity:0;transform:scale(.85)}}
+.toast{transform:translate(-50%,16px);transition:opacity .3s,transform .4s var(--ease);bottom:calc(20px + var(--safe));border-radius:14px;box-shadow:var(--sh2);max-width:92vw;text-align:center;z-index:50}
+.toast.show{transform:translate(-50%,0)}
+.undo{animation:undoin .4s var(--ease);border-radius:14px;z-index:45;bottom:calc(20px + var(--safe));max-width:94vw}
+@keyframes undoin{from{opacity:0;transform:translate(-50%,20px)}}
+.tap{position:fixed;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(47,91,234,.28);pointer-events:none;z-index:99;animation:tapr .55s ease-out forwards}
+@keyframes tapr{from{transform:scale(.2);opacity:1}to{transform:scale(1.6);opacity:0}}
+}
+/* ---------- mobile ---------- */
+@media screen and (max-width:760px){
+main{padding:12px 12px calc(96px + var(--safe))}
+header{padding:16px 14px 18px}header h1{font-size:19px}
+.stats{flex-wrap:nowrap;overflow-x:auto;gap:8px;width:calc(100% + 28px);margin:0 -14px;padding:2px 14px;scroll-snap-type:x proximity;scroll-padding-left:14px;scrollbar-width:none}
+.stats::-webkit-scrollbar{display:none}
+.stat{flex:0 0 auto;scroll-snap-align:start;min-width:76px}
+input,select,textarea{font-size:16px}
+button{min-height:44px}
+button.x{min-height:0;width:38px;height:38px}
+.search-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.search-wrap>*{flex:none!important;min-width:0}
+.search-wrap .grow{grid-column:1/-1}
+.search-wrap .actions button{width:100%}
+.row>*{flex:1 1 100%!important}
+#addForm .actions,#wantForm .actions{display:flex}
+#addForm .actions button,#wantForm .actions button{flex:1}
+.actions>*{flex:1 1 auto}
+.scope{flex-wrap:nowrap;overflow-x:auto;margin:14px -16px 0;padding:4px 16px 8px;scrollbar-width:none}
+.scope::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;min-height:40px}
+.idb{flex-wrap:wrap;gap:10px}.idb .big{font-size:30px;min-width:64px}
+/* table -> cards */
+.tablewrap{overflow:visible}
+table,tbody{display:block;width:100%;min-width:0!important}
+thead{display:none}
+tr.grp{display:block;margin:14px 0 8px}
+tr.grp td{display:block;border-radius:12px;border-top:0}
+tr:not(.grp){display:grid;grid-template-columns:auto auto 1fr;grid-template-areas:"s p b" "n n n" "nm nm nm" "h h h" "t t t" "x x x";column-gap:10px;row-gap:5px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--sh1)}
+tr:not(.grp) td{display:block;border:0;padding:0}
+tr:not(.grp) td.idx{display:none}
+tr:not(.grp) td:nth-child(2){grid-area:s}
+tr:not(.grp) td:nth-child(3){grid-area:p}
+tr:not(.grp) td:nth-child(4){grid-area:n;font-size:22px}
+tr:not(.grp) td:nth-child(5){grid-area:nm}
+tr:not(.grp) td:nth-child(5)::before{content:"👤 "}
+tr:not(.grp) td:nth-child(6){grid-area:h}
+tr:not(.grp) td:nth-child(6)::before{content:"📍 "}
+tr:not(.grp) td:nth-child(7){grid-area:b;justify-self:end;text-align:right}
+tr:not(.grp) td.notecell{grid-area:t;max-width:none}
+tr:not(.grp) td.notecell:empty{display:none}
+tr:not(.grp) td:has(>.nopid:only-child){display:none}
+tr:not(.grp) td.acts{grid-area:x;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--line);padding-top:10px;margin-top:6px}
+tr:not(.grp) td.acts button.icon{margin:0;min-width:48px;min-height:44px;justify-content:center}
+tr.given td:not(.acts){opacity:.6}
+/* sheets */
+.overlay{align-items:flex-end;padding:0}
+.modal{border-radius:22px 22px 0 0;max-width:none!important;max-height:94vh;padding-bottom:var(--safe)}
+.mfoot{flex-wrap:wrap}
+.toast,.undo{bottom:calc(88px + var(--safe))}
+/* bottom nav */
+.bnav{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + var(--safe));z-index:15;background:rgba(255,255,255,.88);backdrop-filter:blur(14px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:22px;box-shadow:var(--sh2);padding:6px;gap:2px;animation:navin .6s .5s var(--ease) backwards}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;background:transparent;color:var(--muted);padding:5px 0;font-size:11px;font-weight:600;min-height:52px;border-radius:16px;box-shadow:none!important}
+.bnav button span{font-size:19px;line-height:1.2}
+.bnav button.on{color:var(--primary);background:rgba(47,91,234,.1)}
+@keyframes navin{from{opacity:0;transform:translateY(40px)}}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important}}
+@media print{.bnav,.tap{display:none!important}}
+
+/* TV-LAYER: validation + language */
+body.bn{font-family:"Segoe UI","Noto Sans Bengali","Nirmala UI","Shonar Bangla",Kalpurush,SolaimanLipi,sans-serif;line-height:1.6}
+header h1{line-height:1.2;max-width:100%}
+.lang{display:inline-flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px;gap:2px}
+.lang button{background:transparent;color:#fff;padding:5px 14px;min-height:0!important;border-radius:999px;font-size:13px;box-shadow:none!important}
+.lang button.on{background:#fff;color:#1d3fae}
+.numhint{font-size:12px;margin-top:4px;min-height:16px;color:var(--muted);font-variant-numeric:tabular-nums;transition:color .2s}
+.numhint.ok{color:#15803d;font-weight:700}.numhint.bad{color:#b91c1c;font-weight:700}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+input.invalid{border-color:#dc2626!important;box-shadow:0 0 0 4px rgba(220,38,38,.14)!important}
+.bulkerr{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:8px 12px;font-size:13px;margin-top:8px;animation:pop2 .3s}
+.bulkerr:empty{display:none}
+td.num.badnum{color:#b91c1c}.num.badnum::after{content:" ⚠"}
+
+/* ---------- secure cloud login + sync status ---------- */
+body:not(.sim-authenticated) header, body:not(.sim-authenticated) main,
+body:not(.sim-authenticated) .overlay, body:not(.sim-authenticated) .undo,
+body:not(.sim-authenticated) .bnav, body:not(.sim-authenticated) .add-fab { display:none !important; }
+#loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(900px 420px at 50% -140px,#dbe7ff,transparent 72%),linear-gradient(145deg,#0f1f4d,#1e3a8a 58%,#2563eb);font-family:"Segoe UI",Roboto,Arial,sans-serif}
+#loginScreen[hidden]{display:none!important}
+.login-card{width:min(100%,440px);padding:30px;border-radius:24px;background:rgba(255,255,255,.98);box-shadow:0 24px 80px rgba(4,16,52,.35);border:1px solid rgba(255,255,255,.65)}
+.login-brand{display:flex;gap:14px;align-items:center}.login-logo{width:58px;height:58px;display:grid;place-items:center;border-radius:17px;background:linear-gradient(140deg,#0f1f4d,#2f5bea);color:white;font-weight:900;font-size:21px;letter-spacing:-1px;box-shadow:0 8px 18px rgba(47,91,234,.25)}
+.login-kicker{font-size:10px;letter-spacing:2px;font-weight:800;color:#64748b}.login-brand h1{margin:3px 0 0;font-size:24px;color:#14244a}.login-brand p{margin:2px 0 0;color:#718096;font-size:13px}.login-divider{height:1px;background:#e7ebf3;margin:23px 0}.login-card h2{margin:0 0 7px;font-size:19px;color:#172554}.login-sub{margin:0 0 21px;color:#64748b;font-size:13px;line-height:1.55}.login-card label{font-size:12px;color:#475569;font-weight:700;margin:13px 0 6px}.login-card input{width:100%;height:47px;border:1px solid #d8dfeb;border-radius:12px;padding:0 13px;font-size:15px;background:#fbfcff}.login-card input:focus{outline:0;border-color:#2f5bea;box-shadow:0 0 0 4px rgba(47,91,234,.12)}.login-submit{width:100%;height:48px;margin-top:19px;background:linear-gradient(135deg,#1e3a8a,#2f5bea);border-radius:12px;box-shadow:0 7px 16px rgba(47,91,234,.2)}.login-submit:disabled{opacity:.65;cursor:wait}.forgot-btn{display:block;margin:12px auto 0;padding:6px 10px;background:transparent;color:#3154c7;font-size:13px}.forgot-btn:hover{background:#eff4ff;box-shadow:none!important}.login-message{min-height:38px;margin-top:14px;padding:9px 11px;border-radius:10px;background:#f1f5f9;color:#475569;font-size:12px;line-height:1.5}.login-message.error{background:#fff1f2;color:#9f1239}.login-message.good{background:#ecfdf5;color:#166534}.login-foot{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:18px;color:#8792a5;font-size:10px}.lock-dot{width:7px;height:7px;border-radius:50%;background:#16a34a}.cloud-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.cloud-status{display:inline-flex;align-items:center;gap:6px;color:#e0eaff;font-size:12px;font-weight:600;padding:7px 10px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(255,255,255,.1)}.cloud-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#a3e635}.cloud-status.pending::before{background:#fbbf24}.cloud-status.error::before{background:#fb7185}.cloud-status.offline::before{background:#94a3b8}.logout-btn{padding:7px 11px;font-size:12px}.sim-cloud-email{font-size:11px;color:#dbeafe;opacity:.9;margin-left:2px}
+@media(max-width:600px){.login-card{padding:24px 21px;border-radius:20px}.cloud-tools{width:100%;justify-content:space-between}.cloud-status{font-size:11px}.logout-btn{min-height:36px}}
+
+
+/* TUSHAR VISA UI refresh — presentation only; data model and ID rules remain unchanged. */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+#loginScreen{padding:18px;background:radial-gradient(850px 420px at 50% -120px,#233e83 0%,transparent 72%),linear-gradient(145deg,#0b1738,#142c68 60%,#1e3fae)}
+.login-card{width:min(100%,390px);padding:26px 26px 24px;border-radius:22px;background:#fff;box-shadow:0 22px 68px rgba(3,12,36,.34);border:1px solid rgba(255,255,255,.75)}
+.login-brand-image{display:block;width:min(100%,228px);height:178px;object-fit:contain;margin:0 auto 19px;border-radius:12px;background:#fff9e8}
+#loginForm{display:grid;gap:11px}
+.login-card input{height:50px;padding:0 15px;border-radius:12px;background:#f8faff;border:1px solid #dce3ef;font-size:15px;color:#14244a}
+.login-card input::placeholder{color:#8a96aa}
+.login-submit{height:49px;margin-top:3px;border-radius:12px;font-size:15px;font-weight:700;letter-spacing:.1px;background:linear-gradient(135deg,#142b63,#2f5bea);box-shadow:0 7px 18px rgba(47,91,234,.2)}
+.login-message{display:none;min-height:0;margin:12px 0 0;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.5}
+.login-message:not(:empty){display:block}
+.login-message.error{background:#fff1f2;color:#9f1239}
+.login-message.good{background:#ecfdf5;color:#166534}
+.login-retry{display:block;margin:10px auto 0;padding:8px 13px;background:#eef3ff;color:#1e40af;font-size:12px;border-radius:9px}
+.login-retry[hidden],.forgot-btn[hidden]{display:none!important}
+.login-card .forgot-btn{display:none!important}
+.app-header{display:block;padding:12px 22px 14px;background:linear-gradient(115deg,#10234f 0%,#173b91 58%,#2857c9 100%);box-shadow:0 7px 22px rgba(15,31,77,.18);color:#fff}
+.app-header::after{display:none}
+.app-header .hrow{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap}
+.brand-actions{display:flex;align-items:center;gap:10px;min-width:0}
+.header-logo{display:block;width:74px;height:59px;object-fit:contain;border-radius:9px;background:#fff7df;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.home-icon{width:40px;height:40px;min-height:40px;display:grid;place-items:center;padding:0;border-radius:12px;border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.13);color:#fff}
+.home-icon:hover{background:rgba(255,255,255,.24)}
+.home-icon svg,.logout-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex:0 0 auto}
+.cloud-tools{display:contents}
+.cloud-status{width:30px;height:30px;min-width:30px;padding:0;border:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent;color:#fff;font-size:0;box-shadow:none}
+.cloud-status::before{content:"✓";width:21px;height:21px;display:grid;place-items:center;border-radius:50%;background:#16a34a;color:#fff;font-size:13px;font-weight:900;line-height:1}
+.cloud-status.pending::before{content:"↻";background:#fbbf24;color:#26334d;font-size:16px;animation:cloud-spin 1s linear infinite}
+.cloud-status.error::before{content:"!";background:#ef4444;color:#fff;font-size:14px}
+.cloud-status.offline::before{content:"·";background:#64748b;color:#fff;font-size:20px}
+@keyframes cloud-spin{to{transform:rotate(360deg)}}
+.logout-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 12px;border-radius:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;font-weight:700}
+.logout-btn:hover{background:rgba(255,255,255,.22)}
+#langSlot{display:flex;align-items:center}
+.app-header .lang{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24)}
+.app-header .lang button{padding:5px 11px;font-size:12px}
+.app-header .stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;width:100%;margin:12px 0 0}
+.app-header .stat{min-width:0;padding:7px 8px 6px;border-radius:12px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.17);backdrop-filter:blur(6px);animation:none}
+.app-header .stat b{font-size:19px;line-height:1.15;font-variant-numeric:tabular-nums}
+.app-header .stat span{display:block;margin-top:3px;font-size:10px;line-height:1.2;white-space:nowrap;opacity:.9}
+.app-header .stat.click{cursor:pointer}
+.app-header .stat.click:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+/* Compact cards for SIM rows on phone: serial/type stay fixed; the 11-digit phone number stays intact. */
+@media screen and (max-width:760px){
+  .app-header{padding:10px 12px 11px}
+  .app-header .hrow{gap:7px}
+  .header-logo{width:58px;height:47px;border-radius:8px}
+  .brand-actions{gap:7px}
+  .home-icon{width:36px;height:36px;min-height:36px;border-radius:10px}
+  .header-actions{gap:5px}
+  .cloud-status{width:25px;height:25px;min-width:25px}
+  .cloud-status::before{width:18px;height:18px;font-size:11px}
+  .cloud-status.pending::before{font-size:14px}
+  .app-header .lang{padding:2px;gap:1px}
+  .app-header .lang button{min-height:30px!important;padding:4px 7px;font-size:11px}
+  .logout-btn{width:36px;min-width:36px;height:36px;min-height:36px;padding:0;border-radius:10px}
+  .logout-btn span{display:none}
+  .logout-btn svg{width:17px;height:17px}
+  .app-header .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:9px}
+  .app-header .stat{padding:6px 3px 5px;border-radius:10px}
+  .app-header .stat b{font-size:17px}
+  .app-header .stat span{font-size:9px;margin-top:2px}
+  main{padding:11px 10px calc(92px + var(--safe))}
+  tr:not(.grp){grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"s b" "p b" "n n" "nm h" "t t" "x x";column-gap:8px;row-gap:4px;padding:10px 11px;margin-bottom:8px;border-radius:13px}
+  tr:not(.grp) td{min-width:0;overflow-wrap:anywhere}
+  tr:not(.grp) td:nth-child(2),tr:not(.grp) td:nth-child(3){font-size:13px;line-height:1.2}
+  tr:not(.grp) td:nth-child(2) .pid,tr:not(.grp) td:nth-child(3) .pid{font-size:14px}
+  tr:not(.grp) td:nth-child(4){font-size:18px;line-height:1.25;letter-spacing:.35px;white-space:nowrap;overflow-x:auto;max-width:100%;padding:2px 0}
+  tr:not(.grp) td:nth-child(5),tr:not(.grp) td:nth-child(6){font-size:12px;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+  tr:not(.grp) td:nth-child(5)::before,tr:not(.grp) td:nth-child(6)::before{font-size:11px}
+  tr:not(.grp) td:nth-child(7){font-size:11px;line-height:1.35}
+  tr:not(.grp) td.notecell{font-size:11px;line-height:1.35;max-width:100%;padding-top:1px}
+  tr:not(.grp) td.acts{gap:6px;padding-top:7px;margin-top:3px}
+  tr:not(.grp) td.acts button.icon{min-width:38px;width:38px;height:36px;min-height:36px;padding:5px;justify-content:center}
+  .card{padding:13px;border-radius:15px;margin-bottom:12px}
+  .card h2{font-size:15px;margin-bottom:10px}
+  .wrow{padding:9px 10px;gap:8px;border-radius:11px}
+  .wmain .num{font-size:16px}
+  .wmeta{font-size:11px}
+  .wbtn button{padding:6px 9px;font-size:11px;min-height:36px}
+  .simrow{gap:7px;padding:7px 8px}
+  .simrow .num{font-size:16px}
+  .pid{font-size:14px}
+}
+@media screen and (max-width:370px){
+  .header-logo{width:50px;height:41px}
+  .brand-actions{gap:5px}
+  .app-header .lang button{padding:4px 5px}
+  .app-header .stat span{font-size:8px}
+  .app-header .stat b{font-size:16px}
+  tr:not(.grp) td:nth-child(4){font-size:16px}
+}
+@media screen and (min-width:761px){
+  .app-header .hrow{min-height:58px}
+}
+@media (prefers-reduced-motion:reduce){.cloud-status.pending::before{animation:none}}
+
+
+/* ================= COMPACT WORKSPACE V3 ================= */
+.app-header{padding:9px 20px 10px}
+.header-logo{width:64px;height:56px;object-fit:cover;object-position:50% 42%;border-radius:12px;background:#fff8e4;padding:1px}
+.app-header .stats{margin-top:8px;gap:7px}
+.app-header .stat{padding:6px 7px;border-radius:11px}
+.app-header .stat b{font-size:18px}
+.app-header .stat span{font-size:10px}
+.search-card{position:relative;padding:12px 14px;margin-bottom:12px;overflow:visible}
+.search-toolbar{display:flex;align-items:center;gap:8px;position:relative}
+.search-box{position:relative;display:flex;align-items:center;flex:1;min-width:0}
+.search-box svg{position:absolute;left:13px;width:19px;height:19px;fill:none;stroke:#7b89a4;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.search-box input{width:100%;height:48px;padding:0 14px 0 41px;border:1px solid #dce4f2;border-radius:15px;background:#fff;font-size:16px;letter-spacing:.1px;box-shadow:0 2px 8px rgba(20,43,99,.04)}
+.search-box input:focus{outline:0;border-color:#4266da;box-shadow:0 0 0 4px rgba(47,91,234,.12)}
+.tool-icon{width:44px;height:44px;min-width:44px;min-height:44px;display:grid;place-items:center;padding:0;border-radius:13px;background:#f0f4fc;color:#243d7b;border:1px solid #e2e9f6}
+.tool-icon:hover{background:#e4ecfb}
+.tool-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.more-icon{font-size:28px;line-height:1;font-weight:800}
+.search-hint{min-height:15px;margin:5px 4px 0;color:#8290a8;font-size:11px;line-height:1.35}
+.search-hint:empty{display:none}
+.search-popover,.more-popover{position:absolute;right:62px;top:66px;z-index:90;width:min(390px,calc(100vw - 30px));padding:13px;background:#fff;border:1px solid #e1e7f1;border-radius:16px;box-shadow:0 14px 38px rgba(12,28,69,.18)}
+.search-popover[hidden],.more-popover[hidden]{display:none!important}
+.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.filter-grid>div:last-child{grid-column:1/-1}
+.filter-grid label,.bulk-actions label{font-size:11px;font-weight:700;color:#66738c;margin:0 0 4px}
+.filter-grid select,.bulk-actions select{height:39px;padding:7px 9px;font-size:13px;border-radius:10px;background:#f9fbff}
+.search-popover .scope{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px;padding:0;overflow:visible}
+.search-popover .chip{min-height:32px;padding:5px 10px;font-size:11px;border-radius:20px}
+.search-popover .chip b{font-size:10px;padding:1px 6px}
+.tool-footer{display:flex;justify-content:flex-end;margin-top:7px}
+.tool-footer button{min-height:34px;padding:6px 11px;font-size:11px}
+.bulk-tools{border-top:1px solid #edf0f5;margin-top:10px;padding-top:8px}
+.bulk-tools summary{font-size:12px;color:#33466f;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.bulk-tools summary::-webkit-details-marker{display:none}
+.bulk-tools summary::after{content:'⌄';font-size:16px;color:#7a88a2}
+.bulk-tools[open] summary::after{content:'⌃'}
+.bulk-tools-body{padding-top:9px}
+.bulk-tools textarea{min-height:82px;font-size:13px;border-radius:10px}
+.bulk-actions{display:grid;grid-template-columns:1fr auto;align-items:end;gap:8px;margin-top:7px}
+.bulk-actions button{min-height:39px;padding:7px 13px;font-size:12px}
+.more-popover{right:5px;width:190px;padding:6px}
+.more-popover button{width:100%;display:flex;justify-content:space-between;align-items:center;background:transparent;color:#23365f;padding:10px 11px;border-radius:10px;text-align:left;font-size:13px}
+.more-popover button:hover{background:#f1f5fb;box-shadow:none}
+.more-popover button span{font-size:11px;color:#fff;background:#3260cf;border-radius:99px;min-width:21px;padding:2px 6px;text-align:center}
+.result-info{margin:4px 4px 0}
+#listCard{display:none}
+#listCard.is-visible{display:block}
+#wantCard,#backupCard{display:none}
+#wantCard.is-open,#backupCard.is-open{display:block}
+#addCard{display:none}
+#addBackdrop{position:fixed;inset:0;z-index:70;background:rgba(7,17,42,.55);backdrop-filter:blur(4px)}
+#addBackdrop[hidden]{display:none!important}
+body.add-open #addCard{display:block;position:fixed;z-index:71;left:50%;top:50%;transform:translate(-50%,-50%);width:min(580px,calc(100vw - 28px));max-height:min(90vh,780px);overflow:auto;margin:0;padding:18px;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.3);animation:sheet .22s ease}
+.card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.card-heading h2{margin:0;font-size:17px}
+.close-add{width:36px;height:36px;min-width:36px;min-height:36px;font-size:23px;line-height:1}
+.internal-option{display:none!important}
+.add-fab{position:fixed;right:26px;bottom:25px;z-index:65;width:60px;height:60px;min-width:60px;min-height:60px;border-radius:20px;background:linear-gradient(145deg,#3566e7,#15378f);box-shadow:0 9px 24px rgba(29,66,164,.34);display:grid;place-items:center;padding:0;color:#fff}
+.add-fab span{font-size:38px;font-weight:400;line-height:1;transform:translateY(-1px)}
+.add-fab:hover{background:linear-gradient(145deg,#4775ed,#1b46a8);transform:translateY(-2px)}
+.wanted-card .card-heading{margin-bottom:10px}
+.wanted-card .card-heading h2{font-size:16px}
+.wanted-card .card-heading .hint{margin:0;font-size:11px}
+.wanted-card #wantForm{padding:10px;background:#f8faff;border:1px solid #e8edf6;border-radius:13px}
+.wanted-card #wantForm .row{gap:7px}
+.wanted-card #wantForm input{height:38px;padding:7px 9px;font-size:13px}
+.wanted-card #wantForm label{font-size:10px}
+.wanted-card #wantForm .actions button{min-height:38px;padding:6px 10px;font-size:12px}
+.wanted-card>.actions{margin-top:8px!important}
+.wanted-card>.actions select{height:36px;font-size:12px}
+.wanted-card #wScan{min-height:36px;padding:6px 10px;font-size:11px}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:9px 11px;margin-top:7px;border-radius:12px}
+.wmain{min-width:0}
+.want-primary{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.wmain .num{font-size:17px;letter-spacing:.25px}
+.wmeta{font-size:11px;line-height:1.35;margin-top:2px}
+.wbtn{gap:4px;justify-content:flex-end}
+.wbtn button{min-height:32px;padding:5px 8px;font-size:10px;border-radius:8px}
+.wlive{padding:6px 8px;margin-top:6px;gap:5px;font-size:11px}
+.wlive button{min-height:30px;padding:4px 7px;font-size:10px}
+.wanted-card .empty{padding:16px}
+/* Compact SIM cards and category group headers. */
+tr.grp{margin:9px 0 5px}
+tr.grp td{padding:7px 10px!important;font-size:12px!important;border-radius:9px}
+tr:not(.grp){padding:9px 11px;margin-bottom:7px;border-radius:12px;row-gap:3px;box-shadow:0 1px 5px rgba(20,43,99,.05)}
+tr:not(.grp) td:nth-child(4){font-size:17px;letter-spacing:.1px}
+tr:not(.grp) td:nth-child(5),tr:not(.grp) td:nth-child(6){font-size:11px}
+tr:not(.grp) td:nth-child(7) .badge{font-size:10px;padding:2px 7px}
+tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-height:32px}
+#idBanner .idb{padding:8px 10px;border-radius:11px;gap:8px;margin-top:7px}
+#idBanner .idb .big{font-size:24px;min-width:48px}
+#idBanner .idb .info{font-size:11px;line-height:1.35}
+#idBanner .idb .info b{font-size:14px}
+#simPanel .simp{padding:9px 10px;margin-top:7px;border-radius:12px}
+#simPanel .simp-h{font-size:12px}
+#simPanel .simp-sub{font-size:10px}
+#simPanel .simrow{gap:6px;padding:6px 7px;margin-top:5px}
+#simPanel .simrow .num{font-size:14px}
+#simPanel .simrow .who{font-size:10px}
+/* Keep Netlify's attribution clear: lift the dock and the floating add action above it. */
+@media screen and (max-width:760px){
+  main{padding:9px 9px calc(176px + var(--safe))}
+  .app-header{padding:8px 10px 9px}
+  .header-logo{width:54px;height:48px;object-fit:cover;object-position:50% 42%}
+  .app-header .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:7px}
+  .app-header .stat{padding:5px 2px 4px;border-radius:9px}
+  .app-header .stat b{font-size:16px}
+  .app-header .stat span{font-size:9px}
+  .search-card{padding:9px 10px;border-radius:14px}
+  .search-toolbar{gap:6px}
+  .search-box input{height:44px;font-size:15px;padding-left:38px}
+  .search-box svg{left:11px;width:17px;height:17px}
+  .tool-icon{width:40px;height:40px;min-width:40px;min-height:40px;border-radius:11px}
+  .search-hint{font-size:10px;margin-top:4px}
+  .search-popover{right:48px;top:58px;width:min(360px,calc(100vw - 24px));padding:11px}
+  .more-popover{right:2px;top:58px}
+  #addCard{border-radius:20px 20px 0 0!important}
+  body.add-open #addCard{left:0;right:0;top:auto;bottom:0;transform:none;width:100%;max-width:none;max-height:88vh;border-radius:20px 20px 0 0;padding:16px 14px calc(18px + var(--safe));}
+  .add-fab{right:16px;bottom:calc(143px + var(--safe));width:56px;height:56px;min-width:56px;min-height:56px;border-radius:18px}
+  .add-fab span{font-size:35px}
+  .card{padding:11px;border-radius:13px;margin-bottom:9px}
+  .card h2{font-size:14px;margin-bottom:8px}
+  .wanted-card #wantForm{padding:8px}
+  .wanted-card #wantForm .row{display:grid;grid-template-columns:1fr 1fr}
+  .wanted-card #wantForm .row>div:first-child{grid-column:1/-1}
+  .wanted-card #wantForm .row>div:nth-child(4){grid-column:1/-1}
+  .wanted-card #wantForm input{height:36px;font-size:14px}
+  .wrow{grid-template-columns:1fr;gap:5px;padding:8px 9px}
+  .wmain .num{font-size:15px}
+  .wmeta{font-size:10px}
+  .wbtn{justify-content:flex-start;gap:5px}
+  .wbtn button{min-height:30px;padding:4px 8px;font-size:10px}
+  .wlive{font-size:10px}
+  tr:not(.grp){grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"s b" "p b" "n n" "nm h" "t t" "x x";padding:8px 9px;margin-bottom:6px;row-gap:2px;column-gap:7px}
+  tr:not(.grp) td:nth-child(4){font-size:16px;letter-spacing:0;line-height:1.2}
+  tr:not(.grp) td:nth-child(2) .pid,tr:not(.grp) td:nth-child(3) .pid{font-size:12px}
+  tr:not(.grp) td:nth-child(5),tr:not(.grp) td:nth-child(6){font-size:10px}
+  tr:not(.grp) td.acts{padding-top:5px;margin-top:2px}
+  tr:not(.grp) td.acts button.icon{min-width:32px;width:32px;height:30px;min-height:30px}
+  .bnav{left:8px;right:8px;bottom:calc(68px + var(--safe));padding:4px;gap:2px;border-radius:17px;z-index:62}
+  .bnav button{min-height:46px;padding:3px 0;font-size:10px;border-radius:12px}
+  .bnav button span{font-size:17px}
+  .toast,.undo{bottom:calc(126px + var(--safe))}
+}
+@media screen and (max-width:370px){
+  .app-header .stat span{font-size:8px}
+  .app-header .stat b{font-size:15px}
+  .header-logo{width:47px;height:42px}
+  .filter-grid{gap:7px}
+  .wbtn button{font-size:9px;padding:4px 6px}
+}
+@media screen and (min-width:761px){
+  main{padding-top:13px}
+  .search-card{max-width:950px;margin:0 auto 12px}
+  #listCard,#wantCard,#backupCard{max-width:1100px;margin-left:auto;margin-right:auto}
+}
+
+</style>
+</head>
+<body>
+
+<section id="loginScreen" aria-label="Sign in">
+  <div class="login-card">
+    <img class="login-brand-image" src="./assets/tushar-visa-logo.jpg" alt="Tushar Visa Info">
+    <form id="loginForm" autocomplete="on">
+      <label class="sr-only" for="loginEmail">Email</label>
+      <input id="loginEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
+      <label class="sr-only" for="loginPassword">Password</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required>
+      <button id="loginBtn" class="login-submit" type="submit">Sign in</button>
+    </form>
+    <button id="forgotBtn" class="forgot-btn" type="button" hidden>Forgot password?</button>
+    <button id="retryBtn" class="login-retry" type="button" hidden>Retry</button>
+    <div id="loginMessage" class="login-message" role="status" aria-live="polite"></div>
+  </div>
+</section>
+
+<header class="app-header">
+  <div class="hrow">
+    <div class="brand-actions">
+      <img class="header-logo" src="./assets/tushar-visa-mark.png" alt="Tushar Visa Info">
+      <button type="button" class="home-icon" id="homeBtn" title="Home" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+      </button>
+    </div>
+    <div class="header-actions" id="headerActions">
+      <span id="cloudStatus" class="cloud-status synced" aria-live="polite" aria-label="Synced" title="Synced"></span>
+      <div id="langSlot"></div>
+      <button type="button" class="logout-btn" id="logoutBtn" aria-label="Sign out" title="Sign out">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Sign out</span>
+      </button>
+    </div>
+  </div>
+  <div class="stats" aria-label="SIM totals">
+    <div class="stat"><b id="sTotal">0</b><span>Total SIMs</span></div>
+    <div class="stat"><b id="sTourist">0</b><span>Tourist</span></div>
+    <div class="stat"><b id="sMedical">0</b><span>Medical</span></div>
+    <div class="stat"><b id="sOther">0</b><span>Other</span></div>
+    <div class="stat"><b id="sGiven">0</b><span>Given</span></div>
+    <div class="stat click" id="statWanted" title="Open the Wanted list"><b id="sWanted">0</b><span>Wanted</span></div>
+    <div class="stat"><b id="sBlank">0</b><span>Incomplete</span></div>
+  </div>
+</header>
+
+<div id="addBackdrop" hidden aria-hidden="true"></div>
+<button type="button" id="addFab" class="add-fab" aria-label="Add New SIM" title="Add New SIM"><span>＋</span></button>
+<main>
+
+  <!-- Compact search-first workspace -->
+  <section class="card search-card" id="searchCard" aria-label="Search SIMs">
+    <div class="search-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+        <input id="q" type="search" placeholder="Search number, last digits, name or ID" autocomplete="off" inputmode="search" aria-label="Search SIMs">
+      </div>
+      <input id="mode" type="hidden" value="end">
+      <button type="button" class="tool-icon" id="gearBtn" aria-label="Filters and tools" title="Filters and tools" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"></path><circle cx="15" cy="7" r="2"></circle><circle cx="9" cy="17" r="2"></circle></svg>
+      </button>
+      <button type="button" class="tool-icon more-icon" id="moreBtn" aria-label="More options" title="More options" aria-expanded="false">⋯</button>
+    </div>
+    <div class="search-hint" id="searchHint" aria-live="polite"></div>
+
+    <div class="search-popover tools-popover" id="toolsPanel" hidden>
+      <div class="filter-grid">
+        <div><label for="filterS">Status</label><select id="filterS"><option value="all">All</option><option value="stock">In stock (not given)</option><option value="given">Given</option><option value="incomplete">Incomplete (no name / type)</option></select></div>
+        <div><label for="sortBy">Sort</label><select id="sortBy"><option value="new">Newest first</option><option value="id">By ID (1, 2, 3…)</option></select></div>
+        <div><label for="filterP">Type</label><select id="filterP"><option value="all">All</option><option value="tourist">Tourist</option><option value="medical">Medical</option><option value="other">Other</option><option value="none">Unknown</option></select></div>
+      </div>
+      <div class="scope" id="scopeBar"></div>
+      <div class="tool-footer"><button type="button" class="sec" id="resetBtn">↺ Reset filters</button></div>
+      <details class="bulk-tools">
+        <summary>＋ Bulk Add</summary>
+        <div class="bulk-tools-body">
+          <textarea id="bulk" rows="4" placeholder="One number per line"></textarea>
+          <div class="bulk-actions">
+            <div><label for="bulkPurpose">Type for all</label><select id="bulkPurpose"><option value="">Unknown</option><option value="tourist">Tourist</option><option value="medical">Medical</option><option value="other">Other</option></select></div>
+            <button id="bulkBtn" type="button" class="sec">Add all</button>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="more-popover" id="moreMenu" hidden>
+      <button type="button" data-open-panel="wanted">Wanted List <span id="wantedMenuCount">0</span></button>
+    </div>
+    <div class="hint result-info" id="resultInfo"></div>
+    <div id="idBanner"></div>
+    <div id="simPanel"></div>
+    <div id="wantPanel"></div>
+  </section>
+
+  <!-- নতুন এন্ট্রি -->
+  <div class="card add-card" id="addCard" role="dialog" aria-modal="true" aria-labelledby="addCardTitle">
+    <div class="card-heading"><h2 id="addCardTitle">Add New SIM</h2><button type="button" class="tool-icon close-add" id="closeAddBtn" aria-label="Close">×</button></div>
+    <form id="addForm" autocomplete="off">
+      <div class="row">
+        <div style="flex:1.3 1 180px"><label>SIM number *</label><input id="fNum" inputmode="numeric" placeholder="01XXXXXXXXX" required></div>
+        <div><label>Client name</label><input id="fName"></div>
+        <div><label>Home / District</label><input id="fHome"></div>
+        <div style="flex:0 0 160px"><label>Type</label>
+          <select id="fPurpose">
+            <option value="">Unknown</option>
+            <option value="tourist">Tourist</option>
+            <option value="medical">Medical</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="actions" style="flex:0 0 auto"><button type="submit">Add</button></div>
+      </div>
+      <label class="keep internal-option"><input type="checkbox" id="keepP" checked> Keep type</label>
+      <label class="keep internal-option"><input type="checkbox" id="askNote" checked> Show the “note this ID” box after each SIM</label>
+      <div id="fHint"></div>
+    </form>
+  </div>
+
+  <!-- খোঁজার তালিকা -->
+  <div class="card wanted-card" id="wantCard">
+    <div class="card-heading"><h2>Wanted List</h2><span class="hint" id="wCount"></span></div>
+    <form id="wantForm" autocomplete="off">
+      <div class="row">
+        <div style="flex:1.2 1 170px"><label>Number to find * (full, or last 4+ digits)</label><input id="wNum" inputmode="numeric" placeholder="01XXXXXXXXX" required></div>
+        <div><label>Customer name</label><input id="wName"></div>
+        <div><label>Phone / contact</label><input id="wPhone"></div>
+        <div><label>Note</label><input id="wNote"></div>
+        <div class="actions" style="flex:0 0 auto"><button type="submit" id="wSubmit">Add to Wanted</button><button type="button" class="sec" id="wCancel" hidden>Cancel edit</button></div>
+      </div>
+    </form>
+    <div class="actions" style="margin-top:12px;align-items:center">
+      <div style="flex:0 0 170px"><select id="wFilter"><option value="open">Still looking</option><option value="found">Found</option><option value="closed">Closed</option><option value="all">All</option></select></div>
+      <button type="button" class="sec" id="wScan">🔄 Check my whole list now</button>
+    </div>
+    <div id="wantList"></div>
+  </div>
+
+  <!-- টেবিল -->
+  <div class="card list-card" id="listCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px"><h2 style="margin:0">SIM List</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="sec" id="typoBtn">🔍 Check typos</button><button type="button" class="sec" id="printBtn">🖨 Print this list</button></span></div>
+    <div class="printonly" id="printTitle"></div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:44px">#</th>
+            <th style="width:70px">Serial</th>
+            <th style="width:90px">Type ID</th>
+            <th style="width:170px">SIM number</th>
+            <th>Name</th>
+            <th>Home / District</th>
+            <th style="width:150px">Type</th>
+            <th>Note</th>
+            <th style="width:140px;text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div id="empty" class="empty" style="display:none">No SIMs found.</div>
+  </div>
+
+  <!-- ব্যাকআপ -->
+  <div class="card backup-card" id="backupCard">
+    <h2>Backup</h2>
+    <div class="actions">
+      <button id="expJson" class="sec">Download backup</button>
+      <button id="expCsv" class="sec">Download CSV</button>
+      <button id="impBtn" class="sec">Restore</button>
+      <button id="autoBtn" class="sec">Auto-backup</button>
+      <input type="file" id="impFile" accept=".json" style="display:none">
+    </div>
+    <div class="hint" id="backupInfo"></div>
+  </div>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<div class="overlay" id="editOv" hidden>
+  <form class="modal" id="editForm" autocomplete="off" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="mhead">
+      <div><h3 id="editTitle">Edit SIM</h3><div class="mids" id="editIds"></div></div>
+      <button type="button" class="x" id="editX" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <div><label>SIM number *</label><input id="eNum" inputmode="numeric" required></div>
+      <div class="two">
+        <div><label>Client name</label><input id="eName"></div>
+        <div><label>Home / District</label><input id="eHome"></div>
+      </div>
+      <div>
+        <label>Type</label>
+        <div class="seg" id="eSeg">
+          <label class="opt u"><input type="radio" name="ePur" value=""><span>Unknown</span></label>
+          <label class="opt t"><input type="radio" name="ePur" value="tourist"><span>Tourist</span></label>
+          <label class="opt m"><input type="radio" name="ePur" value="medical"><span>Medical</span></label>
+          <label class="opt o"><input type="radio" name="ePur" value="other"><span>Other</span></label>
+        </div>
+      </div>
+      <div class="ewarn" id="eWarn"></div>
+      <div><label>Note</label><input id="eNote"></div>
+      <label class="keep" style="margin:0"><input type="checkbox" id="eGiven"> Handed over to client (Given)</label>
+      <div class="eerr" id="eErr"></div>
+    </div>
+    <div class="mfoot">
+      <button type="button" class="danger" id="eDel">Delete</button>
+      <span class="sp"></span>
+      <button type="button" class="sec" id="eCancel">Cancel</button>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+</div>
+
+<div class="overlay" id="noteOv" hidden>
+  <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="noteTitle"><div id="noteBody"></div></div>
+</div>
+
+<div class="overlay" id="infoOv" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+    <div class="mhead"><div><h3 id="infoTitle"></h3><div class="hint" id="infoSub" style="margin:4px 0 0"></div></div><button type="button" class="x" id="infoX" aria-label="Close">✕</button></div>
+    <div class="mbody" id="infoBody"></div>
+    <div class="mfoot"><span class="sp"></span><button type="button" id="infoClose">Close</button></div>
+  </div>
+</div>
+<div class="undo" id="undoBar" hidden><span id="undoMsg"></span><button type="button" id="undoBtn">Undo</button></div>
+
+<script>
+(function(){
+  let KEY = 'simManagerData_v1';
+  let META = 'simManagerMeta_v1';
+  let sims = [];
+  let wanted = [];
+  let WKEY = 'simManagerWanted_v1';
+  let meta = {lastBackup:null, counters:{T:0,M:0,O:0}};
+  let fileHandle = null;
+
+  const $ = id => document.getElementById(id);
+  const PL = {tourist:'Tourist', medical:'Medical', other:'Other', '':''};
+  const PREFIX = {tourist:'T', medical:'M', other:'O'};
+
+  // ---------- আইডি ----------
+  // আইডি একবার দিলে কখনো আবার অন্য সিমকে দেওয়া হয় না (মুছে ফেললেও), তাই ডুপ্লিকেট হওয়ার সুযোগ নেই
+  function pidTaken(p, except){ return sims.some(x => x !== except && x.pid === p); }
+  function assignPid(s){
+    const pre = PREFIX[s.purpose];
+    if(!pre){ s.pid = ''; return; }
+    let n = meta.counters[pre] || 0, p;
+    do { n++; p = pre + n; } while(pidTaken(p, s));
+    meta.counters[pre] = n; s.pid = p; saveMeta();
+  }
+  // স্থায়ী নম্বর (S1, S2...): সিম যোগ হওয়ার সাথে সাথে বসে, কখনো বদলায় না
+  function assignSid(s){
+    let n = meta.counters.S || 0, p;
+    do { n++; p = 'S' + n; } while(sims.some(x => x !== s && x.sid === p));
+    meta.counters.S = n; s.sid = p; saveMeta();
+  }
+  function ensureIds(){
+    meta.counters = Object.assign({T:0,M:0,O:0,S:0}, meta.counters || {});
+    sims.forEach(s=>{
+      const m = /^([TMO])(\d+)$/.exec(s.pid || '');
+      if(m) meta.counters[m[1]] = Math.max(meta.counters[m[1]], +m[2]);
+      const m2 = /^S(\d+)$/.exec(s.sid || '');
+      if(m2) meta.counters.S = Math.max(meta.counters.S, +m2[1]);
+    });
+    let changed = false;
+    for(let i=sims.length-1; i>=0; i--){           // পুরোনো এন্ট্রি আগে, তাই নম্বর ক্রমানুসারে হয়
+      const s = sims[i];
+      if(!s.sid){ assignSid(s); changed = true; }
+      if(!s.pid && PREFIX[s.purpose]){ assignPid(s); changed = true; }
+    }
+    saveMeta();
+    if(changed){ try{ localStorage.setItem(KEY, JSON.stringify(sims)); }catch(e){} }
+  }
+
+  // ---------- helpers ----------
+  const bn2en = s => String(s||'').replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+  const digits = s => bn2en(s).replace(/\D/g,'');
+  const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+  function toast(msg,ms){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms||2200)}
+  function fmtDate(iso){ if(!iso) return 'Never'; return new Date(iso).toLocaleString('en-GB'); }
+
+  // ---------- storage ----------
+  function load(){
+    try{ sims = JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ sims=[]; }
+    try{ meta = Object.assign(meta, JSON.parse(localStorage.getItem(META)||'{}')); }catch(e){}
+    ensureIds();
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(sims)); }
+    catch(e){ toast('Could not save! Download a backup.'); }
+    writeAuto();
+    renderWanted();
+    if(window.simCloudLocalChanged) window.simCloudLocalChanged('sims');
+  }
+  function saveMeta(){ try{localStorage.setItem(META, JSON.stringify(meta));}catch(e){} if(window.simCloudLocalChanged) window.simCloudLocalChanged('meta'); }
+
+  async function writeAuto(){
+    if(!fileHandle) return;
+    try{
+      const w = await fileHandle.createWritable();
+      await w.write(JSON.stringify(payload(), null, 2));
+      await w.close();
+      meta.lastBackup = new Date().toISOString(); saveMeta(); showBackupInfo();
+    }catch(e){ fileHandle=null; $('autoBtn').textContent='Auto-backup'; }
+  }
+  const payload = () => ({app:'sim-manager', version:1, exportedAt:new Date().toISOString(), counters:meta.counters, sims, wanted});
+
+  function showBackupInfo(){
+    $('backupInfo').textContent = 'Last backup: ' + fmtDate(meta.lastBackup) + (fileHandle ? ' • Auto-backup on' : '');
+  }
+
+  function download(name, text, type){
+    const blob = new Blob([text], {type});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 500);
+  }
+  const stamp = () => { const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`; };
+
+  // ---------- add ----------
+  const pendingNumbers = new Set();
+  async function addSim(number, name, home, purpose){
+    const n = digits(number);
+    if(!n) return {ok:false, msg:'Enter a valid number'};
+    const dup = sims.find(s => s.number === n);
+    if(dup) return {ok:false, dup:true, msg:'This number already exists'};
+    if(pendingNumbers.has(n)) return {ok:false, msg:'This number is already being added. Please wait.'};
+    pendingNumbers.add(n);
+    const obj = {id:uid(), sid:'', pid:'', number:n, name:(name||'').trim(), home:(home||'').trim(), purpose:purpose||'', note:'', createdAt:new Date().toISOString()};
+    try{
+      if(window.simCloudAllocateIds){
+        const ids = await window.simCloudAllocateIds(obj.purpose);
+        obj.sid = ids.sid; obj.pid = ids.pid;
+        meta.counters = Object.assign(meta.counters||{}, ids.counters||{});
+        saveMeta();
+      } else { assignSid(obj); assignPid(obj); }
+      sims.unshift(obj);
+      return {ok:true, pid:obj.pid, sid:obj.sid};
+    }catch(err){ return {ok:false, msg:'Could not reserve a unique ID from Firebase. Check your connection and try again.'}; }
+    finally{ pendingNumbers.delete(n); }
+  }
+
+  $('addForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const r = await addSim($('fNum').value, $('fName').value, $('fHome').value, $('fPurpose').value);
+    if(!r.ok){
+      if(r.dup){ const ex = sims.find(x=>x.number===digits($('fNum').value)); resetView(false); $('q').value = ex.number; render(); showDup(ex); }
+      else toast(''+r.msg);
+      return;
+    }
+    save();
+    closeAddPanel();
+    // নাম/বাড়ি/ধরন ধরে রাখি না — শুধু নাম্বার ঘর ফাঁকা করে আবার সেখানেই ফোকাস
+    $('fNum').value=''; $('fName').value=''; $('fHome').value='';
+    if(!$('keepP').checked){ $('fPurpose').value=''; $('fPurpose').dataset.p=''; }
+    $('fNum').focus();
+    const nobj = sims[0];
+    const near = similarAll(nobj.number, new Set([nobj]));   // হাতে লেখার ভুল ধরতে: প্রায়-একই নাম্বার আগে থেকে আছে কি?
+    $('q').value = near.length ? nobj.number : ''; render();
+    if(askNoteOn()) showAddedNote(nobj, near);
+    else toast('Added — ' + r.sid + (r.pid ? ' • ' + r.pid : ' • Unknown') + (near.length ? ` • ⚠ ${near.length} similar number(s) already exist — see top of page` : ''), near.length ? 6000 : 2200);
+    updateAddHint();
+    handleHits(scanWanted([nobj]), 'new');   // কেউ এই সিম খুঁজছিল কি?
+  });
+
+  $('bulkBtn').addEventListener('click', async ()=>{
+    const parts = bn2en($('bulk').value).split(/[\s,;]+/).map(digits).filter(Boolean);
+    if(!parts.length){ toast('No numbers found'); return; }
+    let added=0, dup=0; const addedList=[], dupList=[];
+    const bp = $('bulkPurpose').value;
+    for(const p of parts){ const r=await addSim(p,'','',bp); if(r.ok){ added++; addedList.push(sims[0]); } else { if(r.dup){ dup++; dupList.push(sims.find(x=>x.number===p)); } else { toast(r.msg||'Could not add SIM'); return; } } }
+    save(); $('bulk').value=''; render();
+    if(askNoteOn()) showBulkNote(addedList, dupList); else toast(`${added} added` + (dup?`, ${dup} already existed`:''));
+    if(added) handleHits(scanWanted(sims.slice(0, added)), 'new');
+  });
+
+  // ---------- render ----------
+  function statusOK(s){ const v=$('filterS').value; if(v==='incomplete') return !s.name || !s.purpose; return v==='all' || (v==='given' ? !!s.given : !s.given); }
+  const BD_PREFIXES = {
+    '013':'Grameenphone', '017':'Grameenphone',
+    '014':'Banglalink', '019':'Banglalink',
+    '015':'Teletalk', '016':'Airtel / Robi', '018':'Robi'
+  };
+  function prefixSearch(qd){
+    return qd.length >= 3 && Object.keys(BD_PREFIXES).some(prefix => qd.startsWith(prefix));
+  }
+  function matches(s, q, mode, fp){
+    if(!statusOK(s)) return false;
+    if(fp==='none' ? s.purpose!=='' : (fp!=='all' && s.purpose!==fp)) return false;
+    if(!q) return true;
+    const idq = q.trim().toUpperCase();
+    if(/^[TMOS]\d+$/.test(idq)) return s.pid === idq || s.sid === idq;
+    const qd = digits(q);
+    const isNum = /^[\d০-৯\s\-+]+$/.test(q) && qd.length>0;
+    if(isNum){
+      if(qd.length === 11) return s.number === qd;
+      if(qd.length > 11) return false;
+      if(prefixSearch(qd)) return s.number.startsWith(qd);
+      return s.number.endsWith(qd);
+    }
+    const t = q.trim().toLowerCase();
+    return (s.name||'').toLowerCase().includes(t) || (s.home||'').toLowerCase().includes(t) || (s.note||'').toLowerCase().includes(t) || (PL[s.purpose]||'').toLowerCase().includes(t);
+  }
+
+  function numHtml(number, q, mode){
+    const qd = digits(q);
+    const isNum = q && /^[\d০-৯\s\-+]+$/.test(q) && qd;
+    if(!isNum) return esc(number);
+    if(qd.length===11 && number===qd) return '<mark>'+esc(number)+'</mark>';
+    if(prefixSearch(qd) && number.startsWith(qd)) return '<mark>'+esc(qd)+'</mark>'+esc(number.slice(qd.length));
+    if(number.endsWith(qd)) return esc(number.slice(0,-qd.length))+'<mark>'+esc(qd)+'</mark>';
+    return esc(number);
+  }
+
+  // ---------- প্রায়-মিল (হাতে লেখার ভুল ধরার জন্য) ----------
+  // a = যা লিখেছেন, b = সংরক্ষিত নাম্বার। ভুল ডিজিট, বাদ পড়া/বাড়তি ডিজিট, পাশাপাশি দুই ডিজিট উল্টে যাওয়া — সব ধরে।
+  function editInfo(a, b){
+    const m=a.length, n=b.length;
+    const d = Array.from({length:m+1}, ()=>new Array(n+1).fill(0));
+    for(let i=0;i<=m;i++) d[i][0]=i;
+    for(let j=0;j<=n;j++) d[0][j]=j;
+    for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
+      let v = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + (a[i-1]===b[j-1]?0:1));
+      if(i>1 && j>1 && a[i-1]===b[j-2] && a[i-2]===b[j-1]) v = Math.min(v, d[i-2][j-2]+1);
+      d[i][j] = v;
+    }
+    const mark = new Array(n).fill('x'); let i=m, j=n, hit=0;
+    while(i>0 || j>0){
+      if(i>1 && j>1 && a[i-1]!==b[j-1] && a[i-1]===b[j-2] && a[i-2]===b[j-1] && d[i][j]===d[i-2][j-2]+1){ mark[j-1]='t'; mark[j-2]='t'; i-=2; j-=2; }
+      else if(i>0 && j>0 && d[i][j]===d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)){ if(a[i-1]===b[j-1]){ mark[j-1]='m'; hit++; } i--; j--; }
+      else if(i>0 && d[i][j]===d[i-1][j]+1){ i--; }
+      else { j--; }
+    }
+    return {d:d[m][n], mark, hit};
+  }
+  function inScope(s, fp){ if(!statusOK(s)) return false; return fp==='none' ? s.purpose==='' : (fp==='all' || s.purpose===fp); }
+  // পুরো নাম্বার (৭+ ডিজিট) লিখলে হুবহু মিল না হলেও কাছাকাছি নাম্বারগুলো খুঁজে দেয়
+  function similarAll(q, exact){
+    const qd = digits(q);
+    if(!/^[\d০-৯\s\-+]+$/.test(q) || qd.length < 7) return [];
+    const maxD = qd.length>=10 ? 3 : qd.length>=8 ? 2 : 1;   // ১১ ডিজিটে সর্বোচ্চ ৩টা ভুল পর্যন্ত
+    const out = [];
+    sims.forEach(s=>{
+      if(exact.has(s) || Math.abs(s.number.length-qd.length) > maxD) return;
+      const r = editInfo(qd, s.number);
+      if(r.d <= maxD) out.push({s, d:r.d, mark:r.mark, hit:r.hit, len:Math.max(qd.length, s.number.length)});
+    });
+    out.sort((x,y)=> x.d-y.d || y.hit-x.hit);
+    return out;
+  }
+  function markedNumber(number, mark){
+    return [...number].map((c,i)=> mark[i]==='x' ? `<span class="dx">${c}</span>` : mark[i]==='t' ? `<span class="dt">${c}</span>` : c).join('');
+  }
+
+  const ICON_EDIT = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>';
+  const ICON_DEL = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>';
+  const GROUPS = [['medical','Medical'],['tourist','Tourist'],['other','Other'],['','Unknown']];
+  const SCOPES = [['all','All'],['medical','Medical'],['tourist','Tourist'],['other','Other'],['none','Unknown']];
+  const collapsed = {};
+  let listPanelOpen = false;
+  const idNum = s => { const m=/(\d+)$/.exec(s.pid||s.sid||''); return m ? +m[1] : 1e9; };
+  function render(){
+    const q = $('q').value, mode='end', fp=$('filterP').value;
+    const qd = digits(q);
+    $('listCard').classList.toggle('is-visible', !!q.trim() || listPanelOpen);
+    const hint = $('searchHint');
+    if(!q.trim()) hint.textContent = 'Type last digits, or search a series: 013 · 014 · 015 · 016 · 017 · 018 · 019';
+    else if(/^[\d০-৯\s\-+]+$/.test(q) && qd.length===11) hint.textContent = '11 digits · exact full-number match';
+    else if(/^[\d০-৯\s\-+]+$/.test(q) && prefixSearch(qd)) hint.textContent = `${BD_PREFIXES[qd.slice(0,3)] || 'Mobile'} series · begins with ${qd}`;
+    else if(/^[\d০-৯\s\-+]+$/.test(q) && qd.length>=2) hint.textContent = `Matching the last ${qd.length} digits`; 
+    else hint.textContent = '';
+    const list = sims.filter(s=>matches(s,q,mode,fp));
+    const exactAll = new Set(sims.filter(s=>matches(s,q,mode,'all')));
+    const simAll = similarAll(q, exactAll);
+    const simList = simAll.filter(x=>inScope(x.s, fp));
+    const tb = $('tbody');
+    const wmap = {}; wanted.forEach(w=>{ if(w.status==='found' && w.matchNumber) wmap[w.matchNumber]=w; });
+    const rowHtml = (s,i)=>`
+      <tr data-id="${s.id}"${s.given?' class="given"':''}>
+        <td class="idx">${i+1}</td>
+        <td class="pid S">${esc(s.sid||'')}</td>
+        <td class="pid ${s.pid?s.pid[0]:''}">${s.pid?esc(s.pid):'<span class="nopid">—</span>'}</td>
+        <td class="num">${numHtml(s.number,q,mode)}</td>
+        <td>${s.name?esc(s.name):'<span class="nopid">—</span>'}</td>
+        <td>${s.home?esc(s.home):'<span class="nopid">—</span>'}</td>
+        <td><span class="badge p-${s.purpose||'unknown'}">${s.purpose?PL[s.purpose]:'Unknown'}</span>${s.given?`<br><span class="badge p-given" title="${esc(fmtDate(s.givenAt))}">✔ Given</span>`:''}${wmap[s.number]?`<br><span class="badge p-want" title="Requested by this customer via Wanted list">🔎 ${esc(wmap[s.number].name||'Wanted')}</span>`:''}</td>
+        <td class="notecell">${esc(s.note)}</td>
+        <td class="acts"><button class="icon give${s.given?' on':''}" data-give="1" title="${s.given?'Mark as NOT given':'Mark as given'}">✔</button><button class="icon" data-edit="1" title="Edit">${ICON_EDIT}</button><button class="icon del" data-del="1" title="Delete">${ICON_DEL}</button></td>
+      </tr>`;
+    let html = '';
+    GROUPS.forEach(([key,label])=>{
+      let g = list.filter(s=>s.purpose===key);
+      if(!g.length) return;
+      if($('sortBy').value==='id') g = [...g].sort((a,b)=>idNum(a)-idNum(b));
+      const cls = key || 'unknown';
+      const col = collapsed[cls] && !q;   // সার্চ চললে গ্রুপ বন্ধ থাকবে না
+      html += `<tr class="grp ${cls}" data-grp="${cls}"><td colspan="9"><span class="car">${col?'▸':'▾'}</span>${label}<span class="gc">${g.length}</span></td></tr>`;
+      if(!col) html += g.map(rowHtml).join('');
+    });
+    tb.innerHTML = html;
+    // সার্চের পরিধি (scope) বাটন — সংখ্যা বর্তমান সার্চ অনুযায়ী
+    $('printTitle').textContent = (SCOPES.find(x=>x[0]===fp)||['','All'])[1] + ' SIMs — ' + new Date().toLocaleDateString('en-GB') + ' — ' + list.length + ' total';
+    $('scopeBar').innerHTML = SCOPES.map(([v,l])=>`<button type="button" class="chip ${v}${v===fp?' on':''}" data-scope="${v}">${l}<b>${sims.filter(s=>matches(s,q,mode,v)).length + simAll.filter(x=>inScope(x.s,v)).length}</b></button>`).join('');
+    $('empty').style.display = list.length ? 'none' : 'block';
+    $('empty').innerHTML = sims.length ? 'No SIMs match the current search / filters.<br><br><button type="button" id="emptyReset">↺ Show all SIMs</button>' : 'No SIMs yet.';
+    if(!list.length && simList.length){ $('empty').style.display='block'; $('empty').textContent = 'No exact match — similar numbers are shown above.'; }
+    $('simPanel').innerHTML = simList.length ? `
+      <div class="simp">
+        <div class="simp-h">⚠ Similar numbers — possible typo <span>${simList.length}</span></div>
+        <div class="simp-sub">Red digits differ from what you typed; orange = swapped digits</div>
+        ${simList.map(x=>`
+        <div class="simrow" data-id="${x.s.id}">
+          <span class="pid S">${esc(x.s.sid||'')}</span>
+          <span class="pid ${x.s.pid?x.s.pid[0]:''}">${x.s.pid?esc(x.s.pid):'—'}</span>
+          <span class="num">${markedNumber(x.s.number, x.mark)}</span>
+          <span class="mpct ${x.d<=1?'hi':''}">${x.hit}/${x.len} digits match</span>
+          <span class="who">${esc([x.s.name,x.s.home].filter(Boolean).join(' • '))}</span>
+          <span class="badge p-${x.s.purpose||'unknown'}">${x.s.purpose?PL[x.s.purpose]:'Unknown'}</span>${x.s.given?' <span class="badge p-given">✔ Given</span>':''}
+          <button class="icon" data-edit="1" title="Edit">${ICON_EDIT}</button>
+        </div>`).join('')}
+      </div>` : '';
+    $('resultInfo').textContent = (q || fp!=='all') ? `${list.length} results (of ${sims.length})` + (simList.length ? ` • ${simList.length} similar` : '') : '';
+    // সার্চে অল্প কয়েকটা পাওয়া গেলে বড় করে আইডি দেখাই
+    $('idBanner').innerHTML = (q && list.length>0 && list.length<=5) ? list.map(s=>`
+      <div class="idb">
+        <div class="big S">${esc(s.sid||'')}</div>
+        <div class="big ${s.pid?s.pid[0]:'none'}">${s.pid?esc(s.pid):'Unknown'}</div>
+        <div class="info"><b>${esc(s.number)}</b><br>${esc([s.name,s.home,PL[s.purpose],s.given?'✔ Given':''].filter(Boolean).join(' • '))}</div>
+      </div>`).join('') : '';
+    // সার্চের সাথে Wanted তালিকাও দেখাই
+    const wp = q ? wantedForQuery(q, mode) : [];
+    $('wantPanel').innerHTML = wp.length ? `
+      <div class="wantp">
+        <div class="wantp-h">🔎 In your Wanted list <span>${wp.length}</span></div>
+        ${wp.map(w=>`
+        <div class="wrow ${w.status}" data-w="${w.id}">
+          <div class="wmain">
+            <div class="want-primary"><span class="num">${esc(w.number)}</span>${w.status==='open'?'<span class="badge p-want">Open</span>':w.status==='found'?'<span class="badge p-given">✔ Found</span>':'<span class="badge p-unknown">Closed</span>'}</div>
+            <div class="wmeta"><b>${esc(w.name||'No name')}</b>${w.phone?' • 📞 '+esc(w.phone):''}${w.note?' • '+esc(w.note):''} • asked ${esc(fmtDate(w.createdAt))}</div>
+            ${w.status==='found'?`<div class="wfound">→ ${esc([w.matchSid,w.matchPid].filter(Boolean).join(' • '))} <b class="num">${esc(w.matchNumber||'')}</b></div>`:''}
+          </div>
+          <div class="wbtn"><button type="button" class="ghost" data-wact="manage">Open in Wanted</button></div>
+        </div>`).join('')}
+      </div>` : '';
+    stats();
+  }
+
+  function stats(){
+    $('sTotal').textContent = sims.length;
+    $('sTourist').textContent = sims.filter(s=>s.purpose==='tourist').length;
+    $('sMedical').textContent = sims.filter(s=>s.purpose==='medical').length;
+    $('sWanted').textContent = wanted.filter(w=>w.status==='open').length;
+    $('sGiven').textContent = sims.filter(s=>s.given).length;
+    $('sOther').textContent = sims.filter(s=>s.purpose==='other').length;
+    $('sBlank').textContent = sims.filter(s=>!s.name || !s.purpose).length;
+  }
+
+  // edit & delete (modal)
+  let editing = null;
+  const LBL = {'':'Unknown', tourist:'Tourist', medical:'Medical', other:'Other'};
+  const radios = () => document.querySelectorAll('input[name="ePur"]');
+  const curPur = () => { const r=document.querySelector('input[name="ePur"]:checked'); return r ? r.value : ''; };
+  function purposeWarn(s, nv){
+    const pre = PREFIX[nv];
+    if(!s.pid || pre === s.pid[0]) return '';
+    return pre ? `${s.pid} will be replaced with a new ${pre} ID` : `${s.pid} will be removed`;
+  }
+  function openEdit(s){
+    editing = s;
+    $('editIds').innerHTML = `<span class="badge p-unknown">${esc(s.sid||'')}</span>` + (s.pid ? `<span class="badge p-${s.purpose}">${esc(s.pid)}</span>` : '<span class="badge p-unknown">No type ID</span>');
+    $('eNum').value = s.number; $('eName').value = s.name||''; $('eHome').value = s.home||''; $('eNote').value = s.note||''; $('eGiven').checked = !!s.given;
+    radios().forEach(r => r.checked = (r.value === (s.purpose||'')));
+    $('eWarn').textContent = ''; $('eErr').textContent = '';
+    $('editOv').hidden = false; document.body.style.overflow = 'hidden';
+    setTimeout(()=>$('eNum').focus(), 30);
+  }
+  function closeEdit(){ $('editOv').hidden = true; document.body.style.overflow = ''; editing = null; }
+  function deleteSim(s){
+    if(!confirm(`Delete ${s.number}${s.name?' ('+s.name+')':''}?`)) return false;
+    const idx = sims.indexOf(s); sims = sims.filter(x=>x!==s); save(); render();
+    showUndo(`Deleted ${s.number}`, ()=>{ sims.splice(Math.min(idx, sims.length), 0, s); save(); render(); toast('Restored ' + s.number); });
+    return true;
+  }
+  radios().forEach(r => r.addEventListener('change', ()=>{ if(editing) $('eWarn').textContent = purposeWarn(editing, curPur()); }));
+  $('eNum').addEventListener('input', e=>{ e.target.value = bn2en(e.target.value).replace(/[^\d+\s\-]/g,''); $('eErr').textContent=''; });
+  $('editX').addEventListener('click', closeEdit);
+  $('eCancel').addEventListener('click', closeEdit);
+  $('editOv').addEventListener('mousedown', e=>{ if(e.target === $('editOv')) closeEdit(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('editOv').hidden) closeEdit(); });
+  $('eDel').addEventListener('click', ()=>{ if(editing && deleteSim(editing)) closeEdit(); });
+  $('editForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const s = editing; if(!s) return;
+    const n = digits($('eNum').value);
+    if(!n){ $('eErr').textContent = 'Enter a valid number'; return; }
+    const dup = sims.find(x => x!==s && x.number===n);
+    if(dup){ $('eErr').textContent = `This number already exists (${dup.sid}${dup.pid?' • '+dup.pid:''})`; return; }
+    const nv = curPur(), oldPid = s.pid, oldNum = s.number, previous = {...s};
+    s.number = n; s.name = $('eName').value.trim(); s.home = $('eHome').value.trim(); s.note = $('eNote').value.trim();
+    s.purpose = nv;
+    const gv = $('eGiven').checked; if(gv !== !!s.given){ s.given = gv; s.givenAt = gv ? new Date().toISOString() : ''; }
+    if(!s.pid || PREFIX[nv] !== s.pid[0]){
+      if(window.simCloudAllocatePid && PREFIX[nv]){
+        try{ const allocation=await window.simCloudAllocatePid(nv); s.pid=allocation.pid; meta.counters=Object.assign(meta.counters||{},allocation.counters||{}); saveMeta(); }
+        catch(err){ Object.assign(s,previous); $('eErr').textContent='Could not reserve a unique Type ID from Firebase. Check your connection and try again.'; return; }
+      } else assignPid(s);
+    }
+    save(); closeEdit(); render();
+    toast('Changes saved' + (s.pid!==oldPid ? ' • ID: ' + (s.pid||'none') : '') + (n!==oldNum ? ' • Number changed' : ''));
+    if(n!==oldNum) handleHits(scanWanted([s]), 'new');
+  });
+  $('tbody').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    const s = sims.find(x=>x.id===b.closest('tr').dataset.id); if(!s) return;
+    if(b.dataset.edit) openEdit(s); else if(b.dataset.del) deleteSim(s);
+    else if(b.dataset.give){ s.given = !s.given; s.givenAt = s.given ? new Date().toISOString() : ''; save(); render(); toast(s.given ? `${s.sid} marked as GIVEN` : `${s.sid} back in stock`); }
+  });
+  $('tbody').addEventListener('dblclick', e=>{
+    if(e.target.closest('button')) return;
+    const tr = e.target.closest('tr'); const s = tr && sims.find(x=>x.id===tr.dataset.id); if(s) openEdit(s);
+  });
+  // ধরন বেছে নিলে ড্রপডাউনের রং বদলায়, যাতে ভুল সিলেক্ট চোখে পড়ে
+  ['fPurpose','bulkPurpose'].forEach(id=>{ const el=$(id); el.classList.add('pcol'); el.dataset.p=el.value; el.addEventListener('change',()=>{ el.dataset.p=el.value; }); });
+
+  ['q','filterP','filterS','sortBy'].forEach(id=>$(id).addEventListener('input', render));
+  ['filterP','filterS','sortBy'].forEach(id=>$(id).addEventListener('change', render));
+  $('q').addEventListener('keydown', e=>{ if(e.key==='Escape'){ e.target.value=''; render(); } });
+  $('printBtn').addEventListener('click', ()=>window.print());
+  $('simPanel').addEventListener('click', e=>{
+    const b = e.target.closest('button[data-edit]'); if(!b) return;
+    const s = sims.find(x=>x.id===b.closest('.simrow').dataset.id); if(s) openEdit(s);
+  });
+  $('scopeBar').addEventListener('click', e=>{
+    const b = e.target.closest('button[data-scope]'); if(!b) return;
+    $('filterP').value = b.dataset.scope; render();
+  });
+  $('tbody').addEventListener('click', e=>{
+    const tr = e.target.closest('tr.grp'); if(!tr) return;
+    const k = tr.dataset.grp; collapsed[k] = !collapsed[k]; render();
+  });
+  // ইংরেজি/বাংলা যেকোনো ডিজিট কাজ করবে; নাম্বার ঘরে বাংলা ডিজিট ইংরেজিতে বদলে দিই
+  $('fNum').addEventListener('input', e=>{ e.target.value = bn2en(e.target.value).replace(/[^\d+\s\-]/g,''); });
+
+  // ---------- backup ----------
+  $('expJson').addEventListener('click', ()=>{
+    download(`sim-backup_${stamp()}.json`, JSON.stringify(payload(),null,2), 'application/json');
+    meta.lastBackup = new Date().toISOString(); saveMeta(); showBackupInfo(); toast('Backup downloaded');
+  });
+  $('expCsv').addEventListener('click', ()=>{
+    const q = v => '"'+String(v||'').replace(/"/g,'""')+'"';
+    const rows = [['#','Serial','Type ID','SIM number','Name','Home/District','Type','Note','Added on','Given','Given on']];
+    sims.forEach((s,i)=>rows.push([i+1, s.sid||'', s.pid||'', s.number, s.name, s.home, PL[s.purpose]||'', s.note, s.createdAt, s.given?'Yes':'', s.givenAt||'']));
+    // SIM number যেন Excel-এ শুরুর 0 না হারায়, তাই ="..." ফরম্যাট
+    const csv = '\uFEFF' + rows.map((r,ri)=>r.map((c,ci)=> (ri>0&&ci===3) ? `="${c}"` : q(c)).join(',')).join('\r\n');
+    download(`sim-list_${stamp()}.csv`, csv, 'text/csv;charset=utf-8');
+  });
+  $('impBtn').addEventListener('click', ()=>$('impFile').click());
+  $('impFile').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = ()=>{
+      try{
+        const d = JSON.parse(r.result);
+        const arr = Array.isArray(d) ? d : d.sims;
+        if(!Array.isArray(arr)) throw 0;
+        let add=0, upd=0;
+        const before = new Set(sims);
+        arr.forEach(x=>{
+          const n = digits(x.number); if(!n) return;
+          const ex = sims.find(s=>s.number===n);
+          if(ex){
+            let ch=false;
+            ['name','home','purpose','note'].forEach(k=>{ if(!ex[k] && x[k]){ ex[k]=x[k]; ch=true; } });
+            if(!ex.pid && x.pid && /^[TMO]\d+$/.test(x.pid) && PREFIX[ex.purpose]===x.pid[0] && !pidTaken(x.pid, ex)){ ex.pid=x.pid; ch=true; }
+            if(!ex.given && x.given){ ex.given=true; ex.givenAt=x.givenAt||''; ch=true; }
+            if(ch) upd++;
+          } else {
+            const obj = {id:uid(), sid:'', pid:'', number:n, name:x.name||'', home:x.home||'', purpose:x.purpose||'', note:x.note||'', createdAt:x.createdAt||new Date().toISOString(), given:!!x.given, givenAt:x.givenAt||''};
+            if(x.pid && /^[TMO]\d+$/.test(x.pid) && PREFIX[obj.purpose]===x.pid[0] && !pidTaken(x.pid)) obj.pid = x.pid;
+            if(/^S\d+$/.test(x.sid||'') && !sims.some(o=>o.sid===x.sid)) obj.sid = x.sid;
+            sims.push(obj);
+            add++;
+          }
+        });
+        if(d && d.counters){ ['T','M','O','S'].forEach(k=>{ meta.counters[k] = Math.max(meta.counters[k]||0, +d.counters[k]||0); }); }
+        ensureIds();
+        const wAdded = Array.isArray(d && d.wanted) ? mergeWanted(d.wanted) : 0;
+        if(wAdded) saveWanted();
+        save();
+        if(window.simCloudImportRequested) window.simCloudImportRequested();
+        render(); toast(`Restored: ${add} new, ${upd} updated` + (wAdded ? `, ${wAdded} wanted` : ''));
+        handleHits(scanWanted(sims.filter(x=>!before.has(x))), 'new');
+      }catch(err){ toast('Invalid backup file'); }
+      e.target.value='';
+    };
+    r.readAsText(f);
+  });
+  $('autoBtn').addEventListener('click', async ()=>{
+    if(!window.showSaveFilePicker){ toast('Not supported in this browser — use Chrome/Edge'); return; }
+    try{
+      fileHandle = await window.showSaveFilePicker({suggestedName:'sim-auto-backup.json', types:[{description:'JSON', accept:{'application/json':['.json']}}]});
+      await writeAuto();
+      $('autoBtn').textContent='Auto-backup on';
+      toast('Auto-backup enabled');
+    }catch(e){ /* বাতিল */ }
+  });
+
+
+  // ---------- খোঁজার তালিকা (Wanted) ----------
+  function loadWanted(){
+    try{ wanted = JSON.parse(localStorage.getItem(WKEY)||'[]'); if(!Array.isArray(wanted)) wanted = []; }catch(e){ wanted = []; }
+  }
+  function saveWanted(){
+    try{ localStorage.setItem(WKEY, JSON.stringify(wanted)); }catch(e){ toast('Could not save Wanted list! Download a backup.'); }
+    writeAuto();
+    if(window.simCloudLocalChanged) window.simCloudLocalChanged('wanted');
+  }
+  const KIND_LABEL = {exact:'Exact match', partial:'Same last digits', similar:'Similar — possible typo'};
+  const KIND_RANK = {exact:0, partial:1, similar:2};
+  const maxDfor = len => len>=10 ? 3 : len>=8 ? 2 : 1;
+  const histDiff = (a,b) => { const h=new Array(10).fill(0); for(const c of a) h[+c]++; for(const c of b) h[+c]--; return h.reduce((t,v)=>t+Math.abs(v),0); };
+
+  // w (খোঁজা নাম্বার) বনাম s (সিম): হুবহু / শেষের ডিজিট মেলে / হাতের ভুল সহ প্রায়-মিল
+  function wantMatch(w, s){
+    const wd = w.number, sn = s.number;
+    if(!wd || !sn) return null;
+    const plain = new Array(sn.length).fill('m');
+    if(wd === sn) return {kind:'exact', d:0, hit:sn.length, len:sn.length, mark:plain};
+    if(wd.length < sn.length && wd.length >= 4 && (sn.endsWith(wd) || (wd.length>=6 && sn.includes(wd))))
+      return {kind:'partial', d:0, hit:wd.length, len:sn.length, mark:plain};
+    if(wd.length >= 7){
+      const md = maxDfor(wd.length);
+      if(Math.abs(wd.length - sn.length) <= md && histDiff(wd, sn) <= 2*md){
+        const r = editInfo(wd, sn);
+        if(r.d <= md) return {kind:'similar', d:r.d, hit:r.hit, len:Math.max(wd.length, sn.length), mark:r.mark};
+      }
+    }
+    return null;
+  }
+  const isIgnored = (w, s) => (w.ignored||[]).includes(s.number);
+  function scanWanted(list){
+    const hits = [];
+    wanted.forEach(w=>{
+      if(w.status !== 'open') return;
+      list.forEach(s=>{ if(isIgnored(w,s)) return; const m = wantMatch(w,s); if(m) hits.push({w, s, m}); });
+    });
+    hits.sort((a,b)=> KIND_RANK[a.m.kind]-KIND_RANK[b.m.kind] || a.m.d-b.m.d);
+    return hits;
+  }
+  const simOfWanted = w => sims.find(s=>s.id===w.matchSimId) || sims.find(s=>s.number===w.matchNumber);
+
+  function markFound(w, s, m){
+    w.status = 'found'; w.matchSimId = s.id; w.matchNumber = s.number; w.matchSid = s.sid; w.matchPid = s.pid;
+    w.matchKind = m ? m.kind : 'manual'; w.foundAt = new Date().toISOString();
+    let filled = false;
+    if(!s.name && w.name){ s.name = w.name; filled = true; }                     // সিমে কাস্টমারের নাম বসিয়ে দিই
+    if(!s.note && w.number !== s.number){ s.note = 'Wanted: ' + w.number; filled = true; }
+    return filled;
+  }
+
+  // নতুন সিম এলে যা মিলল তা নিয়ে কাজ: হুবহু মিললে নিজে থেকে "Found", বাকিগুলো জিজ্ঞেস করে
+  function handleHits(hits, ctx){
+    if(!hits.length) return;
+    const done = new Set(), out = []; let simChanged = false;
+    hits.forEach(h=>{ if(h.m.kind==='exact' && !done.has(h.w.id)){ if(markFound(h.w, h.s, h.m)) simChanged = true; done.add(h.w.id); out.push({...h, ctx, state:'auto'}); } });
+    hits.forEach(h=>{ if(h.m.kind!=='exact' && !done.has(h.w.id)) out.push({...h, ctx, state:'pending'}); });
+    if(!out.length) return;
+    saveWanted(); if(simChanged) save(); render(); renderWanted();
+    queueMatches(out);
+  }
+
+  let matchState = [], infoMode = '';
+  function openInfo(mode){ infoMode = mode; $('infoOv').hidden = false; document.body.style.overflow = 'hidden'; }
+  function closeInfo(){ $('infoOv').hidden = true; document.body.style.overflow = ''; infoMode = ''; }
+  function simLine(s){ return `<b>${esc([s.sid,s.pid].filter(Boolean).join(' • '))}</b> • ${esc(PL[s.purpose]||'Unknown')}${s.name?' • '+esc(s.name):''}${s.home?' • '+esc(s.home):''}`; }
+
+  function drawMatches(){
+    const n = matchState.length;
+    $('infoTitle').textContent = '🔔 Someone was looking for this SIM';
+    $('infoSub').textContent = n + ' match' + (n>1?'es':'') + ' from your Wanted list';
+    $('infoBody').innerHTML = matchState.map((h,i)=>{
+      const {w,s,m} = h;
+      const where = h.ctx==='existing' ? 'Already in your list' : 'Just added';
+      let foot = '';
+      if(h.state==='auto') foot = `<div class="done">✔ Marked as Found automatically${(w.name && s.name===w.name)?' • customer name saved on the SIM':''}</div>`;
+      else if(h.state==='yes') foot = `<div class="done">✔ Confirmed — marked as Found</div>`;
+      else if(h.state==='no') foot = `<div class="done no">✖ Not the same SIM — won't alert again</div>`;
+      else foot = `<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="good" data-macts="yes" data-i="${i}">✔ Yes, this is it</button><button type="button" class="ghost" data-macts="no" data-i="${i}">✖ Not it</button></div>`;
+      return `<div class="mcard ${m.kind}">
+        <div><span class="mk mk-${m.kind}">${KIND_LABEL[m.kind]}</span>${m.kind!=='exact'?` <span class="mpct">${m.hit}/${m.len} digits match</span>`:''}</div>
+        <div>Asked by <b>${esc(w.name||'(no name)')}</b>${w.phone?' • 📞 '+esc(w.phone):''} on ${esc(fmtDate(w.createdAt))}</div>
+        <div>They gave: <span class="num">${esc(w.number)}</span>${w.note?' <span class="hint">('+esc(w.note)+')</span>':''}</div>
+        <div>${where}: <span class="num">${markedNumber(s.number, m.mark)}</span></div>
+        <div>${simLine(s)}</div>
+        ${foot}
+      </div>`;
+    }).join('');
+  }
+
+  // Wanted তালিকা দেখানো
+  function wantedForQuery(q, mode){
+    const qd = digits(q), t = q.trim().toLowerCase();
+    const isNum = /^[\d০-৯\s\-+]+$/.test(q) && qd.length>0;
+    const isId = /^[TMOS]\d+$/i.test(t);
+    return wanted.filter(w=>{
+      if(isId){ const u = t.toUpperCase(); return w.matchSid===u || w.matchPid===u; }
+      if(isNum){
+        if(qd.length===11 && w.number===qd) return true;
+        if(qd.length>11) return false;
+        if(prefixSearch(qd) && w.number.startsWith(qd)) return true;
+        if(qd.length>=2 && w.number.endsWith(qd)) return true;
+        if(qd.length>=7 && qd.length<11 && w.number.length>=7){ const md = maxDfor(qd.length); return Math.abs(qd.length-w.number.length)<=md && histDiff(qd,w.number)<=2*md && editInfo(qd,w.number).d<=md; }
+        return false;
+      }
+      return (w.name||'').toLowerCase().includes(t) || (w.note||'').toLowerCase().includes(t) || (w.phone||'').includes(t);
+    });
+  }
+  function renderWanted(){
+    if(!$('wantList')) return;
+    const f = $('wFilter').value;
+    const list = wanted.filter(w=> f==='all' || w.status===f)
+      .sort((a,b)=> (a.status==='open'?0:1)-(b.status==='open'?0:1) || (b.createdAt||'').localeCompare(a.createdAt||''));
+    const open = wanted.filter(w=>w.status==='open').length;
+    $('wCount').textContent = `${open} open · ${wanted.filter(w=>w.status==='found').length} found`;
+    const menuCount = $('wantedMenuCount'); if(menuCount) menuCount.textContent = String(open);
+    $('wantList').innerHTML = list.length ? list.map(w=>{
+      let live = '';
+      if(w.status==='open'){
+        const hits = scanWanted(sims).filter(h=>h.w===w).slice(0,3);
+        live = hits.map(h=>`<div class="wlive"><span class="mk mk-${h.m.kind}">${KIND_LABEL[h.m.kind]}</span><span class="num">${markedNumber(h.s.number,h.m.mark)}</span><span>${simLine(h.s)}</span><button type="button" class="good" data-wact="yes" data-s="${esc(h.s.number)}">✔ This is it</button><button type="button" class="ghost" data-wact="no" data-s="${esc(h.s.number)}">✖ Not it</button></div>`).join('');
+      }
+      const ms = w.status==='found' ? simOfWanted(w) : null;
+      return `<div class="wrow ${w.status}" data-w="${w.id}">
+        <div class="wmain">
+          <div class="want-primary"><span class="num">${esc(w.number)}</span>${w.status==='open'?'<span class="badge p-want">Open</span>':w.status==='found'?'<span class="badge p-given">✔ Found</span>':'<span class="badge p-unknown">Closed</span>'}</div>
+          <div class="wmeta"><b>${esc(w.name||'No name')}</b>${w.phone?' • 📞 '+esc(w.phone):''}${w.note?' • '+esc(w.note):''} • asked ${esc(fmtDate(w.createdAt))}</div>
+          ${w.status==='found'?`<div class="wfound">→ ${esc([w.matchSid,w.matchPid].filter(Boolean).join(' • '))} <b class="num">${esc(w.matchNumber||'')}</b> • ${esc(KIND_LABEL[w.matchKind]||'Confirmed')} • ${esc(fmtDate(w.foundAt))}${ms?'':' (SIM no longer in list)'}</div>`:''}
+          ${live}
+        </div>
+        <div class="wbtn">
+          ${w.status==='open'?`<button type="button" class="ghost" data-wact="search">Search</button><button type="button" class="ghost" data-wact="edit">Edit</button><button type="button" class="ghost" data-wact="close">Close</button>`:''}
+          ${w.status==='found'&&ms?`<button type="button" class="ghost" data-wact="show">Show SIM</button>`:''}
+          ${w.status!=='open'?`<button type="button" class="ghost" data-wact="reopen">Re-open</button>`:''}
+          <button type="button" class="danger" data-wact="del">Delete</button>
+        </div>
+      </div>`;
+    }).join('') : `<div class="empty">${f==='open'?'Nothing to look for right now.':'Nothing here.'}</div>`;
+  }
+
+  let wEditing = null;
+  function resetWantForm(){ wEditing = null; $('wantForm').reset(); $('wSubmit').textContent = 'Add to Wanted'; $('wCancel').hidden = true; }
+  function loadWantForm(w){
+    wEditing = w; $('wNum').value = w.number; $('wName').value = w.name||''; $('wPhone').value = w.phone||''; $('wNote').value = w.note||'';
+    $('wSubmit').textContent = 'Save changes'; $('wCancel').hidden = false;
+    $('wantCard').scrollIntoView({behavior:'smooth', block:'start'}); $('wName').focus();
+  }
+  $('wNum').addEventListener('input', e=>{ e.target.value = bn2en(e.target.value).replace(/[^\d+\s\-]/g,''); });
+  $('wCancel').addEventListener('click', resetWantForm);
+  $('wFilter').addEventListener('input', renderWanted);
+  $('wantForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const num = digits($('wNum').value);
+    if(num.length < 4){ toast('Enter at least 4 digits'); return; }
+    const data = {number:num, name:$('wName').value.trim(), phone:$('wPhone').value.trim(), note:$('wNote').value.trim()};
+    const dup = wanted.find(x=>x!==wEditing && x.status==='open' && x.number===num);
+    if(dup){ toast(`Already in Wanted${dup.name?' ('+dup.name+')':''}`); return; }
+    let w;
+    if(wEditing){
+      w = wEditing; if(w.number !== num) w.ignored = []; Object.assign(w, data);
+      toast('Wanted updated');
+    } else {
+      w = Object.assign({id:uid(), createdAt:new Date().toISOString(), status:'open', ignored:[]}, data);
+      wanted.unshift(w);
+      toast('Added to Wanted — you will be alerted if this SIM shows up');
+    }
+    saveWanted(); resetWantForm(); renderWanted(); render();
+    if(w.status==='open') handleHits(scanWanted(sims).filter(h=>h.w===w), 'existing');   // এখনই তালিকায় আছে কি?
+    $('wNum').focus();
+  });
+  function wantedClick(e){
+    const b = e.target.closest('button[data-wact]'); if(!b) return;
+    const row = b.closest('[data-w]'); const w = row && wanted.find(x=>x.id===row.dataset.w); if(!w) return;
+    const act = b.dataset.wact;
+    const simByNum = b.dataset.s && sims.find(x=>x.number===b.dataset.s);
+    if(act==='search'){ $('q').value = w.number; render(); window.scrollTo({top:0, behavior:'smooth'}); }
+    else if(act==='edit' || act==='manage') loadWantForm(w);
+    else if(act==='close'){ w.status='closed'; saveWanted(); renderWanted(); render(); }
+    else if(act==='reopen'){ w.status='open'; ['matchSimId','matchNumber','matchSid','matchPid','matchKind','foundAt'].forEach(k=>delete w[k]); saveWanted(); renderWanted(); render(); }
+    else if(act==='del'){ if(confirm(`Delete Wanted entry ${w.number}${w.name?' ('+w.name+')':''}?`)){ wanted = wanted.filter(x=>x!==w); saveWanted(); renderWanted(); render(); toast('Deleted'); } }
+    else if(act==='show'){ const ms = simOfWanted(w); if(ms){ $('q').value = ms.number; $('filterS').value='all'; render(); window.scrollTo({top:0, behavior:'smooth'}); } }
+    else if(act==='yes' && simByNum){ const m = wantMatch(w, simByNum); const filled = markFound(w, simByNum, m); saveWanted(); if(filled) save(); render(); renderWanted(); toast(`Found — ${simByNum.sid} is for ${w.name||w.number}`); }
+    else if(act==='no' && simByNum){ (w.ignored = w.ignored||[]).push(simByNum.number); saveWanted(); renderWanted(); }
+  }
+  $('wantList').addEventListener('click', wantedClick);
+  $('wantPanel').addEventListener('click', wantedClick);
+  $('statWanted').addEventListener('click', showWantedPanel);
+  $('wScan').addEventListener('click', ()=>{
+    const hits = scanWanted(sims);
+    if(!hits.length){ toast('No match for anything in your Wanted list'); return; }
+    handleHits(hits, 'existing');
+  });
+  function mergeWanted(arr){
+    let n = 0;
+    arr.forEach(x=>{
+      const num = digits(x && x.number); if(num.length<4) return;
+      const ex = wanted.find(w=>w.id===x.id);
+      if(!ex){ wanted.push({id:x.id||uid(), number:num, name:x.name||'', phone:x.phone||'', note:x.note||'', createdAt:x.createdAt||new Date().toISOString(), status:['open','found','closed'].includes(x.status)?x.status:'open', ignored:Array.isArray(x.ignored)?x.ignored:[], matchSimId:x.matchSimId, matchNumber:x.matchNumber, matchSid:x.matchSid, matchPid:x.matchPid, matchKind:x.matchKind, foundAt:x.foundAt}); n++; }
+      else if(ex.status==='open' && x.status && x.status!=='open'){ Object.assign(ex, {status:x.status, matchSimId:x.matchSimId, matchNumber:x.matchNumber, matchSid:x.matchSid, matchPid:x.matchPid, matchKind:x.matchKind, foundAt:x.foundAt}); n++; }
+    });
+    return n;
+  }
+
+  // Match modal buttons
+  $('infoBody').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    if(b.dataset.macts){
+      const h = matchState[+b.dataset.i]; if(!h) return;
+      if(b.dataset.macts==='yes'){ const filled = markFound(h.w, h.s, h.m); h.state='yes'; if(filled) save(); }
+      else { (h.w.ignored = h.w.ignored||[]).push(h.s.number); h.state='no'; }
+      saveWanted(); render(); renderWanted(); drawMatches();
+    } else if(b.dataset.tact){
+      const i = +b.dataset.i, p = typoState[i]; if(!p) return;
+      if(b.dataset.tact==='ignore'){ typoIgnore.add(typoKey(p.a,p.b)); saveTypoIgnore(); typoState.splice(i,1); drawTypos(); }
+      else { closeInfo(); openEdit(b.dataset.tact==='a' ? p.a : p.b); }
+    }
+  });
+  $('infoX').addEventListener('click', closeInfo);
+  $('infoClose').addEventListener('click', closeInfo);
+  $('infoOv').addEventListener('mousedown', e=>{ if(e.target===$('infoOv')) closeInfo(); });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape' && !$('infoOv').hidden) closeInfo();
+    if(e.key==='/' && !/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'') && $('editOv').hidden && $('infoOv').hidden && $('noteOv').hidden){ e.preventDefault(); $('q').focus(); }
+  });
+
+  // নম্বর টাইপ করার সময়ই সতর্কতা: ডুপ্লিকেট / প্রায়-একই / Wanted-এর সাথে মিল
+  function updateAddHint(){
+    const box = $('fHint'), n = digits($('fNum').value);
+    if(n.length < 4){ box.innerHTML = ''; return; }
+    let html = '';
+    const dup = sims.find(s=>s.number===n);
+    if(dup) html += `<div class="ewarn" style="display:block;margin-top:8px">⚠ Already in your list: ${simLine(dup)}</div>`;
+    else if(n.length >= 7){
+      const sm = similarAll(n, new Set()).slice(0,3);
+      if(sm.length) html += `<div class="ewarn" style="display:block;margin-top:8px">⚠ Looks like an existing number — typo? ${sm.map(x=>`<br><span class="num">${markedNumber(x.s.number,x.mark)}</span> ${simLine(x.s)}`).join('')}</div>`;
+    }
+    const wh = wanted.filter(w=>w.status==='open').map(w=>({w, m:wantMatch(w,{number:n,id:''})})).filter(x=>x.m).slice(0,3);
+    if(wh.length) html += `<div class="wantnote">🔔 This matches your Wanted list: ${wh.map(x=>`<b>${esc(x.w.name||'No name')}</b> asked for <span class="num">${esc(x.w.number)}</span> (${KIND_LABEL[x.m.kind]})`).join('; ')}</div>`;
+    box.innerHTML = html;
+  }
+  $('fNum').addEventListener('input', updateAddHint);
+
+  // পুরো তালিকায় টাইপো-জোড়া খোঁজা
+  const TKEY = 'simManagerTypoIgnore_v1';
+  let typoIgnore = new Set(); try{ typoIgnore = new Set(JSON.parse(localStorage.getItem(TKEY)||'[]')); }catch(e){}
+  const saveTypoIgnore = () => { try{ localStorage.setItem(TKEY, JSON.stringify([...typoIgnore])); }catch(e){} };
+  const typoKey = (a,b) => [a.number,b.number].sort().join('|');
+  let typoState = [];
+  function scanTypos(){
+    const out = [];
+    for(let i=0;i<sims.length;i++) for(let j=i+1;j<sims.length;j++){
+      const a=sims[i], b=sims[j], len=Math.max(a.number.length,b.number.length), md = len>=10 ? 2 : 1;
+      if(Math.abs(a.number.length-b.number.length) > 1 || len<7 || histDiff(a.number,b.number) > 2*md) continue;
+      if(typoIgnore.has(typoKey(a,b))) continue;
+      const r = editInfo(a.number, b.number);
+      if(r.d <= md) out.push({a, b, d:r.d, mA:editInfo(b.number,a.number).mark, mB:r.mark});
+      if(out.length >= 200) return out;
+    }
+    return out.sort((x,y)=>x.d-y.d);
+  }
+  function drawTypos(){
+    $('infoTitle').textContent = '🔍 Possible typos in your list';
+    $('infoSub').textContent = typoState.length ? `${typoState.length} pair(s) of numbers that differ by only 1–2 digits. Red = differs.` : '';
+    $('infoBody').innerHTML = typoState.length ? typoState.map((p,i)=>`
+      <div class="mcard similar">
+        <div><span class="num">${markedNumber(p.a.number,p.mA)}</span> ${simLine(p.a)}</div>
+        <div><span class="num">${markedNumber(p.b.number,p.mB)}</span> ${simLine(p.b)}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="ghost" data-tact="a" data-i="${i}">Edit first</button><button type="button" class="ghost" data-tact="b" data-i="${i}">Edit second</button><button type="button" class="good" data-tact="ignore" data-i="${i}">✔ Both correct (not a typo)</button></div>
+      </div>`).join('') : '<div class="empty">No suspicious pairs found 👍</div>';
+  }
+  $('typoBtn').addEventListener('click', ()=>{ typoState = scanTypos(); drawTypos(); openInfo('typo'); });
+
+  // ভুলে ডিলিট → Undo
+  let undoFn = null;
+  function showUndo(msg, fn){
+    undoFn = fn; $('undoMsg').textContent = msg; $('undoBar').hidden = false;
+    clearTimeout(showUndo._t); showUndo._t = setTimeout(()=>{ $('undoBar').hidden = true; undoFn = null; }, 9000);
+  }
+  $('undoBtn').addEventListener('click', ()=>{ if(undoFn){ const f = undoFn; undoFn = null; $('undoBar').hidden = true; f(); } });
+
+
+  // ---------- Compact panels ----------
+  let previousBodyOverflow = '';
+  function closeAddPanel(){ document.body.classList.remove('add-open'); $('addBackdrop').hidden=true; if(previousBodyOverflow!==null) document.body.style.overflow=previousBodyOverflow; previousBodyOverflow=''; }
+  function openAddPanel(){ closeMenus(); previousBodyOverflow=document.body.style.overflow||''; document.body.style.overflow='hidden'; document.body.classList.add('add-open'); $('addBackdrop').hidden=false; setTimeout(()=>$('fNum').focus(),40); }
+  function closeMenus(){ $('toolsPanel').hidden=true; $('moreMenu').hidden=true; $('gearBtn').setAttribute('aria-expanded','false'); $('moreBtn').setAttribute('aria-expanded','false'); }
+  function showWantedPanel(){ $('wantCard').classList.add('is-open'); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); renderWanted(); $('wantCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showBackupPanel(){ $('backupCard').classList.add('is-open'); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); $('backupCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showListPanel(){ listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  $('addFab').addEventListener('click',openAddPanel);
+  $('closeAddBtn').addEventListener('click',closeAddPanel);
+  $('addBackdrop').addEventListener('click',closeAddPanel);
+  $('gearBtn').addEventListener('click',()=>{ const open=$('toolsPanel').hidden; $('toolsPanel').hidden=!open; $('gearBtn').setAttribute('aria-expanded',String(open)); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); });
+  $('moreBtn').addEventListener('click',()=>{ const open=$('moreMenu').hidden; $('moreMenu').hidden=!open; $('moreBtn').setAttribute('aria-expanded',String(open)); $('toolsPanel').hidden=true; $('gearBtn').setAttribute('aria-expanded','false'); });
+  $('moreMenu').addEventListener('click',e=>{ const b=e.target.closest('[data-open-panel]'); if(!b)return; if(b.dataset.openPanel==='wanted') showWantedPanel(); });
+  document.addEventListener('click',e=>{ if(!e.target.closest('.search-card')) closeMenus(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeAddPanel(); closeMenus(); } });
+  $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open');
+
+  // ---------- Home / Reset ----------
+  function resetView(focus){
+    $('q').value=''; $('filterP').value='all'; $('filterS').value='all'; $('sortBy').value='new'; $('mode').value='end'; listPanelOpen=false;
+    $('toolsPanel').hidden=true; $('gearBtn').setAttribute('aria-expanded','false');
+    Object.keys(collapsed).forEach(k=>delete collapsed[k]);
+    render();
+    if(focus!==false){ if(!$('editOv').hidden) closeEdit(); if(!$('infoOv').hidden) closeInfo(); window.scrollTo({top:0, behavior:'smooth'}); $('q').focus(); }
+  }
+  $('homeBtn').addEventListener('click', ()=>{ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); resetView(true); });
+  $('resetBtn').addEventListener('click', ()=>resetView(true));
+  $('empty').addEventListener('click', e=>{ if(e.target.id==='emptyReset') resetView(true); });
+
+  // ---------- "এই আইডি লিখে রাখুন" ডায়ালগ ----------
+  $('keepP').checked = true; $('askNote').checked = true;
+  const askNoteOn = () => $('askNote').checked;
+
+  let noteMode = '', deferredMatch = false, noteTimer = null;
+  function openNote(mode, html){
+    noteMode = mode; $('noteBody').innerHTML = html; $('noteOv').hidden = false; document.body.style.overflow = 'hidden';
+    const ack = $('noteAck');
+    if(ack){ ack.addEventListener('click', confirmNote); setTimeout(()=>ack.focus(), 40); }
+    else setTimeout(()=>{ const b = $('noteBody').querySelector('button'); if(b) b.focus(); }, 40);
+  }
+  function confirmNote(){
+    const ack = $('noteAck'); if(!ack || ack.classList.contains('done')) return;
+    ack.classList.add('done'); ack.querySelector('.lbl').textContent = 'Noted!';
+    clearTimeout(noteTimer); noteTimer = setTimeout(closeNote, 380);
+  }
+  function closeNote(){
+    if($('noteOv').hidden) return;
+    clearTimeout(noteTimer);
+    const mode = noteMode; $('noteOv').hidden = true; noteMode = ''; $('noteBody').innerHTML = '';
+    if(!$('editOv').hidden || !$('infoOv').hidden) { /* other dialog is on top */ } else document.body.style.overflow = '';
+    if(deferredMatch){ deferredMatch = false; drawMatches(); openInfo('match'); }
+    else if(mode !== 'edit'){ const f = $('fNum'); f.focus(); if(mode==='dup') f.select(); }
+  }
+  function queueMatches(out){
+    if(!$('noteOv').hidden){ matchState = deferredMatch ? matchState.concat(out) : out; deferredMatch = true; }
+    else { matchState = out; drawMatches(); openInfo('match'); }
+  }
+  function ackBlock(label){
+    return `<button type="button" class="bigok" id="noteAck"><span class="tick">✓</span><span class="lbl">${label}</span></button>`;
+  }
+  function showAddedNote(s, near){
+    const warn = near && near.length ? `<div class="nmini">⚠ Similar number already in your list: <b>${esc(near[0].s.sid||'')}</b> ${markedNumber(near[0].s.number, near[0].mark)}${near.length>1?` (+${near.length-1} more)`:''} — typo?</div>` : '';
+    openNote('added', `
+      <div class="nhead" style="padding-bottom:0"><div class="ncheck">✓</div><h3 id="noteTitle" style="margin-bottom:0">SIM saved</h3></div>
+      <div class="nbody">
+        <div class="nserial"><small>SERIAL NO.</small><b>${esc(s.sid)}</b><span class="snum">${esc(s.number)}</span></div>
+        <div class="nmsg">Write this number on the box where you keep this SIM.<br>It will make finding it later easy.</div>
+        ${warn}
+        ${ackBlock('I have noted this ID')}
+      </div>`);
+  }
+  function showBulkNote(added, dups){
+    const rows = list => list.filter(Boolean).map(x=>`<tr><td class="pid S" style="font-size:22px">${esc(x.sid)}</td><td class="num" style="font-size:15px">${esc(x.number)}</td></tr>`).join('');
+    openNote('bulk', `
+      <div class="nhead ${added.length?'':'warn'}" style="padding-bottom:0"><div class="ncheck">${added.length?'✓':'!'}</div><h3 id="noteTitle" style="margin-bottom:0">${added.length} SIM${added.length===1?'':'s'} saved${dups.length?` • ${dups.length} already existed`:''}</h3></div>
+      <div class="nbody">
+        ${added.length?`<div class="nlist"><table><thead><tr><th>Serial No.</th><th>Number</th></tr></thead><tbody>${rows(added)}</tbody></table></div>
+        <div class="nmsg">Write each number on the box where you keep that SIM.</div>`:''}
+        ${dups.length?`<div class="nsub">Already in your list (not added again):</div><div class="nlist"><table><tbody>${rows(dups)}</tbody></table></div>`:''}
+        ${ackBlock(added.length?'I have noted these IDs':'OK, got it')}
+      </div>`);
+  }
+  function showDup(ex){
+    openNote('dup', `
+      <div class="nhead warn"><div class="ncheck">!</div><h3 id="noteTitle">This number already exists</h3><p>Nothing was added. Here is the SIM that is already in your list:</p></div>
+      <div class="nbody">
+        <div class="dupcard">
+          <div class="ids"><b style="color:#334155">${esc(ex.sid||'')}</b><b class="pid ${ex.pid?ex.pid[0]:''}" style="font-size:32px">${ex.pid?esc(ex.pid):'<span class="nopid" style="font-size:16px">no type ID</span>'}</b></div>
+          <div class="num">${esc(ex.number)}</div>
+          <div>${esc(PL[ex.purpose]||'Unknown')}${ex.name?' • '+esc(ex.name):' • <span class="nopid">no client name</span>'}${ex.home?' • '+esc(ex.home):''}</div>
+          ${ex.note?`<div class="hint">Note: ${esc(ex.note)}</div>`:''}
+          <div class="hint">Added ${esc(fmtDate(ex.createdAt))}${ex.given?' • ✔ Given '+esc(fmtDate(ex.givenAt)):' • In stock'}</div>
+        </div>
+        <div class="nbtns"><button type="button" data-nact="show">Show in list</button><button type="button" class="sec" data-nact="edit" data-n="${esc(ex.number)}">Edit this SIM</button><button type="button" class="sec" data-nact="close">Close</button></div>
+      </div>`);
+  }
+  $('noteOv').addEventListener('click', e=>{
+    const b = e.target.closest('button[data-nact]'); if(!b) return;
+    const a = b.dataset.nact;
+    if(a==='edit'){ const s = sims.find(x=>x.number===b.dataset.n); closeNote(); if(s) openEdit(s); }
+    else if(a==='show'){ closeNote(); window.scrollTo({top:0, behavior:'smooth'}); }
+    else closeNote();
+  });
+  document.addEventListener('keydown', e=>{
+    if($('noteOv').hidden) return;
+    if(e.key==='Escape'){ closeNote(); return; }
+    if(e.key==='Enter'){ const ack = $('noteAck'); if(ack){ e.preventDefault(); confirmNote(); } }
+  });
+
+  // ---------- init ----------
+  load(); loadWanted(); render(); renderWanted(); showBackupInfo();
+  window.SIM_MANAGER_BRIDGE = {
+    getData(){ return JSON.parse(JSON.stringify({sims, wanted, counters:meta.counters||{T:0,M:0,O:0,S:0}})); },
+    showMessage(message,ms){ toast(message,ms||9000); },
+    selectUserScope(uid){
+      const scope = String(uid||'').replace(/[^a-zA-Z0-9_-]/g,'');
+      if(!scope) throw new Error('Firebase user scope is missing');
+      const next = {
+        key: `simManagerData_v1_${scope}`,
+        meta: `simManagerMeta_v1_${scope}`,
+        wanted: `simManagerWanted_v1_${scope}`
+      };
+      // Move the old single-user browser cache only once, to the first signed-in UID.
+      const hasScoped = localStorage.getItem(next.key)!==null || localStorage.getItem(next.meta)!==null || localStorage.getItem(next.wanted)!==null;
+      if(!hasScoped){
+        const legacy = {
+          key: localStorage.getItem('simManagerData_v1'),
+          meta: localStorage.getItem('simManagerMeta_v1'),
+          wanted: localStorage.getItem('simManagerWanted_v1')
+        };
+        if(legacy.key!==null || legacy.meta!==null || legacy.wanted!==null){
+          if(legacy.key!==null) localStorage.setItem(next.key,legacy.key);
+          if(legacy.meta!==null) localStorage.setItem(next.meta,legacy.meta);
+          if(legacy.wanted!==null) localStorage.setItem(next.wanted,legacy.wanted);
+          localStorage.removeItem('simManagerData_v1');
+          localStorage.removeItem('simManagerMeta_v1');
+          localStorage.removeItem('simManagerWanted_v1');
+        }
+      }
+      KEY=next.key; META=next.meta; WKEY=next.wanted;
+      sims=[]; wanted=[]; meta={lastBackup:null,counters:{T:0,M:0,O:0,S:0}};
+      load(); loadWanted(); render(); renderWanted(); showBackupInfo(); updateAddHint();
+    },
+    clearUserState(){
+      sims=[]; wanted=[]; meta={lastBackup:null,counters:{T:0,M:0,O:0,S:0}};
+      render(); renderWanted(); showBackupInfo(); updateAddHint();
+    },
+    applyRemote(data){
+      sims = Array.isArray(data.sims) ? JSON.parse(JSON.stringify(data.sims)) : [];
+      wanted = Array.isArray(data.wanted) ? JSON.parse(JSON.stringify(data.wanted)) : [];
+      meta.counters = Object.assign({T:0,M:0,O:0,S:0}, data.counters||{});
+      try{ localStorage.setItem(KEY, JSON.stringify(sims)); localStorage.setItem(WKEY, JSON.stringify(wanted)); localStorage.setItem(META, JSON.stringify(meta)); }catch(e){}
+      render(); renderWanted(); showBackupInfo(); updateAddHint();
+    }
+  };
+  $('fNum').focus();
+})();
+</script>
+
+<script>
+/* Motion + mobile-nav layer. Reads the DOM only; never touches saved data. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // 1) tap pulse + light haptic
+  document.addEventListener('pointerdown',e=>{
+    const b=e.target.closest('button,.chip,.stat.click'); if(!b||b.disabled) return;
+    const s=document.createElement('span'); s.className='tap'; s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px';
+    document.body.appendChild(s); setTimeout(()=>s.remove(),600);
+    if(navigator.vibrate&&e.pointerType==='touch'){ try{navigator.vibrate(8)}catch(_){} }
+  },{passive:true});
+  // 2) stat counters roll to their new value
+  const bs=[...document.querySelectorAll('.stat b')];
+  const run=()=>bs.forEach(b=>{
+    if(b._anim) return; const to=+b.textContent; if(isNaN(to)||to===b._v) return;
+    const from=b._v||0; b._v=to;
+    if(reduce||from===to){ return; }
+    b._anim=1; b.classList.add('bump'); const t0=performance.now(), d=650;
+    const step=t=>{ const k=Math.min(1,(t-t0)/d), e=1-Math.pow(1-k,3); b.textContent=Math.round(from+(to-from)*e);
+      if(k<1) requestAnimationFrame(step); else { b.textContent=to; b._anim=0; b.classList.remove('bump'); } };
+    requestAnimationFrame(step);
+  });
+  bs.forEach(b=>b._v=0); run();
+  const mo=new MutationObserver(run); bs.forEach(b=>mo.observe(b,{childList:true,characterData:true,subtree:true}));
+  // 3) table rows: staggered entrance on load, highlight for newly added rows
+  const tb=$('tbody'), seen=new Set(); let first=true;
+  const rows=()=>{ const rs=[...tb.querySelectorAll('tr[data-id]')]; let i=0;
+    rs.forEach(r=>{ const id=r.dataset.id; if(seen.has(id)) return; seen.add(id);
+      if(first){ if(i<14){ r.style.setProperty('--d',(i*35)+'ms'); r.classList.add('fx-in'); } i++; } else r.classList.add('fx-new'); });
+    if(rs.length) first=false; };
+  rows(); new MutationObserver(rows).observe(tb,{childList:true});
+  // 4) panels pop in when they first appear
+  ['idBanner','simPanel','wantPanel'].forEach(id=>{ const el=$(id); let had=false;
+    new MutationObserver(()=>{ const has=!!el.firstElementChild; if(has&&!had) el.firstElementChild.classList.add('fx-pop'); had=has; }).observe(el,{childList:true}); });
+  // 5) compact bottom navigation: Search / Wanted / SIM List / Backup.
+  const items=[['⌕','Search','search'],['🔎','Wanted','wanted'],['▤','List','list'],['▣','Backup','backup']];
+  const nav=document.createElement('nav'); nav.className='bnav'; nav.setAttribute('aria-label','Sections');
+  nav.innerHTML=items.map((x)=>`<button type="button" data-nav="${x[2]}"><span>${x[0]}</span>${x[1]}</button>`).join('');
+  document.body.appendChild(nav);
+  nav.addEventListener('click',e=>{ const b=e.target.closest('button[data-nav]'); if(!b)return;
+    nav.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    if(b.dataset.nav==='search'){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); $('q').focus({preventScroll:true}); }
+    else if(b.dataset.nav==='wanted') showWantedPanel();
+    else if(b.dataset.nav==='list') showListPanel();
+    else if(b.dataset.nav==='backup') showBackupPanel();
+  });
+  const topTargets=[['searchCard','search'],['wantCard','wanted'],['listCard','list'],['backupCard','backup']];
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ const found=topTargets.find(([id])=>document.getElementById(id)===en.target); if(found) nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.nav===found[1])); } }),{rootMargin:'-35% 0px -55% 0px'});
+    topTargets.forEach(([id])=>io.observe($(id)));
+  }
+
+})();
+</script>
+
+<script>
+/* TV-LAYER: 11-digit rule + English/Bangla. Does not modify saved data or the backup/restore code. */
+(function(){
+  const $=id=>document.getElementById(id);
+  let lang='en'; try{ if(localStorage.getItem('simManagerLang_v1')==='bn') lang='bn'; }catch(e){}
+  const bn2en=s=>String(s||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d));
+  const dg=s=>bn2en(s).replace(/\D/g,'');
+  // ---------- strict SIM number rule: exactly 11 digits, starts with 0 ----------
+  function chk(n){
+    const b=lang==='bn';
+    if(n.length===11&&n[0]==='0') return '';
+    if(n.length===13&&n.startsWith('880')) return b?'দেশের কোড 880 বাদ দিন; নম্বর ০ দিয়ে শুরু হয়ে ১১ ডিজিটের হতে হবে।':'Remove the country code 880 — the number must start with 0 and have 11 digits.';
+    if(n.length<11) return b?`ডিজিট কম: ${n.length}টি। সিম নম্বর অবশ্যই ঠিক ১১ ডিজিটের হতে হবে।`:`Too short: ${n.length} digits. A SIM number must be exactly 11 digits.`;
+    if(n.length>11) return b?`ডিজিট বেশি: ${n.length}টি। সিম নম্বর অবশ্যই ঠিক ১১ ডিজিটের হতে হবে।`:`Too long: ${n.length} digits. A SIM number must be exactly 11 digits.`;
+    return b?'সিম নম্বর অবশ্যই ০ দিয়ে শুরু হতে হবে।':'A SIM number must start with 0.';
+  }
+  const fNum=$('fNum'), hint=document.createElement('div'); hint.className='numhint'; hint.setAttribute('aria-live','polite'); fNum.insertAdjacentElement('afterend',hint);
+  function upd(){ const n=dg(fNum.value); fNum.classList.remove('invalid');
+    if(!n){ hint.textContent=''; hint.className='numhint'; return; }
+    hint.textContent=n.length+'/11'; hint.className='numhint '+(!chk(n)?'ok':(n.length>11||n[0]!=='0')?'bad':''); }
+  fNum.addEventListener('input',upd);
+  document.addEventListener('submit',e=>{
+    const f=e.target;
+    if(f.id==='addForm'){ const m=chk(dg(fNum.value)); if(m){ e.preventDefault(); e.stopImmediatePropagation();
+      hint.textContent=m; hint.className='numhint bad'; fNum.classList.add('invalid'); fNum.classList.remove('shake'); void fNum.offsetWidth; fNum.classList.add('shake'); fNum.focus(); } }
+    else if(f.id==='editForm'){ const n=dg($('eNum').value); if(n!==origNum){ const m=chk(n); if(m){ e.preventDefault(); e.stopImmediatePropagation(); $('eErr').textContent=m; } } }
+  },true);
+  let origNum='';
+  new MutationObserver(()=>{ if(!$('editOv').hidden) origNum=dg($('eNum').value); }).observe($('editOv'),{attributes:true,attributeFilter:['hidden']});
+  const bulk=$('bulk'), be=document.createElement('div'); be.className='bulkerr'; bulk.insertAdjacentElement('afterend',be);
+  bulk.addEventListener('input',()=>be.textContent='');
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('#bulkBtn')) return;
+    const parts=bn2en(bulk.value).split(/[\s,;]+/).map(dg).filter(Boolean), bad=parts.filter(p=>chk(p));
+    if(!bad.length) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    const b=lang==='bn';
+    be.textContent=(b?`${bad.length}টি নম্বর ১১ ডিজিটের সঠিক নম্বর নয় — কিছুই যোগ হয়নি। আগে ঠিক করুন:`:`${bad.length} number(s) are not valid 11-digit numbers — nothing was added. Fix these first:`)
+      +' '+bad.slice(0,6).map(x=>`${x} (${x.length})`).join(', ')+(bad.length>6?' …':'');
+    be.classList.remove('shake'); void be.offsetWidth; be.classList.add('shake');
+  },true);
+  // flag old saved numbers that break the rule (view only, never edits data)
+  const tb=$('tbody');
+  const flag=()=>tb.querySelectorAll('tr[data-id] td.num').forEach(td=>{ const m=chk(dg(td.textContent)); td.classList.toggle('badnum',!!m); if(m) td.title=m; });
+  flag(); new MutationObserver(flag).observe(tb,{childList:true});
+
+  // ---------- language ----------
+  const D={'TUSHAR VISA SIM Management System':'TUSHAR VISA সিম ম্যানেজমেন্ট সিস্টেম','🏠 Home':'🏠 হোম','Total SIMs':'মোট সিম','Tourist':'ট্যুরিস্ট','Medical':'মেডিকেল','Other':'অন্যান্য','Given':'প্রদত্ত','Wanted':'খোঁজা','Incomplete':'অসম্পূর্ণ','Unknown':'অজানা',
+  'Search number, last digits, name or ID':'নম্বরের শেষের ডিজিট, নাম বা আইডি লিখুন','Type last digits, or search a series: 013 · 014 · 015 · 016 · 017 · 018 · 019':'শেষের ডিজিট লিখুন, অথবা সিরিজ দিয়ে খুঁজুন: ০১৩ · ০১৪ · ০১৫ · ০১৬ · ০১৭ · ০১৮ · ০১৯','11 digits · exact full-number match':'১১ ডিজিট · সম্পূর্ণ নম্বর মিলিয়ে খোঁজা হচ্ছে','Matching the last 2 digits':'শেষের ২ ডিজিট মিলিয়ে খোঁজা হচ্ছে','Search SIMs':'সিম খুঁজুন','Add New SIM':'নতুন সিম যোগ','Wanted List':'খোঁজার তালিকা','Filters and tools':'ফিল্টার ও টুলস','Reset filters':'ফিল্টার রিসেট','Bulk Add':'একসাথে যোগ','One number per line':'প্রতি লাইনে একটি নম্বর','Type for all':'সবার ধরন','Add all':'সব যোগ করুন','SIM list':'সিম তালিকা','Number / ID / Name':'নম্বর / আইডি / নাম','Search':'খুঁজুন','Search mode':'খোঁজার ধরন','Ends with':'শেষে মিলবে','Contains':'যেকোনো জায়গায়','Status':'অবস্থা','All':'সব','In stock (not given)':'স্টকে আছে (দেওয়া হয়নি)','Incomplete (no name / type)':'অসম্পূর্ণ (নাম/ধরন নেই)','Sort':'সাজান','Newest first':'নতুন আগে','By ID (1, 2, 3…)':'আইডি অনুযায়ী','↺ Reset':'↺ রিসেট',
+  'New SIM':'নতুন সিম','SIM number *':'সিম নম্বর *','Client name':'ক্লায়েন্টের নাম','Home / District':'বাড়ি / জেলা','Type':'ধরন','Add':'যোগ করুন','Keep type':'ধরন ধরে রাখুন','Bulk add':'একসাথে অনেক যোগ','One number per line':'প্রতি লাইনে একটি নম্বর','Type for all':'সবার জন্য ধরন','Add all':'সব যোগ করুন','Show the “note this ID” box after each SIM':'প্রতিটি সিমের পর “আইডি লিখে রাখুন” বক্স দেখান',
+  '🔎 Wanted SIMs':'🔎 খোঁজা সিম','— a customer gave you an old number to find. If that SIM is ever added, you get an alert.':'— কাস্টমার একটি পুরোনো নম্বর খুঁজতে দিয়েছেন। সেই সিম যোগ হলেই আপনি অ্যালার্ট পাবেন।','Number to find * (full, or last 4+ digits)':'খোঁজার নম্বর * (পুরো, বা শেষ ৪+ ডিজিট)','Customer name':'কাস্টমারের নাম','Phone / contact':'ফোন / যোগাযোগ','Note':'নোট','Add to Wanted':'খোঁজা তালিকায় যোগ','Cancel edit':'এডিট বাতিল','Still looking':'এখনো খুঁজছি','Found':'পাওয়া গেছে','Closed':'বন্ধ হয়েছে','🔄 Check my whole list now':'🔄 পুরো তালিকা এখনই মেলান',
+  'SIM List':'সিম তালিকা','🔍 Check typos':'🔍 টাইপো যাচাই','🖨 Print this list':'🖨 তালিকা প্রিন্ট','Serial':'সিরিয়াল','Type ID':'ধরন আইডি','SIM number':'সিম নম্বর','Name':'নাম','Actions':'অ্যাকশন','No SIMs found.':'কোনো সিম পাওয়া যায়নি।',
+  'Backup':'ব্যাকআপ','List':'তালিকা','Download backup':'ব্যাকআপ ডাউনলোড','Download CSV':'CSV ডাউনলোড','Restore':'রিস্টোর','Auto-backup':'অটো-ব্যাকআপ','Auto-backup on':'অটো-ব্যাকআপ চালু','Never':'কখনো নয়',
+  'Edit SIM':'সিম এডিট','Handed over to client (Given)':'ক্লায়েন্টকে দেওয়া হয়েছে','Delete':'মুছুন','Cancel':'বাতিল','Save':'সংরক্ষণ','Edit':'এডিট','Close':'বন্ধ করুন','✔ Given':'✔ প্রদত্ত','No type ID':'ধরন আইডি নেই',
+  'SIM saved':'সিম সংরক্ষিত','SERIAL NO.':'সিরিয়াল নং','I have noted this ID':'আইডি লিখে রেখেছি','I have noted these IDs':'আইডিগুলো লিখে রেখেছি','Noted!':'লেখা হয়েছে!','OK, got it':'ঠিক আছে','This number already exists':'এই নম্বর আগে থেকেই আছে','Show in list':'তালিকায় দেখান','Edit this SIM':'এই সিম এডিট করুন','Write this number on the box where you keep this SIM.':'এই নম্বরটি সিমের বাক্সে লিখে রাখুন।','It will make finding it later easy.':'পরে খুঁজে পেতে সুবিধা হবে।',
+  'No SIMs yet.':'এখনো কোনো সিম নেই।','↺ Show all SIMs':'↺ সব সিম দেখান','No SIMs match the current search / filters.':'বর্তমান সার্চ/ফিল্টারে কোনো সিম মেলেনি।',
+  '🔔 Someone was looking for this SIM':'🔔 কেউ এই সিমটি খুঁজছিলেন','Exact match':'হুবহু মিল','Same last digits':'শেষের ডিজিট মিলেছে','Similar — possible typo':'কাছাকাছি — টাইপো হতে পারে','✔ Yes, this is it':'✔ হ্যাঁ, এটাই','✖ Not it':'✖ এটা না','✔ This is it':'✔ এটাই','🔎 In your Wanted list':'🔎 আপনার খোঁজা তালিকায়','⚠ Similar numbers — possible typo':'⚠ কাছাকাছি নম্বর — টাইপো হতে পারে','Open in Wanted':'খোঁজা তালিকায় খুলুন','Show SIM':'সিম দেখান','Re-open':'আবার খুলুন',
+  'Backup downloaded':'ব্যাকআপ ডাউনলোড হয়েছে','Changes saved':'পরিবর্তন সংরক্ষিত','Number changed':'নম্বর বদলেছে','Invalid backup file':'ব্যাকআপ ফাইলটি সঠিক নয়','Auto-backup enabled':'অটো-ব্যাকআপ চালু হয়েছে','Deleted':'মুছে ফেলা হয়েছে','Enter a valid number':'সঠিক নম্বর দিন','No numbers found':'কোনো নম্বর পাওয়া যায়নি','Undo':'ফেরান','Enter at least 4 digits':'কমপক্ষে ৪ ডিজিট দিন','Wanted updated':'খোঁজা তালিকা আপডেট হয়েছে','Clear search and all filters':'সার্চ ও সব ফিল্টার মুছুন'};
+  const P=[[/^Matching the last (\d+) digits$/,m=>'শেষের '+m[1]+' ডিজিট মিলিয়ে খোঁজা হচ্ছে'],[/^(.+) series · begins with (.+)$/,m=>m[1]+' সিরিজ · '+m[2]+' দিয়ে শুরু'],[/^Added — (.+)$/,m=>'যোগ হয়েছে — '+m[1]],[/^(\d+) added$/,m=>m[1]+'টি যোগ হয়েছে'],[/^(\d+) already existed$/,m=>m[1]+'টি আগে থেকেই ছিল'],
+   [/^(\d+) results \(of (\d+)\)$/,m=>m[2]+'টির মধ্যে '+m[1]+'টি ফলাফল'],[/^(\d+) similar$/,m=>m[1]+'টি কাছাকাছি'],[/^(\d+) still looking$/,m=>m[1]+'টি খোঁজা চলছে'],[/^(\d+) found$/,m=>m[1]+'টি পাওয়া গেছে'],
+   [/^(\d+)\/(\d+) digits match$/,m=>m[2]+' ডিজিটের '+m[1]+'টি মিলেছে'],[/^Last backup: (.+)$/,m=>'শেষ ব্যাকআপ: '+m[1]],[/^Deleted (.+)$/,m=>'মুছে ফেলা হয়েছে '+m[1]],[/^Restored (\S+)$/,m=>'ফিরিয়ে আনা হয়েছে '+m[1]],
+   [/^Restored: (\d+) new, (\d+) updated/,m=>'রিস্টোর: '+m[1]+'টি নতুন, '+m[2]+'টি আপডেট'],[/^(.+) marked as GIVEN$/,m=>m[1]+' প্রদত্ত হিসেবে চিহ্নিত'],[/^(.+) back in stock$/,m=>m[1]+' আবার স্টকে'],
+   [/^asked (.+)$/,m=>'অনুরোধ: '+m[1]],[/^(\d+) SIMs? saved$/,m=>m[1]+'টি সিম সংরক্ষিত'],[/^Delete (.+)\?$/s,m=>m[1]+' — মুছে ফেলবেন?'],[/^ID: (.+)$/,m=>'আইডি: '+m[1]],[/^🔎 Wanted$/,()=>'🔎 খোঁজা'],
+   [/^Mark as given$/,()=>'প্রদত্ত হিসেবে চিহ্নিত করুন'],[/^Mark as NOT given$/,()=>'প্রদত্ত চিহ্ন তুলুন']];
+  function tseg(s){ const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(s), c=m[2]; if(!c) return s; let r=D[c]; if(r!==undefined) return m[1]+r+m[3];
+    for(const [re,fn] of P){ const x=re.exec(c); if(x) return m[1]+fn(x)+m[3]; } return s; }
+  function tr(s){ if(!/[A-Za-z]/.test(s)) return s; let r=tseg(s); if(r!==s) return r;
+    if(s.includes(' • ')){ let ch=false; const o=s.split(' • ').map(p=>{const q=tseg(p); if(q!==p) ch=true; return q;}); if(ch) return o.join(' • '); } return s; }
+  const ATT=['placeholder','title','aria-label'];
+  function doText(n){ if(n._bn===n.nodeValue) return; const t=tr(n.nodeValue); if(t!==n.nodeValue){ n._en=n.nodeValue; n._bn=t; n.nodeValue=t; } }
+  function doAttr(el){ const a=el._a||(el._a={}); ATT.forEach(k=>{ const v=el.getAttribute(k); if(v==null) return; if(a[k]&&a[k][1]===v) return; const t=tr(v); if(t!==v){ a[k]=[v,t]; el.setAttribute(k,t); } }); }
+  function walk(root){ if(lang!=='bn'||!root) return;
+    if(root.nodeType===3){ if(root.parentElement&&!/^(SCRIPT|STYLE|TEXTAREA)$/.test(root.parentElement.tagName)) doText(root); return; }
+    if(root.nodeType!==1) return;
+    const w=document.createTreeWalker(root,4,{acceptNode:n=>{const p=n.parentElement; if(!p||/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.tagName)) return 2; const r=p.closest('tr[data-id]'); return (r&&!p.closest('td:nth-child(7)'))?2:1;}});
+    const L=[]; let n; while((n=w.nextNode())) L.push(n); L.forEach(doText);
+    if(!(root.closest&&root.closest('tr[data-id]'))||true){ if(root.matches&&root.matches('[placeholder],[title],[aria-label]')) doAttr(root); root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(doAttr); } }
+  function toEn(){ const w=document.createTreeWalker(document.body,4); let n; while((n=w.nextNode())) if(n._en!==undefined&&n.nodeValue===n._bn){ n.nodeValue=n._en; n._bn=undefined; }
+    document.querySelectorAll('*').forEach(el=>{ if(el._a){ for(const k in el._a) if(el.getAttribute(k)===el._a[k][1]) el.setAttribute(k,el._a[k][0]); el._a=null; } }); }
+  new MutationObserver(ms=>{ if(lang!=='bn') return; ms.forEach(m=>{ if(m.type==='childList') m.addedNodes.forEach(walk); else if(m.type==='characterData') doText(m.target); else doAttr(m.target); }); })
+    .observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATT});
+  const oc=window.confirm; window.confirm=m=>oc.call(window,lang==='bn'?tr(String(m)):m);
+  // switch UI
+  const sw=document.createElement('div'); sw.className='lang'; sw.setAttribute('role','group'); sw.setAttribute('aria-label','Language');
+  sw.innerHTML='<button type="button" data-l="en">EN</button><button type="button" data-l="bn">বাংলা</button>';
+  document.querySelector('#langSlot').appendChild(sw);
+  function setLang(l){ lang=l; try{localStorage.setItem('simManagerLang_v1',l);}catch(e){}
+    document.documentElement.lang=l; document.body.classList.toggle('bn',l==='bn');
+    sw.querySelectorAll('button').forEach(b=>{ b.classList.toggle('on',b.dataset.l===l); b.setAttribute('aria-pressed',b.dataset.l===l); });
+    if(l==='bn') walk(document.body); else toEn();
+    document.title=l==='bn'?D['TUSHAR VISA SIM Management System']:'TUSHAR VISA SIM Management System'; upd(); }
+  sw.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b&&b.dataset.l!==lang) setLang(b.dataset.l); });
+  setLang(lang);
+})();
+</script>
+<script type="module" src="./firebase-sync.js"></script>
+</body>
+</html>
