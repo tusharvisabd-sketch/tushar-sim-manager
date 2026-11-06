@@ -1,22 +1,5 @@
-# TUSHAR SIM MANAGER — GitHub Pages V6
+# TUSHAR SIM Manager — V7
 
-Static GitHub Pages project for the existing Firebase-connected Tushar SIM Management System.
+GitHub Pages deployment files for the Tushar SIM Management System. The Firebase configuration and sync module are carried forward unchanged. See `UPDATE-V7-BN.md` for the Bengali update procedure.
 
-## V6 changes
-- Functional category counter shortcuts.
-- Three-dot category menu with live record counts.
-- Functional mobile Search / Wanted / List / Backup navigation.
-- Exclusive view switching between Wanted, List and Backup panels.
-- Updated service-worker cache version.
-
-## Update the existing local repository
-1. Extract this ZIP.
-2. Copy all contents into `Documents/GitHub/tushar-sim-manager/`, replacing existing site files.
-3. Keep the `.git` folder untouched.
-4. In GitHub Desktop, commit and Push origin.
-5. GitHub Pages is configured to publish `main` from `/(root)`.
-
-## Security
-- Never commit SIM/customer backups, JSON/CSV exports, passwords or private customer data to this public repository.
-- `firebase-config.js` contains the public Firebase Web App configuration. Firestore Security Rules and Firebase Authentication protect the database.
-- Existing Firebase project and cloud records are reused. Do not re-import the backup during a UI update.
+**Security:** This repository is public. Never add customer records, SIM backups, exports, passwords, or private data to this repository. Customer records remain in Firebase Firestore.

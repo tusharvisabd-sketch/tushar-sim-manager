@@ -695,6 +695,101 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   .brand-actions{gap:5px}
 }
 
+
+/* ================= V7 FINAL MOBILE / NAV / LIST FIXES ================= */
+[hidden]{display:none!important}
+/* The top area stays intentionally minimal; stats are available from the eye button. */
+.app-header .stats{display:none!important}
+.header-eye{width:36px;height:36px;min-width:36px;min-height:36px;padding:0;display:grid;place-items:center;border-radius:11px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.12);color:#fff}
+.header-eye svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.header-eye:hover{background:rgba(255,255,255,.22)}
+.header-logo{width:58px!important;height:58px!important;object-fit:contain!important;object-position:center!important;padding:3px!important;background:#fff8e4!important;border-radius:13px!important;flex:0 0 auto}
+/* Search input has no placeholder/help copy, so typed text never collides with it. */
+.search-hint{display:none!important}
+.search-box{min-width:0;flex:1 1 0}
+.search-box input{min-width:0;width:100%;padding-left:42px!important;padding-right:10px!important;font-size:15px!important;letter-spacing:0!important;text-overflow:clip!important}
+.search-box input::placeholder{color:transparent!important}
+.search-toolbar{min-width:0;gap:8px}
+.more-icon{font-size:29px!important;line-height:1!important}
+.more-popover button span.menu-action{display:inline-flex;align-items:center;gap:8px;font-size:13px!important;color:#23365f!important;background:transparent!important;border-radius:0!important;min-width:0!important;padding:0!important;text-align:left!important}
+.menu-action svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stats-card{max-width:900px;margin:0 auto 12px}
+.stats-card[hidden]{display:none!important}
+.stats-note{margin:0 0 10px;color:#7d8aa2;font-size:12px}
+.stats-card .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+.stats-card .stat{min-width:0;padding:12px 8px;border-radius:13px;background:#f5f7fc;border:1px solid #e5eaf3;color:#22345e;text-align:center}
+.stats-card .stat b{display:block;font-size:22px;line-height:1.15}
+.stats-card .stat span{display:block;margin-top:4px;font-size:11px;color:#66738c}
+.stats-card .stat:hover{background:#edf2ff}
+/* Mobile list rows: number, client name, compact metadata, then actions. */
+@media screen and (max-width:760px){
+  .app-header{padding:8px 10px!important}
+  .app-header .hrow{min-height:48px;gap:6px!important}
+  .header-logo{width:50px!important;height:50px!important}
+  .brand-actions{gap:6px!important}
+  .home-icon{width:34px!important;height:34px!important;min-height:34px!important}
+  .header-actions{gap:5px!important}
+  .header-eye{width:32px;height:32px;min-width:32px;min-height:32px}
+  .cloud-status{width:22px!important;height:22px!important;min-width:22px!important}
+  .app-header .lang button{font-size:10px!important;padding:4px 6px!important}
+  .logout-btn{width:32px!important;min-width:32px!important;height:32px!important;min-height:32px!important}
+  main{padding:10px 9px calc(92px + var(--safe))!important}
+  .search-card{padding:10px!important;margin-bottom:9px!important}
+  .search-box input{height:43px!important;padding-left:37px!important;font-size:15px!important}
+  .search-box svg{left:10px!important;width:16px!important;height:16px!important}
+  .tool-icon{width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important}
+  .more-popover,.search-popover{top:53px!important;max-width:calc(100vw - 20px)!important}
+  .stats-card .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .stats-card .stat{padding:10px 6px}
+  .stats-card .stat b{font-size:20px}
+  .stats-card .stat span{font-size:10px}
+  #listCard{padding:9px!important}
+  #listCard .tablewrap{overflow:visible!important}
+  #listCard table,#listCard tbody{display:block!important;width:100%!important;min-width:0!important}
+  #listCard thead{display:none!important}
+  #listCard tr.grp{display:block!important;margin:8px 0 5px!important}
+  #listCard tr.grp td{display:block!important;padding:7px 9px!important;border-radius:9px!important;font-size:11px!important}
+  #listCard tr[data-id]{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"s p" "n n" "nm nm" "h note" "t t" "x x";gap:3px 8px!important;align-items:center!important;padding:8px 10px!important;margin:0 0 6px!important;border:1px solid #e4e9f1!important;border-radius:11px!important;background:#fff!important;box-shadow:0 1px 4px rgba(18,37,79,.045)!important}
+  #listCard tr[data-id] td{display:block!important;min-width:0!important;padding:0!important;border:0!important;overflow-wrap:anywhere!important;line-height:1.25!important}
+  #listCard tr[data-id] td.idx{display:none!important}
+  #listCard tr[data-id] td:nth-child(2){grid-area:s;font-size:11px!important}
+  #listCard tr[data-id] td:nth-child(3){grid-area:p;font-size:11px!important;text-align:right}
+  #listCard tr[data-id] td:nth-child(4){grid-area:n;font-size:17px!important;font-weight:800!important;letter-spacing:.15px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;padding:2px 0!important}
+  #listCard tr[data-id] td:nth-child(5){grid-area:nm;font-size:12px!important;font-weight:700!important;color:#334155!important}
+  #listCard tr[data-id] td:nth-child(5)::before{content:""!important}
+  #listCard tr[data-id] td:nth-child(6){grid-area:h;font-size:10px!important;color:#69758a!important}
+  #listCard tr[data-id] td:nth-child(6)::before{content:""!important}
+  #listCard tr[data-id] td:nth-child(7){grid-area:t;font-size:10px!important;color:#53627c!important}
+  #listCard tr[data-id] td:nth-child(8){grid-area:note;font-size:10px!important;color:#7a8497!important;text-align:right!important}
+  #listCard tr[data-id] td.acts{grid-area:x;display:flex!important;justify-content:flex-end!important;gap:5px!important;padding-top:4px!important;margin-top:1px!important;border-top:1px solid #edf0f5!important}
+  #listCard tr[data-id] td.acts button.icon{width:31px!important;min-width:31px!important;height:29px!important;min-height:29px!important;padding:4px!important;border-radius:8px!important}
+  #listCard tr[data-id] td.acts button.icon svg{width:14px;height:14px}
+  .wrow{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:5px!important;padding:7px 8px!important;margin-top:6px!important}
+  .wmain .num{font-size:14px!important}
+  .wmeta{font-size:10px!important;line-height:1.25!important}
+  .wbtn{display:flex!important;flex-wrap:wrap!important;justify-content:flex-end!important;gap:4px!important}
+  .wbtn button{font-size:9px!important;min-height:27px!important;padding:3px 6px!important}
+  .bnav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;transform:none!important;z-index:100!important;display:flex!important;gap:2px!important;padding:5px 7px calc(5px + var(--safe))!important;border-radius:16px 16px 0 0!important;border:1px solid rgba(255,255,255,.14)!important;border-bottom:0!important;background:rgba(15,23,42,.97)!important;backdrop-filter:blur(18px)!important;box-shadow:0 -5px 24px rgba(0,0,0,.2)!important}
+  .bnav button{flex:1!important;min-height:47px!important;padding:3px 0!important;gap:1px!important;border-radius:10px!important;color:#aeb9cf!important;font-size:10px!important;background:transparent!important}
+  .bnav button span:first-child{font-size:18px!important;line-height:1.1!important}
+  .bnav button.on{background:#26365f!important;color:#fff!important}
+  .bnav .nav-search-label{display:none!important}
+  .add-fab{right:15px!important;bottom:calc(66px + var(--safe))!important;width:51px!important;height:51px!important;min-width:51px!important;min-height:51px!important;border-radius:16px!important;z-index:99!important}
+  .toast,.undo{bottom:calc(62px + var(--safe))!important}
+  #wantCard,#backupCard,#statsCard{scroll-margin-bottom:75px!important}
+}
+@media screen and (max-width:380px){
+  .header-logo{width:45px!important;height:45px!important}
+  .home-icon{width:31px!important;height:31px!important}
+  .header-actions{gap:3px!important}
+  .app-header .lang button{padding:3px 5px!important}
+  #listCard tr[data-id] td:nth-child(4){font-size:15px!important}
+}
+@media screen and (min-width:761px){
+  .bnav{display:none!important}
+  .stats-card .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -724,6 +819,9 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
       </button>
     </div>
     <div class="header-actions" id="headerActions">
+      <button type="button" class="header-eye" id="statsBtn" title="Statistics" aria-label="Open statistics">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+      </button>
       <span id="cloudStatus" class="cloud-status synced" aria-live="polite" aria-label="Synced" title="Synced"></span>
       <div id="langSlot"></div>
       <button type="button" class="logout-btn" id="logoutBtn" aria-label="Sign out" title="Sign out">
@@ -731,7 +829,16 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
       </button>
     </div>
   </div>
-  <div class="stats" id="stats" aria-label="SIM totals">
+</header>
+
+<div id="addBackdrop" hidden aria-hidden="true"></div>
+<button type="button" id="addFab" class="add-fab" aria-label="Add New SIM" title="Add New SIM"><span>＋</span></button>
+<main>
+
+  <section class="card stats-card" id="statsCard" hidden aria-label="SIM statistics">
+    <div class="card-heading"><h2>Overview</h2><button type="button" class="tool-icon" id="closeStatsBtn" aria-label="Close statistics">×</button></div>
+    <p class="stats-note">Select a category to view its records.</p>
+    <div class="stats" id="stats" aria-label="SIM totals">
     <button type="button" class="stat click" data-category="all" title="Show all SIMs"><b id="sTotal">0</b><span>Total SIMs</span></button>
     <button type="button" class="stat click" data-category="tourist" title="Show Tourist SIMs"><b id="sTourist">0</b><span>Tourist</span></button>
     <button type="button" class="stat click" data-category="medical" title="Show Medical SIMs"><b id="sMedical">0</b><span>Medical</span></button>
@@ -739,19 +846,15 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     <button type="button" class="stat click" data-category="given" title="Show given SIMs"><b id="sGiven">0</b><span>Given</span></button>
     <div class="stat click" id="statWanted" title="Open the Wanted list"><b id="sWanted">0</b><span>Wanted</span></div>
     <button type="button" class="stat click" data-category="incomplete" title="Show incomplete SIMs"><b id="sBlank">0</b><span>Incomplete</span></button>
-  </div>
-</header>
-
-<div id="addBackdrop" hidden aria-hidden="true"></div>
-<button type="button" id="addFab" class="add-fab" aria-label="Add New SIM" title="Add New SIM"><span>＋</span></button>
-<main>
+    </div>
+  </section>
 
   <!-- Compact search-first workspace -->
   <section class="card search-card" id="searchCard" aria-label="Search SIMs">
     <div class="search-toolbar">
       <div class="search-box">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-        <input id="q" type="search" placeholder="Search SIM number or last digits" autocomplete="off" inputmode="search" aria-label="Search SIMs">
+        <input id="q" type="search" placeholder="" autocomplete="off" inputmode="search" aria-label="Search SIMs">
       </div>
       <input id="mode" type="hidden" value="end">
       <button type="button" class="tool-icon" id="gearBtn" aria-label="Filters and tools" title="Filters and tools" aria-expanded="false">
@@ -759,7 +862,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
       </button>
       <button type="button" class="tool-icon more-icon" id="moreBtn" aria-label="More options" title="More options" aria-expanded="false">⋯</button>
     </div>
-    <div class="search-hint" id="searchHint" aria-live="polite"></div>
+    <div class="search-hint" id="searchHint" aria-live="polite" hidden></div>
 
     <div class="search-popover tools-popover" id="toolsPanel" hidden>
       <div class="filter-grid">
@@ -791,6 +894,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
       <button type="button" data-open-category="given">Given <span id="menuGivenCount">0</span></button>
       <button type="button" data-open-category="incomplete">Incomplete <span id="menuIncompleteCount">0</span></button>
       <div class="menu-divider"></div>
+      <button type="button" data-open-panel="stats"><span class="menu-action"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Statistics</span><span>↗</span></button>
       <button type="button" data-open-panel="wanted">Wanted List <span id="wantedMenuCount">0</span></button>
       <button type="button" data-open-panel="backup">Backup &amp; Restore <span>↗</span></button>
     </div>
@@ -882,6 +986,12 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   </div>
 
 </main>
+<nav class="bnav" id="mobileNav" aria-label="Sections">
+  <button type="button" data-nav="search" class="on" aria-label="Search"><span aria-hidden="true">⌕</span><span class="nav-label nav-search-label">Search</span></button>
+  <button type="button" data-nav="wanted"><span aria-hidden="true">🔎</span><span class="nav-label">Wanted</span></button>
+  <button type="button" data-nav="list"><span aria-hidden="true">▤</span><span class="nav-label">List</span></button>
+  <button type="button" data-nav="backup"><span aria-hidden="true">▣</span><span class="nav-label">Backup</span></button>
+</nav>
 <div class="toast" id="toast"></div>
 
 <div class="overlay" id="editOv" hidden>
@@ -1173,11 +1283,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     const qd = digits(q);
     $('listCard').classList.toggle('is-visible', !!q.trim() || listPanelOpen);
     const hint = $('searchHint');
-    if(!q.trim()) hint.textContent = 'Type last digits, or search a series: 013 · 014 · 015 · 016 · 017 · 018 · 019';
-    else if(/^[\d০-৯\s\-+]+$/.test(q) && qd.length===11) hint.textContent = '11 digits · exact full-number match';
-    else if(/^[\d০-৯\s\-+]+$/.test(q) && prefixSearch(qd)) hint.textContent = `${BD_PREFIXES[qd.slice(0,3)] || 'Mobile'} series · begins with ${qd}`;
-    else if(/^[\d০-৯\s\-+]+$/.test(q) && qd.length>=2) hint.textContent = `Matching the last ${qd.length} digits`; 
-    else hint.textContent = '';
+    if(hint) { hint.textContent = ''; hint.hidden = true; }
     const list = sims.filter(s=>matches(s,q,mode,fp));
     const exactAll = new Set(sims.filter(s=>matches(s,q,mode,'all')));
     const simAll = similarAll(q, exactAll);
@@ -1712,11 +1818,13 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   function closeAddPanel(){ document.body.classList.remove('add-open'); $('addBackdrop').hidden=true; if(previousBodyOverflow!==null) document.body.style.overflow=previousBodyOverflow; previousBodyOverflow=''; }
   function openAddPanel(){ closeMenus(); previousBodyOverflow=document.body.style.overflow||''; document.body.style.overflow='hidden'; document.body.classList.add('add-open'); $('addBackdrop').hidden=false; setTimeout(()=>$('fNum').focus(),40); }
   function closeMenus(){ $('toolsPanel').hidden=true; $('moreMenu').hidden=true; $('gearBtn').setAttribute('aria-expanded','false'); $('moreBtn').setAttribute('aria-expanded','false'); }
-  function closeContentPanels(){ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); }
-  function showSearchPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=false; render(); $('searchCard').scrollIntoView({behavior:'smooth',block:'start'}); $('q').focus({preventScroll:true}); }
-  function showWantedPanel(){ closeMenus(); $('backupCard').classList.remove('is-open'); listPanelOpen=false; render(); $('wantCard').classList.add('is-open'); renderWanted(); $('wantCard').scrollIntoView({behavior:'smooth',block:'start'}); }
-  function showBackupPanel(){ closeMenus(); $('wantCard').classList.remove('is-open'); listPanelOpen=false; render(); $('backupCard').classList.add('is-open'); $('backupCard').scrollIntoView({behavior:'smooth',block:'start'}); }
-  function showListPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function closeContentPanels(){ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); $('statsCard').hidden=true; }
+  function showSearchPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=false; render(); setNavActive('search'); $('searchCard').scrollIntoView({behavior:'smooth',block:'start'}); $('q').focus({preventScroll:true}); }
+  function showWantedPanel(){ closeMenus(); $('backupCard').classList.remove('is-open'); $('statsCard').hidden=true; listPanelOpen=false; render(); $('wantCard').classList.add('is-open'); renderWanted(); setNavActive('wanted'); $('wantCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showBackupPanel(){ closeMenus(); $('wantCard').classList.remove('is-open'); $('statsCard').hidden=true; listPanelOpen=false; render(); $('backupCard').classList.add('is-open'); setNavActive('backup'); $('backupCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showListPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=true; render(); setNavActive('list'); $('listCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showStatsPanel(){ closeMenus(); closeContentPanels(); $('statsCard').hidden=false; listPanelOpen=false; render(); window.scrollTo({top:0,behavior:'smooth'}); $('statsCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function setNavActive(key){ document.querySelectorAll('#mobileNav [data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===key)); }
   function showCategoryPanel(category){
     closeMenus(); closeContentPanels(); $('q').value='';
     $('filterP').value='all'; $('filterS').value='all';
@@ -1724,11 +1832,14 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     else if(category==='unknown') $('filterP').value='none';
     else if(category==='given') $('filterS').value='given';
     else if(category==='incomplete') $('filterS').value='incomplete';
-    listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'});
+    listPanelOpen=true; render(); setNavActive('list'); $('listCard').scrollIntoView({behavior:'smooth',block:'start'});
   }
   // Expose only deliberate navigation callbacks for the separate mobile dock script.
-  window.SIM_MANAGER_NAV = { openSearch:showSearchPanel, openWanted:showWantedPanel, openList:showListPanel, openBackup:showBackupPanel, openCategory:showCategoryPanel };
+  window.SIM_MANAGER_NAV = { openSearch:showSearchPanel, openWanted:showWantedPanel, openList:showListPanel, openBackup:showBackupPanel, openCategory:showCategoryPanel, openStats:showStatsPanel };
   $('stats')?.addEventListener('click', e=>{ const tile=e.target.closest('[data-category]'); if(tile) showCategoryPanel(tile.dataset.category); });
+  $('mobileNav')?.addEventListener('click', e=>{ const b=e.target.closest('[data-nav]'); if(!b) return; const key=b.dataset.nav; if(key==='search') showSearchPanel(); else if(key==='wanted') showWantedPanel(); else if(key==='list') showListPanel(); else if(key==='backup') showBackupPanel(); });
+  $('statsBtn')?.addEventListener('click',showStatsPanel);
+  $('closeStatsBtn')?.addEventListener('click',()=>{ $('statsCard').hidden=true; showSearchPanel(); });
   $('addFab').addEventListener('click',openAddPanel);
   $('closeAddBtn').addEventListener('click',closeAddPanel);
   $('addBackdrop').addEventListener('click',closeAddPanel);
@@ -1738,7 +1849,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     const category=e.target.closest('[data-open-category]');
     if(category){ showCategoryPanel(category.dataset.openCategory); return; }
     const b=e.target.closest('[data-open-panel]'); if(!b)return;
-    if(b.dataset.openPanel==='wanted') showWantedPanel(); else if(b.dataset.openPanel==='backup') showBackupPanel();
+    if(b.dataset.openPanel==='wanted') showWantedPanel(); else if(b.dataset.openPanel==='backup') showBackupPanel(); else if(b.dataset.openPanel==='stats') showStatsPanel();
   });
   document.addEventListener('click',e=>{ if(!e.target.closest('.search-card')) closeMenus(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeAddPanel(); closeMenus(); } });
@@ -1746,13 +1857,14 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
 
   // ---------- Home / Reset ----------
   function resetView(focus){
+    closeContentPanels();
     $('q').value=''; $('filterP').value='all'; $('filterS').value='all'; $('sortBy').value='new'; $('mode').value='end'; listPanelOpen=false;
     $('toolsPanel').hidden=true; $('gearBtn').setAttribute('aria-expanded','false');
     Object.keys(collapsed).forEach(k=>delete collapsed[k]);
     render();
     if(focus!==false){ if(!$('editOv').hidden) closeEdit(); if(!$('infoOv').hidden) closeInfo(); window.scrollTo({top:0, behavior:'smooth'}); $('q').focus(); }
   }
-  $('homeBtn').addEventListener('click', ()=>{ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); resetView(true); });
+  $('homeBtn').addEventListener('click', ()=>{ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); $('statsCard').hidden=true; setNavActive('search'); resetView(true); });
   $('resetBtn').addEventListener('click', ()=>resetView(true));
   $('empty').addEventListener('click', e=>{ if(e.target.id==='emptyReset') resetView(true); });
 
@@ -1921,25 +2033,8 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   // 4) panels pop in when they first appear
   ['idBanner','simPanel','wantPanel'].forEach(id=>{ const el=$(id); let had=false;
     new MutationObserver(()=>{ const has=!!el.firstElementChild; if(has&&!had) el.firstElementChild.classList.add('fx-pop'); had=has; }).observe(el,{childList:true}); });
-  // 5) compact bottom navigation: Search / Wanted / SIM List / Backup.
-  const items=[['⌕','Search','search'],['🔎','Wanted','wanted'],['▤','List','list'],['▣','Backup','backup']];
-  const nav=document.createElement('nav'); nav.className='bnav'; nav.setAttribute('aria-label','Sections');
-  nav.innerHTML=items.map((x,i)=>`<button type="button" class="${i===0?'on':''}" data-nav="${x[2]}"><span>${x[0]}</span>${x[1]}</button>`).join('');
-  document.body.appendChild(nav);
-  nav.addEventListener('click',e=>{ const b=e.target.closest('button[data-nav]'); if(!b)return;
-    nav.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
-    const navApi=window.SIM_MANAGER_NAV;
-    if(!navApi){ console.error('SIM_MANAGER_NAV is not ready'); return; }
-    if(b.dataset.nav==='search') navApi.openSearch();
-    else if(b.dataset.nav==='wanted') navApi.openWanted();
-    else if(b.dataset.nav==='list') navApi.openList();
-    else if(b.dataset.nav==='backup') navApi.openBackup();
-  });
-  const topTargets=[['searchCard','search'],['wantCard','wanted'],['listCard','list'],['backupCard','backup']];
-  if('IntersectionObserver' in window){
-    const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ const found=topTargets.find(([id])=>document.getElementById(id)===en.target); if(found) nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.nav===found[1])); } }),{rootMargin:'-35% 0px -55% 0px'});
-    topTargets.forEach(([id])=>io.observe($(id)));
-  }
+  // Bottom navigation is static markup and is wired directly in the main app scope.
+  // This avoids cross-IIFE callback failures and guarantees all four tabs stay functional.
 
 })();
 </script>
