@@ -499,7 +499,7 @@ body:not(.sim-authenticated) .bnav, body:not(.sim-authenticated) .add-fab { disp
 
 /* ================= COMPACT WORKSPACE V3 ================= */
 .app-header{padding:9px 20px 10px}
-.header-logo{width:64px;height:56px;object-fit:cover;object-position:50% 42%;border-radius:12px;background:#fff8e4;padding:1px}
+.header-logo{width:58px;height:58px;object-fit:contain;object-position:center;border-radius:13px;background:#fff8e4;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.14)}
 .app-header .stats{margin-top:8px;gap:7px}
 .app-header .stat{padding:6px 7px;border-radius:11px}
 .app-header .stat b{font-size:18px}
@@ -536,10 +536,15 @@ body:not(.sim-authenticated) .bnav, body:not(.sim-authenticated) .add-fab { disp
 .bulk-tools textarea{min-height:82px;font-size:13px;border-radius:10px}
 .bulk-actions{display:grid;grid-template-columns:1fr auto;align-items:end;gap:8px;margin-top:7px}
 .bulk-actions button{min-height:39px;padding:7px 13px;font-size:12px}
-.more-popover{right:5px;width:190px;padding:6px}
+.more-popover{right:5px;width:min(250px,calc(100vw - 24px));padding:7px;max-height:min(72vh,520px);overflow:auto}
 .more-popover button{width:100%;display:flex;justify-content:space-between;align-items:center;background:transparent;color:#23365f;padding:10px 11px;border-radius:10px;text-align:left;font-size:13px}
 .more-popover button:hover{background:#f1f5fb;box-shadow:none}
 .more-popover button span{font-size:11px;color:#fff;background:#3260cf;border-radius:99px;min-width:21px;padding:2px 6px;text-align:center}
+.menu-caption{padding:8px 11px 5px;font-size:10px;font-weight:800;letter-spacing:1px;color:#8290a8}
+.menu-divider{height:1px;background:#e8edf5;margin:6px 5px}
+.app-header button.stat{font:inherit;color:#fff;text-align:center;cursor:pointer}
+.app-header button.stat:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.app-header button.stat:hover{transform:translateY(-1px);background:rgba(255,255,255,.2)}
 .result-info{margin:4px 4px 0}
 #listCard{display:none}
 #listCard.is-visible{display:block}
@@ -653,6 +658,43 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   #listCard,#wantCard,#backupCard{max-width:1100px;margin-left:auto;margin-right:auto}
 }
 
+
+/* ================= V5 GITHUB PAGES MOBILE POLISH ================= */
+.header-logo{width:60px;height:60px;object-fit:contain;object-position:center;padding:3px;border-radius:13px;background:#fff8e4;flex:0 0 auto}
+.search-box{min-width:0;flex:1 1 0}
+.search-box input{min-width:0;width:100%;font-size:14px;letter-spacing:0;padding-right:10px;text-overflow:ellipsis}
+.search-box input::placeholder{font-size:14px;letter-spacing:0;opacity:.82}
+.search-box svg{left:12px;width:17px;height:17px}
+.search-toolbar{min-width:0}
+.backup-card .actions{display:flex;flex-wrap:wrap;gap:8px}
+.backup-card .actions button{flex:1 1 135px;min-height:40px}
+#backupCard{scroll-margin-top:14px;scroll-margin-bottom:100px}
+#listCard,#wantCard{scroll-margin-top:14px;scroll-margin-bottom:100px}
+@media screen and (max-width:760px){
+  .header-logo{width:56px;height:56px;object-fit:contain;padding:3px}
+  .search-card{padding:10px 11px}
+  .search-toolbar{gap:7px}
+  .search-box input{height:46px;padding-left:37px;font-size:13px}
+  .search-box input::placeholder{font-size:13px;letter-spacing:0}
+  .search-box svg{left:11px;width:16px;height:16px}
+  .tool-icon{width:40px;height:40px;min-width:40px;min-height:40px}
+  .bnav{left:9px;right:9px;bottom:calc(10px + var(--safe));padding:5px;gap:3px;border-radius:17px;z-index:80}
+  .bnav button{min-height:48px;padding:4px 0;font-size:10px}
+  .bnav button span{font-size:18px}
+  main{padding-bottom:calc(112px + var(--safe))}
+  .add-fab{right:16px;bottom:calc(82px + var(--safe));width:54px;height:54px;min-width:54px;min-height:54px;border-radius:17px;z-index:81}
+  .toast,.undo{bottom:calc(76px + var(--safe))}
+  #backupCard{padding:13px;margin-bottom:20px}
+  .backup-card .actions button{flex:1 1 calc(50% - 8px);font-size:12px;padding:8px 9px}
+}
+@media screen and (max-width:380px){
+  .header-logo{width:50px;height:50px}
+  .search-box input{font-size:12px}
+  .search-box input::placeholder{font-size:12px}
+  .app-header .hrow{gap:5px}
+  .brand-actions{gap:5px}
+}
+
 </style>
 </head>
 <body>
@@ -689,14 +731,14 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
       </button>
     </div>
   </div>
-  <div class="stats" aria-label="SIM totals">
-    <div class="stat"><b id="sTotal">0</b><span>Total SIMs</span></div>
-    <div class="stat"><b id="sTourist">0</b><span>Tourist</span></div>
-    <div class="stat"><b id="sMedical">0</b><span>Medical</span></div>
-    <div class="stat"><b id="sOther">0</b><span>Other</span></div>
-    <div class="stat"><b id="sGiven">0</b><span>Given</span></div>
+  <div class="stats" id="stats" aria-label="SIM totals">
+    <button type="button" class="stat click" data-category="all" title="Show all SIMs"><b id="sTotal">0</b><span>Total SIMs</span></button>
+    <button type="button" class="stat click" data-category="tourist" title="Show Tourist SIMs"><b id="sTourist">0</b><span>Tourist</span></button>
+    <button type="button" class="stat click" data-category="medical" title="Show Medical SIMs"><b id="sMedical">0</b><span>Medical</span></button>
+    <button type="button" class="stat click" data-category="other" title="Show Other SIMs"><b id="sOther">0</b><span>Other</span></button>
+    <button type="button" class="stat click" data-category="given" title="Show given SIMs"><b id="sGiven">0</b><span>Given</span></button>
     <div class="stat click" id="statWanted" title="Open the Wanted list"><b id="sWanted">0</b><span>Wanted</span></div>
-    <div class="stat"><b id="sBlank">0</b><span>Incomplete</span></div>
+    <button type="button" class="stat click" data-category="incomplete" title="Show incomplete SIMs"><b id="sBlank">0</b><span>Incomplete</span></button>
   </div>
 </header>
 
@@ -709,7 +751,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     <div class="search-toolbar">
       <div class="search-box">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-        <input id="q" type="search" placeholder="Search number, last digits, name or ID" autocomplete="off" inputmode="search" aria-label="Search SIMs">
+        <input id="q" type="search" placeholder="Search SIM number or last digits" autocomplete="off" inputmode="search" aria-label="Search SIMs">
       </div>
       <input id="mode" type="hidden" value="end">
       <button type="button" class="tool-icon" id="gearBtn" aria-label="Filters and tools" title="Filters and tools" aria-expanded="false">
@@ -740,7 +782,17 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     </div>
 
     <div class="more-popover" id="moreMenu" hidden>
+      <div class="menu-caption">SIM CATEGORIES</div>
+      <button type="button" data-open-category="all">All SIMs <span id="menuAllCount">0</span></button>
+      <button type="button" data-open-category="tourist">Tourist <span id="menuTouristCount">0</span></button>
+      <button type="button" data-open-category="medical">Medical <span id="menuMedicalCount">0</span></button>
+      <button type="button" data-open-category="other">Other <span id="menuOtherCount">0</span></button>
+      <button type="button" data-open-category="unknown">Unknown <span id="menuUnknownCount">0</span></button>
+      <button type="button" data-open-category="given">Given <span id="menuGivenCount">0</span></button>
+      <button type="button" data-open-category="incomplete">Incomplete <span id="menuIncompleteCount">0</span></button>
+      <div class="menu-divider"></div>
       <button type="button" data-open-panel="wanted">Wanted List <span id="wantedMenuCount">0</span></button>
+      <button type="button" data-open-panel="backup">Backup &amp; Restore <span>↗</span></button>
     </div>
     <div class="hint result-info" id="resultInfo"></div>
     <div id="idBanner"></div>
@@ -822,7 +874,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     <div class="actions">
       <button id="expJson" class="sec">Download backup</button>
       <button id="expCsv" class="sec">Download CSV</button>
-      <button id="impBtn" class="sec">Restore</button>
+      <button id="impBtn" class="sec">Restore backup</button>
       <button id="autoBtn" class="sec">Auto-backup</button>
       <input type="file" id="impFile" accept=".json" style="display:none">
     </div>
@@ -1210,6 +1262,16 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     $('sGiven').textContent = sims.filter(s=>s.given).length;
     $('sOther').textContent = sims.filter(s=>s.purpose==='other').length;
     $('sBlank').textContent = sims.filter(s=>!s.name || !s.purpose).length;
+    const counts = {
+      menuAllCount:sims.length,
+      menuTouristCount:sims.filter(s=>s.purpose==='tourist').length,
+      menuMedicalCount:sims.filter(s=>s.purpose==='medical').length,
+      menuOtherCount:sims.filter(s=>s.purpose==='other').length,
+      menuUnknownCount:sims.filter(s=>!s.purpose).length,
+      menuGivenCount:sims.filter(s=>s.given).length,
+      menuIncompleteCount:sims.filter(s=>!s.name || !s.purpose).length
+    };
+    Object.entries(counts).forEach(([id,value])=>{ const el=$(id); if(el) el.textContent=String(value); });
   }
 
   // edit & delete (modal)
@@ -1650,15 +1712,34 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   function closeAddPanel(){ document.body.classList.remove('add-open'); $('addBackdrop').hidden=true; if(previousBodyOverflow!==null) document.body.style.overflow=previousBodyOverflow; previousBodyOverflow=''; }
   function openAddPanel(){ closeMenus(); previousBodyOverflow=document.body.style.overflow||''; document.body.style.overflow='hidden'; document.body.classList.add('add-open'); $('addBackdrop').hidden=false; setTimeout(()=>$('fNum').focus(),40); }
   function closeMenus(){ $('toolsPanel').hidden=true; $('moreMenu').hidden=true; $('gearBtn').setAttribute('aria-expanded','false'); $('moreBtn').setAttribute('aria-expanded','false'); }
-  function showWantedPanel(){ $('wantCard').classList.add('is-open'); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); renderWanted(); $('wantCard').scrollIntoView({behavior:'smooth',block:'start'}); }
-  function showBackupPanel(){ $('backupCard').classList.add('is-open'); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); $('backupCard').scrollIntoView({behavior:'smooth',block:'start'}); }
-  function showListPanel(){ listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function closeContentPanels(){ $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open'); }
+  function showSearchPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=false; render(); $('searchCard').scrollIntoView({behavior:'smooth',block:'start'}); $('q').focus({preventScroll:true}); }
+  function showWantedPanel(){ closeMenus(); $('backupCard').classList.remove('is-open'); listPanelOpen=false; render(); $('wantCard').classList.add('is-open'); renderWanted(); $('wantCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showBackupPanel(){ closeMenus(); $('wantCard').classList.remove('is-open'); listPanelOpen=false; render(); $('backupCard').classList.add('is-open'); $('backupCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showListPanel(){ closeMenus(); closeContentPanels(); listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showCategoryPanel(category){
+    closeMenus(); closeContentPanels(); $('q').value='';
+    $('filterP').value='all'; $('filterS').value='all';
+    if(['tourist','medical','other'].includes(category)) $('filterP').value=category;
+    else if(category==='unknown') $('filterP').value='none';
+    else if(category==='given') $('filterS').value='given';
+    else if(category==='incomplete') $('filterS').value='incomplete';
+    listPanelOpen=true; render(); $('listCard').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  // Expose only deliberate navigation callbacks for the separate mobile dock script.
+  window.SIM_MANAGER_NAV = { openSearch:showSearchPanel, openWanted:showWantedPanel, openList:showListPanel, openBackup:showBackupPanel, openCategory:showCategoryPanel };
+  $('stats')?.addEventListener('click', e=>{ const tile=e.target.closest('[data-category]'); if(tile) showCategoryPanel(tile.dataset.category); });
   $('addFab').addEventListener('click',openAddPanel);
   $('closeAddBtn').addEventListener('click',closeAddPanel);
   $('addBackdrop').addEventListener('click',closeAddPanel);
   $('gearBtn').addEventListener('click',()=>{ const open=$('toolsPanel').hidden; $('toolsPanel').hidden=!open; $('gearBtn').setAttribute('aria-expanded',String(open)); $('moreMenu').hidden=true; $('moreBtn').setAttribute('aria-expanded','false'); });
   $('moreBtn').addEventListener('click',()=>{ const open=$('moreMenu').hidden; $('moreMenu').hidden=!open; $('moreBtn').setAttribute('aria-expanded',String(open)); $('toolsPanel').hidden=true; $('gearBtn').setAttribute('aria-expanded','false'); });
-  $('moreMenu').addEventListener('click',e=>{ const b=e.target.closest('[data-open-panel]'); if(!b)return; if(b.dataset.openPanel==='wanted') showWantedPanel(); });
+  $('moreMenu').addEventListener('click',e=>{
+    const category=e.target.closest('[data-open-category]');
+    if(category){ showCategoryPanel(category.dataset.openCategory); return; }
+    const b=e.target.closest('[data-open-panel]'); if(!b)return;
+    if(b.dataset.openPanel==='wanted') showWantedPanel(); else if(b.dataset.openPanel==='backup') showBackupPanel();
+  });
   document.addEventListener('click',e=>{ if(!e.target.closest('.search-card')) closeMenus(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeAddPanel(); closeMenus(); } });
   $('wantCard').classList.remove('is-open'); $('backupCard').classList.remove('is-open');
@@ -1843,14 +1924,16 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   // 5) compact bottom navigation: Search / Wanted / SIM List / Backup.
   const items=[['⌕','Search','search'],['🔎','Wanted','wanted'],['▤','List','list'],['▣','Backup','backup']];
   const nav=document.createElement('nav'); nav.className='bnav'; nav.setAttribute('aria-label','Sections');
-  nav.innerHTML=items.map((x)=>`<button type="button" data-nav="${x[2]}"><span>${x[0]}</span>${x[1]}</button>`).join('');
+  nav.innerHTML=items.map((x,i)=>`<button type="button" class="${i===0?'on':''}" data-nav="${x[2]}"><span>${x[0]}</span>${x[1]}</button>`).join('');
   document.body.appendChild(nav);
   nav.addEventListener('click',e=>{ const b=e.target.closest('button[data-nav]'); if(!b)return;
     nav.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
-    if(b.dataset.nav==='search'){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); $('q').focus({preventScroll:true}); }
-    else if(b.dataset.nav==='wanted') showWantedPanel();
-    else if(b.dataset.nav==='list') showListPanel();
-    else if(b.dataset.nav==='backup') showBackupPanel();
+    const navApi=window.SIM_MANAGER_NAV;
+    if(!navApi){ console.error('SIM_MANAGER_NAV is not ready'); return; }
+    if(b.dataset.nav==='search') navApi.openSearch();
+    else if(b.dataset.nav==='wanted') navApi.openWanted();
+    else if(b.dataset.nav==='list') navApi.openList();
+    else if(b.dataset.nav==='backup') navApi.openBackup();
   });
   const topTargets=[['searchCard','search'],['wantCard','wanted'],['listCard','list'],['backupCard','backup']];
   if('IntersectionObserver' in window){

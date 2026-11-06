@@ -1,4 +1,4 @@
-const CACHE = "tushar-sim-shell-v4-compact-search";
+const CACHE = "tushar-sim-shell-v6-navigation-functional";
 const SHELL = [
   "./",
   "./index.html",
