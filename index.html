@@ -790,13 +790,128 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   .stats-card .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
+
+/* ================= V8 CLEAN + COMPACT UI ================= */
+/* ---- login ---- */
+html body #loginScreen{padding:20px;background:radial-gradient(700px 380px at 50% -80px,rgba(47,91,234,.45),transparent 70%),radial-gradient(500px 300px at 100% 100%,rgba(30,168,150,.18),transparent 70%),linear-gradient(160deg,#0a1431,#10234f 55%,#17338a)}
+html body .login-card{width:min(100%,380px);padding:0;overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 28px 80px rgba(2,8,28,.5);border:1px solid rgba(255,255,255,.2)}
+.login-hero{background:#fef7dd;padding:14px 14px 0;text-align:center}
+html body .login-brand-image{display:block;width:min(100%,250px);height:auto;aspect-ratio:1100/1029;max-height:230px;object-fit:contain;margin:0 auto;border-radius:0;background:transparent}
+.login-body{padding:20px 24px 20px}
+.login-title{text-align:center;margin-bottom:16px}
+.login-title b{display:block;font-size:17px;color:#10234f;letter-spacing:.1px}
+.login-title span{display:block;margin-top:3px;font-size:12px;color:#7a869c}
+html body .login-card input{height:48px;background:#f5f8ff;border:1px solid #dbe3f1}
+.login-secure{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:16px;font-size:11px;color:#8b97ad}
+.login-secure i{width:7px;height:7px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 3px #dcfce7}
+
+/* ---- header: logo + name + icon actions only ---- */
+html body .app-header{padding:7px 12px!important;background:linear-gradient(110deg,#0d1d47,#16358a 70%,#2250c0);box-shadow:0 4px 16px rgba(13,29,71,.22)}
+html body .app-header .hrow{min-height:46px!important;gap:8px!important}
+html body .header-logo{width:38px!important;height:38px!important;padding:0!important;border-radius:50%!important;background:#fef7dd!important;object-fit:cover!important;box-shadow:0 0 0 2px rgba(255,255,255,.35);cursor:pointer}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;min-width:0;cursor:pointer}
+.brand-text b{font-size:15px;color:#fff;font-weight:800;letter-spacing:.2px;white-space:nowrap}
+.brand-text span{font-size:10px;color:#a9bcf0;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;white-space:nowrap}
+html body .brand-actions{gap:9px!important;min-width:0}
+@media screen and (max-width:760px){
+  html body .home-icon{display:none!important}
+  html body .app-header .lang button{font-size:10px!important;padding:3px 6px!important;min-height:26px!important}
+  html body .cloud-status{order:3;width:16px!important;min-width:16px!important;height:16px!important}
+  html body .cloud-status::before{width:12px;height:12px;font-size:8px}
+  html body .header-actions{gap:6px!important}
+}
+@media screen and (max-width:350px){.brand-text span{display:none}}
+
+/* ---- search: icon, input and clear are flex siblings => can never overlap ---- */
+html body .search-box{position:relative;display:flex;align-items:center;gap:8px;flex:1 1 0;min-width:0;height:44px;padding:0 6px 0 12px;background:#fff;border:1.5px solid #d3dcf0;border-radius:13px;box-shadow:0 1px 4px rgba(20,43,99,.06);transition:border-color .2s,box-shadow .2s}
+html body .search-box:focus-within{border-color:#3a63e0;box-shadow:0 0 0 4px rgba(47,91,234,.13)}
+html body .search-box svg{position:static!important;flex:0 0 auto;width:18px!important;height:18px!important;left:auto!important;stroke:#7587aa}
+html body .search-box input#q{flex:1 1 auto;min-width:0;width:auto;height:100%!important;padding:0!important;margin:0;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;outline:0!important;font-size:16px!important;letter-spacing:.2px!important;line-height:normal;color:#14244a;-webkit-appearance:none;appearance:none;text-overflow:ellipsis!important}
+html body .search-box input#q::placeholder{color:#97a3ba!important;font-size:14px!important;letter-spacing:0;opacity:1}
+html body .search-box input#q::-webkit-search-cancel-button,html body .search-box input#q::-webkit-search-decoration{display:none;-webkit-appearance:none}
+.q-clear{flex:0 0 auto;width:30px;height:30px;min-height:30px!important;padding:0;display:grid;place-items:center;border-radius:50%;background:#eaeffa;color:#4a5b82;font-size:19px;line-height:1;box-shadow:none!important}
+.q-clear:hover{background:#dbe4f7}
+html body .search-card{padding:9px!important;margin-bottom:8px!important}
+html body .tool-icon{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+html body .result-info{margin:6px 3px 0;font-size:11px}
+html body .result-info:empty{display:none}
+
+/* ---- statistics panel (opened by the eye icon) ---- */
+html body .stats-card .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+html body .stats-card .stat{padding:8px 4px;border-radius:11px}
+html body .stats-card .stat b{font-size:18px}
+html body .stats-card .stat span{font-size:10px;margin-top:2px}
+html body .stats-note{display:none}
+
+/* ---- SIM list: one profile = two slim lines ---- */
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.list-head h2{margin:0!important;white-space:nowrap}
+.list-tools{display:flex;gap:6px}
+.list-tools button{min-height:32px!important;padding:5px 10px;font-size:12px;white-space:nowrap}
+td.mmeta{display:none}
+@media screen and (max-width:760px){
+  html body #listCard{padding:7px!important;border-radius:13px}
+  html body #listCard .list-head{margin-bottom:6px}
+  html body #listCard tr.grp{margin:6px 0 4px!important}
+  html body #listCard tr.grp td{padding:5px 9px!important;font-size:11px!important;border-radius:8px!important}
+  html body #listCard tr.grp .gc{font-size:10px;padding:0 7px}
+  html body #listCard tr[data-id]{display:grid!important;grid-template-columns:34px minmax(0,1fr) auto!important;grid-template-areas:"s n x" "p m x"!important;column-gap:9px!important;row-gap:1px!important;align-items:center!important;padding:6px 8px 6px 9px!important;margin:0 0 4px!important;border:1px solid #e6ebf4!important;border-left:3px solid #94a3b8!important;border-radius:10px!important;box-shadow:none!important}
+  html body #listCard tr.r-tourist{border-left-color:#16a34a!important}
+  html body #listCard tr.r-medical{border-left-color:#dc2626!important}
+  html body #listCard tr.r-other{border-left-color:#4f46e5!important}
+  html body #listCard tr[data-id] td{padding:0!important;border:0!important;line-height:1.2!important}
+  html body #listCard tr[data-id] td:nth-child(5),html body #listCard tr[data-id] td:nth-child(6),html body #listCard tr[data-id] td:nth-child(7),html body #listCard tr[data-id] td.notecell,html body #listCard tr[data-id] td.idx{display:none!important}
+  html body #listCard tr[data-id] td:nth-child(2){grid-area:s;font-size:10px!important;font-weight:700;color:#7a869c;text-align:left!important}
+  html body #listCard tr[data-id] td:nth-child(3){grid-area:p;font-size:12px!important;text-align:left!important}
+  html body #listCard tr[data-id] td:nth-child(2) ,html body #listCard tr[data-id] td:nth-child(3){font-family:Consolas,"SF Mono",monospace}
+  html body #listCard tr[data-id] td:nth-child(4){grid-area:n;font-size:16px!important;font-weight:800!important;letter-spacing:.3px!important;white-space:nowrap!important;padding:0!important;overflow:hidden!important}
+  html body #listCard tr[data-id] td.mmeta{display:block!important;grid-area:m;min-width:0;font-size:11px!important;color:#6b778c!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  td.mmeta b{color:#27385f;font-weight:700}
+  td.mmeta i{font-style:normal;color:#8b96aa}
+  td.mmeta u{text-decoration:none;margin:0 4px;color:#b6bfce}
+  td.mmeta .mw{font-style:normal;font-weight:700;color:#075985;background:#e0f2fe;border-radius:6px;padding:0 5px;margin-right:4px}
+  html body #listCard tr[data-id] td.acts{grid-area:x!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:4px!important;margin:0!important;padding:0!important;border:0!important}
+  html body #listCard tr[data-id] td.acts button.icon{width:30px!important;min-width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;margin:0!important;border-radius:9px!important;justify-content:center}
+  html body #listCard tr[data-id] td.acts button.icon svg{width:14px;height:14px}
+  html body #listCard tr.given{background:#f6faf7!important}
+  html body #listCard tr.given td:not(.acts){opacity:.62}
+  html body #listCard tr.given td.mmeta{opacity:.75}
+  html body main{padding:8px 8px calc(84px + var(--safe))!important}
+}
+@media screen and (max-width:360px){
+  html body #listCard tr[data-id]{grid-template-columns:30px minmax(0,1fr) auto!important}
+  html body #listCard tr[data-id] td:nth-child(4){font-size:15px!important}
+  html body #listCard tr[data-id] td.acts button.icon{width:27px!important;min-width:27px!important}
+}
+@media print{td.mmeta{display:none!important}}
+
+/* ---- bottom navigation: always icon + label ---- */
+@media screen and (max-width:760px){
+  html body .bnav{padding:4px 8px calc(4px + var(--safe))!important;gap:4px!important;border-radius:0!important;background:rgba(10,20,48,.98)!important}
+  html body .bnav button{flex-direction:column!important;justify-content:center;gap:2px!important;min-height:46px!important;border-radius:12px!important;font-size:10px!important;letter-spacing:.3px;color:#9fb0d4!important}
+  html body .bnav button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  html body .bnav .nav-search-label,html body .bnav .nav-label{display:block!important}
+  html body .bnav button.on{background:rgba(255,255,255,.12)!important;color:#fff!important}
+  html body .add-fab{bottom:calc(62px + var(--safe))!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;border-radius:15px!important;right:12px!important}
+}
+
+
+html body .stats-card{padding:10px!important}
+html body .stats-card .card-heading{margin-bottom:8px}
+html body .stats-card .card-heading h2{margin:0}
+html body .stats-card .tool-icon{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important}
+html body .stats-card .stats{width:100%!important;margin:0!important;padding:0!important;overflow:visible!important;display:grid!important}
+html body .stats-card .stat{min-width:0!important}
+.login-hero{background:#fff4d6}
 </style>
 </head>
 <body>
 
 <section id="loginScreen" aria-label="Sign in">
   <div class="login-card">
-    <img class="login-brand-image" src="./assets/tushar-visa-logo.jpg" alt="Tushar Visa Info">
+    <div class="login-hero"><img class="login-brand-image" src="./assets/tushar-visa-logo.jpg" alt="Tushar Visa Info"></div>
+    <div class="login-body">
+    <div class="login-title"><b>SIM Management System</b><span>Sign in to continue</span></div>
     <form id="loginForm" autocomplete="on">
       <label class="sr-only" for="loginEmail">Email</label>
       <input id="loginEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
@@ -807,13 +922,16 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     <button id="forgotBtn" class="forgot-btn" type="button" hidden>Forgot password?</button>
     <button id="retryBtn" class="login-retry" type="button" hidden>Retry</button>
     <div id="loginMessage" class="login-message" role="status" aria-live="polite"></div>
+    <div class="login-secure"><i></i>Private &amp; secure workspace</div>
+    </div>
   </div>
 </section>
 
 <header class="app-header">
   <div class="hrow">
     <div class="brand-actions">
-      <img class="header-logo" src="./assets/tushar-visa-mark.png" alt="Tushar Visa Info">
+      <img class="header-logo" id="brandLogo" src="./assets/tushar-visa-mark.png" alt="Tushar Visa Info">
+      <div class="brand-text" id="brandText"><b>Tushar Visa</b><span>SIM Manager</span></div>
       <button type="button" class="home-icon" id="homeBtn" title="Home" aria-label="Home">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
       </button>
@@ -854,7 +972,8 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     <div class="search-toolbar">
       <div class="search-box">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-        <input id="q" type="search" placeholder="" autocomplete="off" inputmode="search" aria-label="Search SIMs">
+        <input id="q" type="text" placeholder="Search number, name or ID" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" enterkeyhint="search" aria-label="Search SIMs">
+        <button type="button" id="qClear" class="q-clear" aria-label="Clear search" hidden>×</button>
       </div>
       <input id="mode" type="hidden" value="end">
       <button type="button" class="tool-icon" id="gearBtn" aria-label="Filters and tools" title="Filters and tools" aria-expanded="false">
@@ -949,7 +1068,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
 
   <!-- টেবিল -->
   <div class="card list-card" id="listCard">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px"><h2 style="margin:0">SIM List</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="sec" id="typoBtn">🔍 Check typos</button><button type="button" class="sec" id="printBtn">🖨 Print this list</button></span></div>
+    <div class="list-head"><h2>SIM List</h2><span class="list-tools"><button type="button" class="sec" id="typoBtn">🔍 Check typos</button><button type="button" class="sec" id="printBtn">🖨 Print</button></span></div>
     <div class="printonly" id="printTitle"></div>
     <div class="tablewrap">
       <table>
@@ -987,10 +1106,10 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
 
 </main>
 <nav class="bnav" id="mobileNav" aria-label="Sections">
-  <button type="button" data-nav="search" class="on" aria-label="Search"><span aria-hidden="true">⌕</span><span class="nav-label nav-search-label">Search</span></button>
-  <button type="button" data-nav="wanted"><span aria-hidden="true">🔎</span><span class="nav-label">Wanted</span></button>
-  <button type="button" data-nav="list"><span aria-hidden="true">▤</span><span class="nav-label">List</span></button>
-  <button type="button" data-nav="backup"><span aria-hidden="true">▣</span><span class="nav-label">Backup</span></button>
+  <button type="button" data-nav="search" class="on" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 5 5"/></svg><span class="nav-label">Search</span></button>
+  <button type="button" data-nav="wanted" aria-label="Wanted"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg><span class="nav-label">Wanted</span></button>
+  <button type="button" data-nav="list" aria-label="List"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.6" cy="6" r="1"/><circle cx="3.6" cy="12" r="1"/><circle cx="3.6" cy="18" r="1"/></svg><span class="nav-label">List</span></button>
+  <button type="button" data-nav="backup" aria-label="Backup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M12 3v12m0 0-4-4m4 4 4-4"/></svg><span class="nav-label">Backup</span></button>
 </nav>
 <div class="toast" id="toast"></div>
 
@@ -1281,6 +1400,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   function render(){
     const q = $('q').value, mode='end', fp=$('filterP').value;
     const qd = digits(q);
+    const qc = $('qClear'); if(qc) qc.hidden = !q;
     $('listCard').classList.toggle('is-visible', !!q.trim() || listPanelOpen);
     const hint = $('searchHint');
     if(hint) { hint.textContent = ''; hint.hidden = true; }
@@ -1290,8 +1410,9 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
     const simList = simAll.filter(x=>inScope(x.s, fp));
     const tb = $('tbody');
     const wmap = {}; wanted.forEach(w=>{ if(w.status==='found' && w.matchNumber) wmap[w.matchNumber]=w; });
+    const mmeta = (s, wm)=>{ const parts=[]; if(s.name) parts.push(`<b>${esc(s.name)}</b>`); if(s.home) parts.push(esc(s.home)); if(s.note) parts.push(`<i>${esc(s.note)}</i>`); const w=wm[s.number]; return (w?`<em class="mw">🔎 ${esc(w.name||'Wanted')}</em> `:'') + (parts.length?parts.join('<u>·</u>'):'<span class="nopid">No name</span>'); };
     const rowHtml = (s,i)=>`
-      <tr data-id="${s.id}"${s.given?' class="given"':''}>
+      <tr data-id="${s.id}" class="r-${s.purpose||'unknown'}${s.given?' given':''}">
         <td class="idx">${i+1}</td>
         <td class="pid S">${esc(s.sid||'')}</td>
         <td class="pid ${s.pid?s.pid[0]:''}">${s.pid?esc(s.pid):'<span class="nopid">—</span>'}</td>
@@ -1300,6 +1421,7 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
         <td>${s.home?esc(s.home):'<span class="nopid">—</span>'}</td>
         <td><span class="badge p-${s.purpose||'unknown'}">${s.purpose?PL[s.purpose]:'Unknown'}</span>${s.given?`<br><span class="badge p-given" title="${esc(fmtDate(s.givenAt))}">✔ Given</span>`:''}${wmap[s.number]?`<br><span class="badge p-want" title="Requested by this customer via Wanted list">🔎 ${esc(wmap[s.number].name||'Wanted')}</span>`:''}</td>
         <td class="notecell">${esc(s.note)}</td>
+        <td class="mmeta">${mmeta(s, wmap)}</td>
         <td class="acts"><button class="icon give${s.given?' on':''}" data-give="1" title="${s.given?'Mark as NOT given':'Mark as given'}">✔</button><button class="icon" data-edit="1" title="Edit">${ICON_EDIT}</button><button class="icon del" data-del="1" title="Delete">${ICON_DEL}</button></td>
       </tr>`;
     let html = '';
@@ -1450,6 +1572,9 @@ tr:not(.grp) td.acts button.icon{min-width:34px;width:34px;height:32px;min-heigh
   ['q','filterP','filterS','sortBy'].forEach(id=>$(id).addEventListener('input', render));
   ['filterP','filterS','sortBy'].forEach(id=>$(id).addEventListener('change', render));
   $('q').addEventListener('keydown', e=>{ if(e.key==='Escape'){ e.target.value=''; render(); } });
+  $('qClear')?.addEventListener('click', ()=>{ $('q').value=''; render(); $('q').focus(); });
+  $('brandLogo')?.addEventListener('click', ()=>$('homeBtn').click());
+  $('brandText')?.addEventListener('click', ()=>$('homeBtn').click());
   $('printBtn').addEventListener('click', ()=>window.print());
   $('simPanel').addEventListener('click', e=>{
     const b = e.target.closest('button[data-edit]'); if(!b) return;
