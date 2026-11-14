@@ -903,6 +903,69 @@ html body .stats-card .tool-icon{width:34px!important;height:34px!important;min-
 html body .stats-card .stats{width:100%!important;margin:0!important;padding:0!important;overflow:visible!important;display:grid!important}
 html body .stats-card .stat{min-width:0!important}
 .login-hero{background:#fff4d6}
+
+
+/* ================= V9 PHONE KEYBOARD + SHEET FIXES (layout only — no data or logic changes) =================
+   Why Add / Save / "I have noted this ID" were unreachable on phones:
+   1) the bottom dock (z-index 100) and the floating + button (99) were stacked ABOVE the sheets and dialogs (z-index 20-71);
+   2) sheets are pinned to the bottom of the page and the on-screen keyboard was left covering their buttons.
+   Fix: sheets/dialogs now sit above the dock, follow the area that is really visible above the keyboard
+   (--vvh / --kb come from window.visualViewport, see the small script at the end), and their action buttons stay
+   pinned inside the sheet while the content scrolls. */
+:root{--vvh:100vh;--kb:0px}
+@supports (height:100dvh){:root{--vvh:100dvh}}
+html body #addBackdrop{z-index:290}
+html body.add-open #addCard{z-index:295}
+html body .overlay{z-index:300;inset:0 0 var(--kb,0px) 0}
+html body #noteOv{z-index:310}
+html body .undo{z-index:395}
+html body .toast{z-index:400}
+html body .overlay .modal{max-height:min(92vh,calc(var(--vvh) - 16px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+html body .modal .mhead{position:sticky;top:0;z-index:3}
+html body .modal .mfoot{position:sticky;bottom:0;z-index:3;padding-bottom:calc(14px + var(--safe));box-shadow:0 -8px 16px rgba(15,23,42,.06)}
+html body #noteOv #noteAck{position:sticky;bottom:calc(8px + var(--safe));z-index:3}
+html body #noteOv .nbody{padding-bottom:calc(18px + var(--safe))}
+html body .modal input,html body .modal textarea,html body #addCard input,html body #addCard select{scroll-margin-top:70px;scroll-margin-bottom:96px}
+/* sign-in screen: scrollable, and kept above the keyboard so the Sign in button is always reachable */
+html body #loginScreen{inset:0 0 var(--kb,0px) 0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+html body #loginScreen .login-card{margin:auto}
+/* while typing on a phone the dock and the floating + step aside */
+html body.typing .bnav,html body.typing .add-fab{display:none!important}
+
+@media screen and (max-width:760px){
+  html body .overlay .modal{padding-bottom:0}
+  /* Add-SIM sheet: compact form, sticky title and a sticky Add button */
+  html body.add-open #addCard{bottom:var(--kb,0px);max-height:calc(var(--vvh) - 10px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 14px}
+  html body.add-open #addCard .card-heading{position:sticky;top:0;z-index:4;background:#fff;margin:0 -14px 6px;padding:12px 14px 6px}
+  html body.add-open #addForm .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  html body.add-open #addForm .row>*{flex:none!important;min-width:0}
+  html body.add-open #addForm .row>div:nth-child(1),html body.add-open #addForm .row>div:nth-child(4),html body.add-open #addForm .row>.actions{grid-column:1/-1}
+  html body.add-open #addForm .row>.actions{position:sticky;bottom:0;z-index:4;display:flex;margin:0 -14px;padding:10px 14px calc(12px + var(--safe));background:#fff;border-top:1px solid #edf0f5}
+  html body.add-open #addForm .row>.actions button{flex:1;min-height:50px;font-size:16px}
+  html body.add-open #addForm input,html body.add-open #addForm select{min-height:46px}
+  html body.add-open #addForm #fHint{padding-bottom:6px}
+}
+@media screen and (min-width:761px){
+  html body.add-open #addCard{top:calc((100% - var(--kb,0px)) / 2);max-height:min(90vh,780px,calc(var(--vvh) - 16px))}
+}
+/* short phones: make the "SIM saved" dialog smaller so the Noted button is on screen without scrolling */
+@media (max-height:700px){
+  html body #noteOv .nhead{padding:14px 18px 0}
+  html body #noteOv .nhead h3{font-size:18px;margin-top:8px}
+  html body #noteOv .ncheck{width:44px;height:44px;font-size:24px;box-shadow:0 0 0 6px #dcfce7}
+  html body #noteOv .nbody{padding:10px 16px calc(14px + var(--safe));gap:8px}
+  html body #noteOv .nserial{padding:10px 8px}
+  html body #noteOv .nserial b{font-size:clamp(48px,16vw,72px)}
+  html body #noteOv .nmsg{font-size:14px}
+  html body #noteOv .bigok{padding:14px 16px;font-size:17px}
+}
+/* touch screens: skip the expensive blur effects (smoother on low-end Android phones) */
+@media (pointer:coarse){
+  html body .overlay,html body #addBackdrop{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  html body .overlay{background:rgba(15,23,42,.62)}
+  html body #addBackdrop{background:rgba(7,17,42,.62)}
+  html body .bnav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
 </style>
 </head>
 <body>
@@ -1519,7 +1582,8 @@ html body .stats-card .stat{min-width:0!important}
     radios().forEach(r => r.checked = (r.value === (s.purpose||'')));
     $('eWarn').textContent = ''; $('eErr').textContent = '';
     $('editOv').hidden = false; document.body.style.overflow = 'hidden';
-    setTimeout(()=>$('eNum').focus(), 30);
+    // Phones: do not pop the keyboard open by itself (it hides Type / Note / Save). Desktop keeps the auto-focus.
+    setTimeout(()=>{ if(!matchMedia('(pointer:coarse)').matches) $('eNum').focus(); }, 30);
   }
   function closeEdit(){ $('editOv').hidden = true; document.body.style.overflow = ''; editing = null; }
   function deleteSim(s){
@@ -2257,6 +2321,37 @@ html body .stats-card .stat{min-width:0!important}
     document.title=l==='bn'?D['TUSHAR VISA SIM Management System']:'TUSHAR VISA SIM Management System'; upd(); }
   sw.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b&&b.dataset.l!==lang) setLang(b.dataset.l); });
   setLang(lang);
+})();
+</script>
+<script>
+/* V9 phone keyboard layer — layout only; it never reads or writes saved data.
+   Keeps sheets and dialogs inside the area that is really visible above the on-screen keyboard. */
+(function(){
+  const root=document.documentElement, vv=window.visualViewport, coarse=matchMedia('(pointer:coarse)');
+  let raf=0;
+  function sync(){
+    raf=0;
+    const ih=window.innerHeight, h=vv?vv.height:ih, top=vv?vv.offsetTop:0;
+    const raw=Math.max(0, ih-h-top);
+    const kb=raw>80?Math.round(raw):0;                    // ignore small changes (browser address bar)
+    root.style.setProperty('--vvh', Math.round(h)+'px');
+    root.style.setProperty('--kb', kb+'px');
+  }
+  const queue=()=>{ if(!raf) raf=requestAnimationFrame(sync); };
+  if(vv){ vv.addEventListener('resize',queue); vv.addEventListener('scroll',queue); }
+  window.addEventListener('resize',queue); window.addEventListener('orientationchange',queue);
+  sync();
+  // dock + floating "+" step aside while a text field is focused on a phone
+  const typingField=el=>!!el && /^(INPUT|TEXTAREA)$/.test(el.tagName) && !/^(checkbox|radio|button|submit|reset|file|hidden)$/.test(el.type||'');
+  document.addEventListener('focusin',e=>{
+    if(coarse.matches && typingField(e.target)) document.body.classList.add('typing');
+    // keep the field you tap inside a sheet visible once the keyboard has appeared
+    const t=e.target; if(t && t.closest && t.closest('#addCard,.modal') && typingField(t)) setTimeout(()=>{ try{ t.scrollIntoView({block:'nearest',behavior:'smooth'}); }catch(_){} },300);
+  });
+  document.addEventListener('focusout',()=>setTimeout(()=>{ if(!typingField(document.activeElement)) document.body.classList.remove('typing'); },150));
+  // when a result dialog opens (e.g. "SIM saved — I have noted this ID"), close the keyboard so the buttons are fully visible
+  const dropKeyboard=()=>{ const a=document.activeElement; if(typingField(a)) a.blur(); };
+  ['noteOv','infoOv'].forEach(id=>{ const el=document.getElementById(id); if(el) new MutationObserver(()=>{ if(!el.hidden) dropKeyboard(); }).observe(el,{attributes:true,attributeFilter:['hidden']}); });
 })();
 </script>
 <script type="module" src="./firebase-sync.js"></script>
