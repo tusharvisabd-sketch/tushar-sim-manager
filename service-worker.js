@@ -1,4 +1,4 @@
-const CACHE = "tushar-sim-shell-v9-phone-keyboard";
+const CACHE = "tushar-sim-shell-v10-loading";
 const SHELL = [
   "./",
   "./index.html",
